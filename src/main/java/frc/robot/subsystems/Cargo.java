@@ -1,3 +1,6 @@
-public class Cargo extends Cargo {
+public class Cargo extends Subsystem {
+
+
+
 
 }
