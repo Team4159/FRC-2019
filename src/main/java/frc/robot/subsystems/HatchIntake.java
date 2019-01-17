@@ -1,13 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.MoveHatchIntake;
 import frc.robot.util.Constants;
 
 public class HatchIntake extends Subsystem{
     private static HatchIntake instance;
-    public HatchIntake getInstance(){
+    public static HatchIntake getInstance(){
         if(instance==null){
             instance = new HatchIntake();
         }
@@ -45,6 +45,6 @@ public class HatchIntake extends Subsystem{
 
     @Override
     protected void initDefaultCommand() {
-
+        setDefaultCommand(new MoveHatchIntake());
     }
 }
