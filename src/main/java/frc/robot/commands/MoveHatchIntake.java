@@ -11,6 +11,8 @@ public class MoveHatchIntake extends Command {
     public MoveHatchIntake() {
         hatchIntake = HatchIntake.getInstance();
         oi = OI.getInstance();
+
+        requires(hatchIntake);
     }
 
     @Override
