@@ -17,18 +17,15 @@ public class ControlCargo extends Command {
 
     @Override
     protected void execute() {
-        /*TODO:Add in proper button getters. Until then, leave this out for no errors.*/
-        /*
         if (oi.getCargoIntakeButton() && oi.getCargoOuttakeButton()) {
             cargo.stopCargo();
         } else if (oi.getCargoIntakeButton()) {
             cargo.intakeCargo();
         } else if (oi.getCargoOuttakeButton()) {
             cargo.outtakeCargo();
-        }
-        else {
+        } else {
             cargo.stopCargo();
-        }*/
+        }
     }
 
     @Override

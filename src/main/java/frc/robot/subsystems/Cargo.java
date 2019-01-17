@@ -23,7 +23,9 @@ public class Cargo extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {setDefaultCommand(new ControlCargo());}
+    protected void initDefaultCommand() {
+        setDefaultCommand(new ControlCargo());
+    }
 
     public void setSpeed(double speed) {
         intakeTalon.set(ControlMode.PercentOutput, speed);
