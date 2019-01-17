@@ -15,19 +15,17 @@ public class MoveHatchIntake extends Command {
 
     @Override
     protected void execute() {
-        /*
         if (OI.getSolenoid1()) {
             hatchIntake.outSolenoid1();
         } else {
-            hatchIntake.inSolenoid1()
+            hatchIntake.inSolenoid1();
         }
 
         if (OI.getSolenoid2()) {
             hatchIntake.outSolenoid2();
         } else {
-            hatchIntake.inSolenoid2()
+            hatchIntake.inSolenoid2();
         }
-        */
     }
 
     @Override
