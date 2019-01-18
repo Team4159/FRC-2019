@@ -17,7 +17,6 @@ public class Drivetrain extends Subsystem {
         return instance;
     }
 
-    private static Constants constants;
     private DrivetrainControlState state;
 
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;

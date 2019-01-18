@@ -23,7 +23,6 @@ public class OI {
 
     private Joystick leftJoy, rightJoy;
     private static XboxController xbox;
-    private Constants constants;
 
     public static OI getInstance() {
         if(instance == null)
