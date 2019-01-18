@@ -39,11 +39,11 @@ public class OI {
         xbox = new XboxController(constants.getInt("XBOX"));
     }
 
-    public static boolean getSolenoid1() {
+    public boolean getSolenoid1() {
         return xbox.getBumper(GenericHID.Hand.kLeft);
     }
 
-    public static boolean getSolenoid2() {
+    public boolean getSolenoid2() {
         return xbox.getBumper(GenericHID.Hand.kRight);
     }
 
