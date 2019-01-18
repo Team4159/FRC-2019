@@ -10,16 +10,14 @@ import frc.robot.util.Constants;
 public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
+    private DrivetrainControlState state;
+    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
 
     public static Drivetrain getInstance() {
         if(instance == null)
             instance = new Drivetrain();
         return instance;
     }
-
-    private DrivetrainControlState state;
-
-    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
 
     private Drivetrain() {
         leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
@@ -31,7 +29,6 @@ public class Drivetrain extends Subsystem {
         rightSlaveTalon.follow(rightMasterTalon);
 
         configSensors();
-
     }
 
     public void rawDrive(double left, double right) {

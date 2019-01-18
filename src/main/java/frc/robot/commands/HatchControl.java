@@ -13,7 +13,6 @@ public class HatchControl extends Command {
 
         hatch = Hatch.getInstance();
         oi = OI.getInstance();
-
         requires(hatch);
     }
 

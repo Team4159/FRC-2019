@@ -18,24 +18,14 @@ public class DriveControl extends Command {
         requires(drivetrain);
     }
 
-    /**
-     * The initialize method is called just before the first time
-     * this Command is run after being started.
-     */
     @Override
     protected void initialize() {
         //drivetrain.setState();
     }
 
-    /**
-     * The execute method is called repeatedly when this Command is
-     * scheduled to run until this Command either finishes or is canceled.
-     */
     @Override
     protected void execute() {
-
         drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
-
     }
 
     @Override
@@ -45,9 +35,7 @@ public class DriveControl extends Command {
 
     @Override
     protected void end() {
-
         drivetrain.stop();
-
     }
 
     @Override

@@ -5,7 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -14,13 +13,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.util.Constants;
 
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
 public class OI {
-    private static OI instance;
 
+    private static OI instance;
     private Joystick leftJoy, rightJoy;
     private static XboxController xbox;
 
