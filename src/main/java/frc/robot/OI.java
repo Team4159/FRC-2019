@@ -43,7 +43,7 @@ public class OI {
       
         leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
-        secondaryJoy = new Joystick(2);
+        secondaryJoy = new Joystick(constants.getInt("SECONDARY_JOY"));
         xbox = new Joystick(constants.getInt("XBOX"));
     }
 
