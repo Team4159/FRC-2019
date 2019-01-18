@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.jetbrains.annotations.NotNull;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.commands.DriveControl;
 import frc.robot.util.Constants;
 
@@ -71,5 +72,4 @@ public class Drivetrain extends Subsystem {
         VISION,
         PATH_FOLLOWING
     }
-
 }
