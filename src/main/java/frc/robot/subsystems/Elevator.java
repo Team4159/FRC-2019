@@ -17,7 +17,6 @@ public class Elevator extends Subsystem {
     }
 
     private ElevatorControlState state;
-    private static Constants constants;
 
 
     private TalonSRX elevatorTalon;
@@ -25,13 +24,10 @@ public class Elevator extends Subsystem {
 
 
     private Elevator() {
-
-        constants = Constants.getInstance();
-
-        elevatorTalon = new TalonSRX(constants.getInt("ELEVATOR_TALON"));
-        elevatorVictor1 = new VictorSPX(constants.getInt("ELEVATOR_VICTOR_1"));
-        elevatorVictor2 = new VictorSPX(constants.getInt("ELEVATOR_VICTOR_2"));
-        elevatorVictor3 = new VictorSPX(constants.getInt("ELEVATOR_VICTOR_3"));
+        elevatorTalon = new TalonSRX(Constants.getInt("ELEVATOR_TALON"));
+        elevatorVictor1 = new VictorSPX(Constants.getInt("ELEVATOR_VICTOR_1"));
+        elevatorVictor2 = new VictorSPX(Constants.getInt("ELEVATOR_VICTOR_2"));
+        elevatorVictor3 = new VictorSPX(Constants.getInt("ELEVATOR_VICTOR_3"));
 
         state = ElevatorControlState.OPEN_LOOP;
 
