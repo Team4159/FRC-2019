@@ -22,7 +22,7 @@ public class OI {
 
     private OI() {
         constants = Constants.getInstance();
-
+      
         leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
         xbox = new Joystick(constants.getInt("XBOX"));
