@@ -20,14 +20,11 @@ public class OI {
 
     private Joystick leftJoy, rightJoy;
     private XboxController xbox;
-    private Constants constants;
 
     private OI() {
-        constants = Constants.getInstance();
-      
-        leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
-        rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
-        xbox = new XboxController(constants.getInt("XBOX"));
+        leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
+        rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
+        xbox = new XboxController(Constants.getInt("XBOX"));
     }
 
     public double getLeftY() {

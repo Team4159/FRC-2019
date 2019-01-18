@@ -4,28 +4,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class Constants {
+    private static Properties prop = new Properties();
+    private static FileInputStream input;
 
-    private static Constants instance;
-
-    public static Constants getInstance() {
-        if (instance == null)
-            instance = new Constants();
-        return instance;
-    }
-
-    private Properties prop;
-    private InputStream input;
-
-    private Constants() {
-        prop = new Properties();
-        input = null;
-    }
-
-    public int getInt(@NotNull String key) {
+    public static int getInt(@NotNull String key) {
 
         try {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");
@@ -47,7 +32,7 @@ public class Constants {
         }
     }
 
-    public double getDouble(@NotNull String key) {
+    public static double getDouble(@NotNull String key) {
 
         try {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");
@@ -69,7 +54,7 @@ public class Constants {
         }
     }
 
-    public String getString(@NotNull String key) {
+    public static String getString(@NotNull String key) {
 
         try {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");

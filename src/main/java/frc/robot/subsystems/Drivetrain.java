@@ -27,15 +27,12 @@ public class Drivetrain extends Subsystem {
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
 
     private Drivetrain() {
-
-        constants = Constants.getInstance();
-
-        leftMasterTalon = new TalonSRX(constants.getInt("LEFT_MASTER_TALON"));
-        leftSlaveTalon = new TalonSRX(constants.getInt("LEFT_SLAVE_TALON"));
+        leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
+        leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
         leftSlaveTalon.follow(leftMasterTalon);
 
-        rightMasterTalon = new TalonSRX(constants.getInt("RIGHT_MASTER_TALON"));
-        rightSlaveTalon = new TalonSRX(constants.getInt("RIGHT_SLAVE_TALON"));
+        rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
+        rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
         rightSlaveTalon.follow(rightMasterTalon);
 
         configSensors();
