@@ -5,6 +5,7 @@ import frc.robot.OI;
 import frc.robot.subsystems.HatchIntake;
 
 public class MoveHatchIntake extends Command {
+
     private OI oi;
     private HatchIntake hatchIntake;
 

@@ -6,17 +6,19 @@ import frc.robot.commands.MoveHatchIntake;
 import frc.robot.util.Constants;
 
 public class HatchIntake extends Subsystem{
+
     private static HatchIntake instance;
+
+    public DoubleSolenoid solenoid1;
+    public DoubleSolenoid solenoid2;
+    public Constants constants;
+
     public static HatchIntake getInstance(){
         if(instance==null){
             instance = new HatchIntake();
         }
         return instance;
     }
-
-    public DoubleSolenoid solenoid1;
-    public DoubleSolenoid solenoid2;
-    public Constants constants;
 
     private HatchIntake(){
         constants = Constants.getInstance();
@@ -25,21 +27,17 @@ public class HatchIntake extends Subsystem{
     }
     public void outSolenoid1(){
         solenoid1.set(DoubleSolenoid.Value.kForward);
-
     }
     public void inSolenoid1(){
         solenoid1.set(DoubleSolenoid.Value.kReverse);
-
     }
 
     public void outSolenoid2(){
         solenoid2.set(DoubleSolenoid.Value.kForward);
-
     }
 
     public void inSolenoid2(){
         solenoid2.set(DoubleSolenoid.Value.kReverse);
-
     }
 
 

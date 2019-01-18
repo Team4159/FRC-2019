@@ -8,6 +8,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.util.Constants;
@@ -20,7 +21,9 @@ import frc.robot.util.Constants;
 public class OI {
     private static OI instance;
 
-    private static Joystick secondaryJoy;
+    private Joystick leftJoy, rightJoy;
+    private static XboxController xbox;
+    private Constants constants;
 
     public static OI getInstance() {
         if(instance == null)
@@ -28,27 +31,20 @@ public class OI {
         return instance;
     }
 
-
-    public static boolean getSolenoid1() {
-        return secondaryJoy.getRawButton(0);
-    }
-
-    public static boolean getSolenoid2() {
-        return secondaryJoy.getRawButton(1);
-    }
-
-
-    private Joystick leftJoy, rightJoy;
-    private XboxController xbox;
-    private Constants constants;
-
     private OI() {
         constants = Constants.getInstance();
       
         leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
-        secondaryJoy = new Joystick(constants.getInt("SECONDARY_JOY"));
         xbox = new XboxController(constants.getInt("XBOX"));
+    }
+
+    public static boolean getSolenoid1() {
+        return xbox.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    public static boolean getSolenoid2() {
+        return xbox.getBumper(GenericHID.Hand.kRight);
     }
 
     public double getLeftY() {
