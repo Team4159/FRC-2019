@@ -20,8 +20,8 @@ public class HatchIntake extends Subsystem{
 
     private HatchIntake(){
         constants = Constants.getInstance();
-        solenoid1 = new DoubleSolenoid(constants.getInt("Solenoid1Channell"),constants.getInt("Solenoid1Channel2"));
-        solenoid2 = new DoubleSolenoid(constants.getInt("Solenoid2Channel1"),constants.getInt("Solenoid2Channel2"));
+        solenoid1 = new DoubleSolenoid(constants.getInt("SOLENOID1CHANNEL1"),constants.getInt("SOLENOID1CHANNEL2"));
+        solenoid2 = new DoubleSolenoid(constants.getInt("SOLENOID2CHANNEL1"),constants.getInt("SOLENOID2CHANNEL2"));
     }
     public void outSolenoid1(){
         solenoid1.set(DoubleSolenoid.Value.kForward);
