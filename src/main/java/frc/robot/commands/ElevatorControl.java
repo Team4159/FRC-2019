@@ -1,18 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.OI;
+import frc.robot.subsystems.Elevator;
 
+public class ElevatorControl extends Command {
 
-public class Drive extends Command {
+    private Elevator elevator;
+    private OI oi;
 
-    private Drivetrain drivetrain;
+    public ElevatorControl() {
 
-    public Drive() {
+        elevator = Elevator.getInstance();
+        oi = OI.getInstance();
 
-        drivetrain = Drivetrain.getInstance();
-        requires(drivetrain);
+        requires(elevator);
     }
+
 
     /**
      * The initialize method is called just before the first time
@@ -20,7 +24,6 @@ public class Drive extends Command {
      */
     @Override
     protected void initialize() {
-
     }
 
 

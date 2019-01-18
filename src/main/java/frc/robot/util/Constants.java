@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class Constants {
         input = null;
     }
 
-    public int getInt(String key) {
+    public int getInt(@NotNull String key) {
 
         try {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");
@@ -46,10 +47,10 @@ public class Constants {
         }
     }
 
-    public double getDouble(String key) {
+    public double getDouble(@NotNull String key) {
 
         try {
-            input = new FileInputStream("/home/lvuser/config.properties");
+            input = new FileInputStream("/home/lvuser/deploy/config.properties");
             prop.load(input);
             return Double.parseDouble(prop.getProperty(key));
 
@@ -68,10 +69,11 @@ public class Constants {
         }
     }
 
-    public String getString(String key) {
+
+    public String getString(@NotNull String key) {
 
         try {
-            input = new FileInputStream("/home/lvuser/config.properties");
+            input = new FileInputStream("/home/lvuser/deploy/config.properties");
             prop.load(input);
             return prop.getProperty(key);
 
