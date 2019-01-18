@@ -9,6 +9,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.util.Constants;
 
 
@@ -27,6 +28,7 @@ public class OI {
         return instance;
     }
 
+
     public static boolean getSolenoid1() {
         return secondaryJoy.getRawButton(0);
     }
@@ -35,7 +37,9 @@ public class OI {
         return secondaryJoy.getRawButton(1);
     }
 
-    private Joystick leftJoy, rightJoy, xbox;
+
+    private Joystick leftJoy, rightJoy;
+    private XboxController xbox;
     private Constants constants;
 
     private OI() {
@@ -44,7 +48,7 @@ public class OI {
         leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
         secondaryJoy = new Joystick(constants.getInt("SECONDARY_JOY"));
-        xbox = new Joystick(constants.getInt("XBOX"));
+        xbox = new XboxController(constants.getInt("XBOX"));
     }
 
     public double getLeftY() {
