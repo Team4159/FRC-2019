@@ -2,16 +2,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import org.jetbrains.annotations.NotNull;
 
 import frc.robot.commands.DriveControl;
 import frc.robot.util.Constants;
 
-/**
- * Add your docs here.
- */
 public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
@@ -43,7 +38,7 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public void rawDrive(@NotNull double left, @NotNull double right) {
+    public void rawDrive(double left, double right) {
 
         leftMasterTalon.set(ControlMode.PercentOutput, left);
         rightMasterTalon.set(ControlMode.PercentOutput, right);
