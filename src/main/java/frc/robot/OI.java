@@ -46,4 +46,8 @@ public class OI {
     public double getRightY() {
         return rightJoy.getY();
     }
+
+    public double getCargoIntake() { return xbox.getTriggerAxis(GenericHID.Hand.kLeft); }
+
+    public double getCargoOuttake() { return xbox.getTriggerAxis(GenericHID.Hand.kRight); }
 }
