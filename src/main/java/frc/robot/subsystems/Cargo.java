@@ -36,7 +36,7 @@ public class Cargo extends Subsystem {
         intakeVictor.set(ControlMode.PercentOutput, 1);
     }
 
-        public void outtakeCargo() {
+    public void outtakeCargo() {
         intakeVictor.set(ControlMode.PercentOutput, -1);
     }
 
