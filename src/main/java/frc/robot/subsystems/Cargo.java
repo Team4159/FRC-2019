@@ -23,11 +23,6 @@ public class Cargo extends Subsystem {
         return instance;
     }
 
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new CargoControl());
-    }
-
     public void stopCargo() {
         intakeVictor.set(ControlMode.PercentOutput, 0);
     }
@@ -40,4 +35,8 @@ public class Cargo extends Subsystem {
         intakeVictor.set(ControlMode.PercentOutput, -1);
     }
 
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new CargoControl());
+    }
 }
