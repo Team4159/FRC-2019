@@ -9,19 +9,15 @@ import frc.robot.util.Constants;
 public class Elevator extends Subsystem {
 
     private static Elevator instance;
+    private ElevatorControlState state;
+    private TalonSRX elevatorTalon;
+    private VictorSPX elevatorVictor1, elevatorVictor2, elevatorVictor3;
 
     public static Elevator getInstance() {
         if(instance == null)
             instance = new Elevator();
         return instance;
     }
-
-    private ElevatorControlState state;
-
-
-    private TalonSRX elevatorTalon;
-    private VictorSPX elevatorVictor1, elevatorVictor2, elevatorVictor3;
-
 
     private Elevator() {
         elevatorTalon = new TalonSRX(Constants.getInt("ELEVATOR_TALON"));
@@ -30,7 +26,6 @@ public class Elevator extends Subsystem {
         elevatorVictor3 = new VictorSPX(Constants.getInt("ELEVATOR_VICTOR_3"));
 
         state = ElevatorControlState.OPEN_LOOP;
-
     }
 
     public void rawControl(double speed) {

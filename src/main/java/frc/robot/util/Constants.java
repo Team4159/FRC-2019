@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Constants {
+
     private static Properties prop = new Properties();
     private static FileInputStream input;
 

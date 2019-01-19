@@ -8,6 +8,8 @@ import frc.robot.util.Constants;
 public class Hatch extends Subsystem{
 
     private static Hatch instance;
+    private DoubleSolenoid solenoid1;
+    private DoubleSolenoid solenoid2;
 
     public static Hatch getInstance(){
         if(instance == null)
@@ -15,17 +17,10 @@ public class Hatch extends Subsystem{
         return instance;
     }
 
-    private Constants constants;
-
-    private DoubleSolenoid solenoid1;
-    private DoubleSolenoid solenoid2;
-
     private Hatch() {
 
-        constants = Constants.getInstance();
-
-        solenoid1 = new DoubleSolenoid(constants.getInt("Solenoid1Channell"), constants.getInt("Solenoid1Channel2"));
-        solenoid2 = new DoubleSolenoid(constants.getInt("Solenoid2Channel1"), constants.getInt("Solenoid2Channel2"));
+        solenoid1 = new DoubleSolenoid(Constants.getInt("SOLENOID1CHANNEL1"), Constants.getInt("SOLENOID1CHANNEL2"));
+        solenoid2 = new DoubleSolenoid(Constants.getInt("SOLENOID2CHANNEL1"), Constants.getInt("SOLENOID2CHANNEL2"));
 
     }
 
