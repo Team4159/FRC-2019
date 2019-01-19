@@ -1,30 +1,17 @@
 package frc.robot.util;
 
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class Constants {
 
-    private static Constants instance;
+    private static Properties prop = new Properties();
+    private static FileInputStream input;
 
-    public static Constants getInstance() {
-        if (instance == null)
-            instance = new Constants();
-        return instance;
-    }
-
-    private Properties prop;
-    private InputStream input;
-
-    private Constants() {
-        prop = new Properties();
-        input = null;
-    }
-
-    public int getInt(String key) {
+    public static int getInt(@NotNull String key) {
 
         try {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");
@@ -46,10 +33,10 @@ public class Constants {
         }
     }
 
-    public double getDouble(String key) {
+    public static double getDouble(@NotNull String key) {
 
         try {
-            input = new FileInputStream("/home/lvuser/config.properties");
+            input = new FileInputStream("/home/lvuser/deploy/config.properties");
             prop.load(input);
             return Double.parseDouble(prop.getProperty(key));
 
@@ -68,10 +55,10 @@ public class Constants {
         }
     }
 
-    public String getString(String key) {
+    public static String getString(@NotNull String key) {
 
         try {
-            input = new FileInputStream("/home/lvuser/config.properties");
+            input = new FileInputStream("/home/lvuser/deploy/config.properties");
             prop.load(input);
             return prop.getProperty(key);
 

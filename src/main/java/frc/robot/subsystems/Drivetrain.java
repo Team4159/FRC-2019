@@ -2,35 +2,65 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.commands.Drive;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
-/**
- * Add your docs here.
- */
+import frc.robot.commands.DriveControl;
+import frc.robot.util.Constants;
+
 public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
+    private DrivetrainControlState state;
+    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
+
     public static Drivetrain getInstance() {
         if(instance == null)
             instance = new Drivetrain();
         return instance;
     }
 
-    private TalonSRX leftMasterTalon;
-    private TalonSRX rightMasterTalon;
-
     private Drivetrain() {
+        leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
+        leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
+        leftSlaveTalon.follow(leftMasterTalon);
 
-        leftMasterTalon = new TalonSRX(0);
-        rightMasterTalon = new TalonSRX(1);
+        rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
+        rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
+        rightSlaveTalon.follow(rightMasterTalon);
+
+        configSensors();
+    }
+
+    public void rawDrive(double left, double right) {
+
+        leftMasterTalon.set(ControlMode.PercentOutput, left);
+        rightMasterTalon.set(ControlMode.PercentOutput, right);
 
     }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    public void stop() {
+
+        leftMasterTalon.set(ControlMode.PercentOutput, 0);
+        rightMasterTalon.set(ControlMode.PercentOutput, 0);
+
+    }
+
+    private void configSensors() {
+
+    }
+
+    public DrivetrainControlState getState() {
+        return state;
+    }
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new Drive());
+        setDefaultCommand(new DriveControl());
+    }
+
+    public enum DrivetrainControlState {
+        OPEN_LOOP,
+        VISION,
+        PATH_FOLLOWING
     }
 }
