@@ -32,11 +32,11 @@ public class Cargo extends Subsystem {
         intakeVictor.set(ControlMode.PercentOutput, 0);
     }
 
-    public void intakeCargo() { //TODO:Determine motor speed
+    public void intakeCargo() {
         intakeVictor.set(ControlMode.PercentOutput, 1);
     }
 
-    public void outtakeCargo() { //TODO:Determine motor speed
+        public void outtakeCargo() {
         intakeVictor.set(ControlMode.PercentOutput, -1);
     }
 
