@@ -1,14 +1,14 @@
-package frc.robot.commands.Cargo;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Cargo;
 
-public class ControlCargo extends Command {
+public class CargoControl extends Command {
     private Cargo cargo;
     private OI oi;
 
-    public ControlCargo() {
+    public CargoControl() {
         cargo = Cargo.getInstance();
         oi = OI.getInstance();
 
@@ -17,11 +17,11 @@ public class ControlCargo extends Command {
 
     @Override
     protected void execute() {
-        if (oi.getCargoIntakeButton() && oi.getCargoOuttakeButton()) {
+        if (oi.getCargoIntake() > 0 && oi.getCargoOuttake() > 0) {
             cargo.stopCargo();
-        } else if (oi.getCargoIntakeButton()) {
+        } else if (oi.getCargoIntake() > 0) {
             cargo.intakeCargo();
-        } else if (oi.getCargoOuttakeButton()) {
+        } else if (oi.getCargoOuttake() > 0) {
             cargo.outtakeCargo();
         } else {
             cargo.stopCargo();
@@ -32,4 +32,10 @@ public class ControlCargo extends Command {
     protected boolean isFinished() {
         return false;
     }
+
+    @Override
+    protected void end() { cargo.stopCargo(); }
+
+    @Override
+    protected void interrupted() { end(); }
 }

@@ -1,18 +1,20 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.robot.commands.Cargo.ControlCargo;
+import frc.robot.commands.CargoControl;
+import frc.robot.util.Constants;
 
 public class Cargo extends Subsystem {
+
     private static Cargo instance;
-    //TODO:Determine type of motor controller and configuration
-    //private static VictorSPX victor;
-    private static TalonSRX intakeTalon;
+
+    private VictorSPX intakeVictor;
 
     private Cargo() {
-        intakeTalon = new TalonSRX(3);
+        intakeVictor = new VictorSPX(Constants.getInt("CARGO_VICTOR_1"));
     }
 
     public static Cargo getInstance() {
@@ -24,23 +26,19 @@ public class Cargo extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ControlCargo());
-    }
-
-    public void setSpeed(double speed) {
-        intakeTalon.set(ControlMode.PercentOutput, speed);
+        setDefaultCommand(new CargoControl());
     }
 
     public void stopCargo() {
-        setSpeed(0);
+        intakeVictor.set(ControlMode.PercentOutput, 0);
     }
 
     public void intakeCargo() { //TODO:Determine motor speed
-        setSpeed(1);
+        intakeVictor.set(ControlMode.PercentOutput, 1);
     }
 
     public void outtakeCargo() { //TODO:Determine motor speed
-        setSpeed(-1);
+        intakeVictor.set(ControlMode.PercentOutput, -1);
     }
 
 }
