@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Constants {
+
     private static Properties prop = new Properties();
     private static FileInputStream input;
 
@@ -41,7 +42,7 @@ public class Constants {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-            return 0;
+            return 0.0;
 
         } finally {
             if (input != null) {

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import frc.robot.commands.DriveControl;
+import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
 
 public class Drivetrain extends Subsystem {
@@ -17,12 +17,10 @@ public class Drivetrain extends Subsystem {
         return instance;
     }
 
-    private static Constants constants;
-    private DrivetrainControlState state;
-
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
 
     private Drivetrain() {
+
         leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
         leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
         leftSlaveTalon.follow(leftMasterTalon);
@@ -53,8 +51,12 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public DrivetrainControlState getState() {
-        return state;
+    public void setRawConfig() {
+
+    }
+
+    public void setPathFollowingConfig() {
+
     }
 
     @Override
@@ -62,9 +64,4 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new DriveControl());
     }
 
-    public enum DrivetrainControlState {
-        OPEN_LOOP,
-        VISION,
-        PATH_FOLLOWING
-    }
 }

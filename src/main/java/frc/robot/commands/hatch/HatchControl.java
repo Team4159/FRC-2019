@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
@@ -20,18 +20,12 @@ public class HatchControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.getSolenoid1()) {
-            hatch.outSolenoid1();
-
-        } else {
-            hatch.inSolenoid1();
+        if(oi.hatchOpenButtonPressed()) {
+            hatch.open();
         }
 
-        if (oi.getSolenoid2()) {
-            hatch.outSolenoid2();
-
-        } else {
-            hatch.inSolenoid2();
+        if(oi.hatchCloseButtonPressed()) {
+            hatch.close();
         }
 
     }
@@ -43,7 +37,5 @@ public class HatchControl extends Command {
 
     @Override
     protected void end() {
-        hatch.inSolenoid1();
-        hatch.inSolenoid2();
     }
 }

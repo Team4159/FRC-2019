@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
@@ -34,8 +34,16 @@ public class ElevatorControl extends Command {
     @Override
     protected void execute() {
 
-    }
+        elevator.setPercentOutput(oi.getXboxRightStick());
 
+        /*
+         * For testing:
+         * Use joystick to determine gains
+         * Define a button to go about halfway
+         *
+         */
+
+    }
 
     /**
      * <p>
