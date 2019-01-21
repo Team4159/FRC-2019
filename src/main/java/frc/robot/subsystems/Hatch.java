@@ -8,6 +8,8 @@ import frc.robot.util.Constants;
 public class Hatch extends Subsystem {
 
     private static Hatch instance;
+    private DoubleSolenoid solenoid1;
+    private DoubleSolenoid solenoid2;
 
     public static Hatch getInstance(){
         if(instance == null)

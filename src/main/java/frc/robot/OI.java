@@ -9,18 +9,18 @@ import frc.robot.util.Constants;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
 
     private static OI instance;
+    private Joystick leftJoy, rightJoy;
+    private static XboxController xbox;
 
     public static OI getInstance() {
         if(instance == null)
             instance = new OI();
         return instance;
     }
-
-    private Joystick leftJoy, rightJoy;
-    private static XboxController xbox;
 
     private OI() {
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
@@ -46,5 +46,13 @@ public class OI {
 
     public double getXboxRightStick() {
         return xbox.getY(GenericHID.Hand.kRight);
+    }
+
+    public double getCargoIntake() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
+    public double getCargoOuttake() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kRight);
     }
 }

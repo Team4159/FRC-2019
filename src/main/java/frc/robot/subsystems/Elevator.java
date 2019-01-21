@@ -13,7 +13,6 @@ import frc.robot.util.Constants;
 public class Elevator extends Subsystem {
 
     private static Elevator instance;
-
     public static Elevator getInstance() {
         if(instance == null)
             instance = new Elevator();
