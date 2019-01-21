@@ -9,13 +9,6 @@ import frc.robot.util.Constants;
 public class Cargo extends Subsystem {
 
     private static Cargo instance;
-
-    private VictorSPX intakeVictor;
-
-    private Cargo() {
-        intakeVictor = new VictorSPX(Constants.getInt("CARGO_VICTOR_1"));
-    }
-
     public static Cargo getInstance() {
         if (instance == null) {
             instance = new Cargo();
@@ -23,16 +16,30 @@ public class Cargo extends Subsystem {
         return instance;
     }
 
+    private VictorSPX intakeVictor;
+
+    private Cargo() {
+
+        intakeVictor = new VictorSPX(Constants.getInt("CARGO_VICTOR_1"));
+
+    }
+
     public void stopCargo() {
+
         intakeVictor.set(ControlMode.PercentOutput, 0);
+
     }
 
     public void intakeCargo() {
+
         intakeVictor.set(ControlMode.PercentOutput, 1);
+
     }
 
     public void outtakeCargo() {
+
         intakeVictor.set(ControlMode.PercentOutput, -1);
+
     }
 
     @Override
