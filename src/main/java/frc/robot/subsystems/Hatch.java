@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.HatchControl;
+import frc.robot.commands.hatch.HatchControl;
 import frc.robot.util.Constants;
 
-public class Hatch extends Subsystem{
+public class Hatch extends Subsystem {
 
     private static Hatch instance;
     private DoubleSolenoid solenoid1;
@@ -17,27 +17,20 @@ public class Hatch extends Subsystem{
         return instance;
     }
 
+    private DoubleSolenoid solenoid;
+
     private Hatch() {
 
-        solenoid1 = new DoubleSolenoid(Constants.getInt("SOLENOID1CHANNEL1"), Constants.getInt("SOLENOID1CHANNEL2"));
-        solenoid2 = new DoubleSolenoid(Constants.getInt("SOLENOID2CHANNEL1"), Constants.getInt("SOLENOID2CHANNEL2"));
+        solenoid = new DoubleSolenoid(Constants.getInt("PCM1"), Constants.getInt("HATCH_A"), Constants.getInt("HATCH_B"));
 
     }
 
-    public void outSolenoid1(){
-        solenoid1.set(DoubleSolenoid.Value.kForward);
+    public void open() {
+        solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void inSolenoid1(){
-        solenoid1.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    public void outSolenoid2(){
-        solenoid2.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void inSolenoid2(){
-        solenoid2.set(DoubleSolenoid.Value.kReverse);
+    public void close() {
+        solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override

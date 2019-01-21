@@ -42,7 +42,7 @@ public class Constants {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-            return 0;
+            return 0.0;
 
         } finally {
             if (input != null) {

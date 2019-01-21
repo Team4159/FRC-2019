@@ -1,42 +1,40 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Drivetrain;
 
-public class ElevatorControl extends Command {
+public class DriveControl extends Command {
 
-    private Elevator elevator;
+    private Drivetrain drivetrain;
     private OI oi;
 
-    public ElevatorControl() {
+    public DriveControl() {
 
-        elevator = Elevator.getInstance();
+        drivetrain = Drivetrain.getInstance();
         oi = OI.getInstance();
 
-        requires(elevator);
+        requires(drivetrain);
     }
-
-
 
     @Override
     protected void initialize() {
+        //drivetrain.setState();
     }
 
     @Override
     protected void execute() {
-
+        drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
         return false;
     }
 
     @Override
     protected void end() {
-
+        drivetrain.stop();
     }
 
     @Override
