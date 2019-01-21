@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.CargoControl;
+import frc.robot.commands.cargo.CargoControl;
 import frc.robot.util.Constants;
 
 public class Cargo extends Subsystem {
