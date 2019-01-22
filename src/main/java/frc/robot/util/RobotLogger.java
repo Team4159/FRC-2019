@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.subsystems.Superstructure;
 
 public class RobotLogger implements Runnable {
-    class LogFormatter extends Formatter {
+    private class LogFormatter extends Formatter {
         @Override
         public String getHead(Handler h) {
             return String.join(",", fieldNames);
@@ -33,13 +33,13 @@ public class RobotLogger implements Runnable {
         return instance;
     }
 
-    private static Notifier notifier;
-    private static Logger logger;
+    private Notifier notifier;
+    private Logger logger;
 
-    private static Superstructure superstructure;
+    private Superstructure superstructure;
 
-    private static String[] fieldNames;
-    private static ArrayList<Supplier<Object>> handlers;
+    private String[] fieldNames;
+    private ArrayList<Supplier<Object>> handlers;
 
     private RobotLogger() {
         notifier = new Notifier(this);
