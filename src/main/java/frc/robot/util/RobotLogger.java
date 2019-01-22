@@ -3,8 +3,9 @@ package frc.robot.util;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import java.util.logging.Level;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 import java.util.logging.Handler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.stream.Collectors;
 import java.util.logging.FileHandler;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -21,7 +23,7 @@ public class RobotLogger implements Runnable {
     private class LogFormatter extends Formatter {
         @Override
         public String getHead(Handler h) {
-            return String.join(",", fieldNames);
+            return String.join(",", fields.keySet());
         }
 
         @Override
@@ -44,8 +46,7 @@ public class RobotLogger implements Runnable {
 
     private Superstructure superstructure;
 
-    private String[] fieldNames;
-    private ArrayList<Supplier<Object>> handlers;
+    private HashMap<String, Supplier<Object>> fields;
 
     private RobotLogger() {
         notifier = new Notifier(this);
@@ -53,19 +54,14 @@ public class RobotLogger implements Runnable {
 
         superstructure = Superstructure.getInstance();
 
-        fieldNames = new String[] {
-                "MODE",
-                "ALLIANCE",
-                "MATCH NUMBER",
-                "VOLTAGE"
+        fields = new HashMap<>() {
+            {
+                put("MODE", superstructure::getMode);
+                put("ALLIANCE", superstructure::getAlliance);
+                put("MATCH NUMBER", superstructure::getMatchNumber);
+                put("VOLTAGE", superstructure::getRobotVoltage);
+            }
         };
-
-        handlers = new ArrayList<>(Arrays.asList(
-                superstructure::getMode,
-                superstructure::getAlliance,
-                superstructure::getMatchNumber,
-                superstructure::getRobotVoltage
-        ));
 
         try {
             initLogger();
@@ -94,13 +90,11 @@ public class RobotLogger implements Runnable {
 
     @Override
     public void run() {
-        String[] res = new String[handlers.size()];
-
-        for (int i = 0; i < handlers.size(); i++) {
-            res[i] = handlers.get(i).get().toString();
-        }
-
-        logger.info(String.join(",", res));
+        logger.info(String.join(",", fields.values()
+                .stream()
+                .map(handler -> handler.get().toString())
+                .collect(Collectors.toList())
+        ));
     }
 
     private String locateDrive() {
