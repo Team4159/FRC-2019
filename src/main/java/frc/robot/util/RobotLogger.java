@@ -1,11 +1,12 @@
 package frc.robot.util;
 
 import java.io.File;
-
 import java.io.IOException;
-import java.util.Arrays;
 
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.*;
+import java.util.logging.Formatter;
 
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.subsystems.Superstructure;
@@ -13,17 +14,13 @@ import frc.robot.subsystems.Superstructure;
 public class RobotLogger implements Runnable {
     class LogFormatter extends Formatter {
         @Override
+        public String getHead(Handler h) {
+            return String.join(",", fieldNames);
+        }
+
+        @Override
         public String format(LogRecord record) {
-            String message = "";
-
-            if (record.getLevel() != Level.CONFIG) {
-                message += record.getMillis();
-                message += ',';
-            }
-
-            message += record.getMessage();
-
-            return message;
+            return record.getMessage();
         }
     }
 
@@ -41,11 +38,28 @@ public class RobotLogger implements Runnable {
 
     private static Superstructure superstructure;
 
+    private static String[] fieldNames;
+    private static ArrayList<Supplier<Object>> handlers;
+
     private RobotLogger() {
         notifier = new Notifier(this);
         notifier.startPeriodic(0.2);
 
         superstructure = Superstructure.getInstance();
+
+        fieldNames = new String[] {
+                "MODE",
+                "ALLIANCE",
+                "MATCH NUMBER",
+                "VOLTAGE"
+        };
+
+        handlers = new ArrayList<>(Arrays.asList(
+                superstructure::getMode,
+                superstructure::getAlliance,
+                superstructure::getMatchNumber,
+                superstructure::getRobotVoltage
+        ));
 
         try {
             initLogger();
@@ -66,9 +80,7 @@ public class RobotLogger implements Runnable {
             logFileHandler.setFormatter(new LogFormatter());
 
             logger.addHandler(logFileHandler);
-            logger.setLevel(Level.ALL);
-
-            logger.config("timestamp,mode,alliance,matchNumber,voltage");
+            logger.setLevel(Level.INFO);
         } else {
             throw new IOException("Unable to locate USB drive.");
         }
@@ -76,11 +88,13 @@ public class RobotLogger implements Runnable {
 
     @Override
     public void run() {
-        logger.info(superstructure.getMode()
-                    + "," + superstructure.getAlliance()
-                    + "," + superstructure.getMatchNumber()
-                    + "," + superstructure.getRobotVoltage()
-        );
+        String[] res = new String[handlers.size()];
+
+        for (int i = 0; i < handlers.size(); i++) {
+            res[i] = handlers.get(i).get().toString();
+        }
+
+        logger.info(String.join(",", res));
     }
 
     private String locateDrive() {
