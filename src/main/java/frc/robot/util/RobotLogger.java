@@ -68,7 +68,7 @@ public class RobotLogger implements Runnable {
             logger.addHandler(logFileHandler);
             logger.setLevel(Level.ALL);
 
-            logger.config("timestamp,voltage,alliance,matchNumber");
+            logger.config("timestamp,mode,alliance,matchNumber,voltage");
         } else {
             throw new IOException("Unable to locate USB drive.");
         }
@@ -76,9 +76,11 @@ public class RobotLogger implements Runnable {
 
     @Override
     public void run() {
-        logger.info(superstructure.getRobotVoltage()
+        logger.info(superstructure.getMode()
                     + "," + superstructure.getAlliance()
-                    + "," + superstructure.getMatchNumber());
+                    + "," + superstructure.getMatchNumber()
+                    + "," + superstructure.getRobotVoltage()
+        );
     }
 
     private String locateDrive() {

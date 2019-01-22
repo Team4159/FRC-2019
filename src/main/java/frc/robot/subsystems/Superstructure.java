@@ -20,11 +20,13 @@ public class Superstructure extends Subsystem {
 
     private PowerDistributionPanel pdp;
     private Compressor compressor;
+    private DriverStation driverStation;
 
     private Superstructure() {
 
         compressor = new Compressor();
         pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
+        driverStation = DriverStation.getInstance();
 
     }
 
@@ -55,8 +57,12 @@ public class Superstructure extends Subsystem {
 
     public int getMatchNumber() {
 
-        return DriverStation.getInstance().getMatchNumber();
+        return driverStation.getMatchNumber();
 
+    }
+
+    public String getMode() {
+        return driverStation.isDisabled() ? "DISABLED" : (driverStation.isAutonomous() ? "AUTONOMOUS" : "TELEOPERATED");
     }
 
     public void initDefaultCommand() {
