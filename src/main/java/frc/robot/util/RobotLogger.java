@@ -29,7 +29,7 @@ public class RobotLogger implements Runnable {
 
     private static RobotLogger instance;
 
-    public RobotLogger getInstance() {
+    public static RobotLogger getInstance() {
         if (instance == null)
             instance = new RobotLogger();
 
