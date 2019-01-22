@@ -3,10 +3,16 @@ package frc.robot.util;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Supplier;
-import java.util.logging.*;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.Handler;
 import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+import java.util.logging.FileHandler;
 
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.subsystems.Superstructure;
