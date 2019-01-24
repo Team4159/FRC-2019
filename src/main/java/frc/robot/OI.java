@@ -58,11 +58,11 @@ public class OI {
     }
 
     //Random numbers for button IDs (temporary)
-    public boolean getFeederIntake(){
+    public boolean getFeederIntake() {
         return secondaryJoy.getRawButtonPressed(2);
     }
 
-    public boolean getFeederOuttake(){
+    public boolean getFeederOuttake() {
         return secondaryJoy.getRawButtonPressed(3);
     }
 }

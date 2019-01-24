@@ -12,7 +12,7 @@ public class Feeder extends Subsystem {
     private VictorSPX feederVictor;
     private static Feeder instance;
 
-    public static Feeder getInstance(){
+    public static Feeder getInstance() {
         if (instance == null) {
             instance = new Feeder();
         }
@@ -20,7 +20,6 @@ public class Feeder extends Subsystem {
     }
 
     private Feeder() {
-        //Need to add to constants
         feederVictor = new VictorSPX(Constants.getInt("FEEDER_VICTOR"));
     }
 

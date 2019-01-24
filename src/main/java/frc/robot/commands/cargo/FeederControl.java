@@ -15,6 +15,7 @@ public class FeederControl extends Command {
         oi = OI.getInstance();
 
         requires(feeder);
+
     }
 
     @Override
