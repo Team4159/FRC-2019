@@ -23,24 +23,20 @@ public class HatchIntake extends Subsystem{
         solenoid1 = new DoubleSolenoid(constants.getInt("SOLENOID1CHANNEL1"),constants.getInt("SOLENOID1CHANNEL2"));
         solenoid2 = new DoubleSolenoid(constants.getInt("SOLENOID2CHANNEL1"),constants.getInt("SOLENOID2CHANNEL2"));
     }
-    public void outSolenoid1(){
+    public void outSolenoids(){
+
         solenoid1.set(DoubleSolenoid.Value.kForward);
-
-    }
-    public void inSolenoid1(){
-        solenoid1.set(DoubleSolenoid.Value.kReverse);
-
-    }
-
-    public void outSolenoid2(){
         solenoid2.set(DoubleSolenoid.Value.kForward);
 
-    }
 
-    public void inSolenoid2(){
+    }
+    public void inSolenoids(){
+
+        solenoid1.set(DoubleSolenoid.Value.kReverse);
         solenoid2.set(DoubleSolenoid.Value.kReverse);
 
     }
+
 
 
     @Override
