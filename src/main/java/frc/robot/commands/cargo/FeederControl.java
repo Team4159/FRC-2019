@@ -20,13 +20,12 @@ public class FeederControl extends Command {
 
     @Override
     protected void execute() {
-        if (oi.getFeederIntake()) {
-            feeder.intake();
-        } else
-        if (oi.getFeederOuttake()) {
-            feeder.outtake();
-        } else {
+        if (oi.getFeederOuttake() == oi.getFeederIntake()) {
             feeder.stop();
+        } else if (oi.getFeederOuttake()) {
+            feeder.outtake();
+        } else if (oi.getFeederIntake()) {
+            feeder.intake();
         }
     }
 
