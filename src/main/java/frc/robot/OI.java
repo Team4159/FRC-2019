@@ -27,13 +27,10 @@ public class OI {
         return instance;
     }
 
-    public static boolean getSolenoid1() {
+    public static boolean getSolenoids() {
         return secondaryJoy.getRawButton(0);
     }
 
-    public static boolean getSolenoid2() {
-        return secondaryJoy.getRawButton(1);
-    }
 
     private Joystick leftJoy, rightJoy, xbox;
     private Constants constants;
