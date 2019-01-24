@@ -4,12 +4,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.cargo.FeederControl;
 import frc.robot.util.Constants;
 
 public class Feeder extends Subsystem {
 
     private VictorSPX feederVictor;
-    private static Feeder instance,
+    private static Feeder instance;
 
     public static Feeder getInstance(){
         if (instance == null) {
