@@ -55,4 +55,13 @@ public class OI {
     public double getCargoOuttake() {
         return xbox.getTriggerAxis(GenericHID.Hand.kRight);
     }
+
+    //Random numbers for button IDs (temporary)
+    public boolean getFeederIntake() {
+        return xbox.getRawButtonPressed(2);
+    }
+
+    public boolean getFeederOuttake() {
+        return xbox.getRawButtonPressed(3);
+    }
 }
