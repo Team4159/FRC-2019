@@ -15,8 +15,7 @@ public class HatchIntake extends Subsystem {
         return instance;
     }
 
-    public DoubleSolenoid solenoid1;
-    public DoubleSolenoid solenoid2;
+    private DoubleSolenoid solenoid;
 
     private HatchIntake(){
         solenoid = new DoubleSolenoid(Constants.getInt("HATCH_SOLENOID_A"), Constants.getInt("HATCH_SOLENOID_B"));
