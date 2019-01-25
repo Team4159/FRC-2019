@@ -42,7 +42,9 @@ public class GrabberControl extends Command {
 
     @Override
     protected void end() {
+
         grabber.stop();
+
     }
 
     @Override
