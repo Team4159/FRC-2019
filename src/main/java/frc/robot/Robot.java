@@ -8,6 +8,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.util.RobotLogger;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -18,6 +19,7 @@ import frc.robot.util.RobotLogger;
 public class Robot extends TimedRobot {
 
     private Drivetrain drivetrain;
+
     private Elevator elevator;
     private OI oi;
     private Command autoCommand;
@@ -29,6 +31,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         drivetrain = Drivetrain.getInstance();
+
         elevator = Elevator.getInstance();
         oi = OI.getInstance();
 
