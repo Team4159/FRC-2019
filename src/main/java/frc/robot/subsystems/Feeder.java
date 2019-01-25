@@ -23,11 +23,17 @@ public class Feeder extends Subsystem {
         feederVictor = new VictorSPX(Constants.getInt("FEEDER_VICTOR"));
     }
 
-    public void stop() { feederVictor.set(ControlMode.PercentOutput, 0); }
+    public void stop() {
+        feederVictor.set(ControlMode.PercentOutput, 0);
+    }
 
-    public void intake() { feederVictor.set(ControlMode.PercentOutput, 1); }
+    public void intake() {
+        feederVictor.set(ControlMode.PercentOutput, 1);
+    }
 
-    public void outtake() { feederVictor.set(ControlMode.PercentOutput, -1); }
+    public void outtake() {
+        feederVictor.set(ControlMode.PercentOutput, -1);
+    }
 
     @Override
     protected void initDefaultCommand() {
