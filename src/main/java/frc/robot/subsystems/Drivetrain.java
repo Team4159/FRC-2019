@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import org.jetbrains.annotations.NotNull;
 
 import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
@@ -24,10 +22,16 @@ public class Drivetrain extends Subsystem {
 
         leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
         leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
-        leftSlaveTalon.follow(leftMasterTalon);
 
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
+
+        leftMasterTalon.configFactoryDefault();
+        leftSlaveTalon.configFactoryDefault();
+        rightMasterTalon.configFactoryDefault();
+        rightSlaveTalon.configFactoryDefault();
+
+        leftSlaveTalon.follow(leftMasterTalon);
         rightSlaveTalon.follow(rightMasterTalon);
 
         configSensors();
