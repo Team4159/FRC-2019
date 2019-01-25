@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import java.util.logging.Level;
@@ -54,7 +53,7 @@ public class RobotLogger implements Runnable {
 
         superstructure = Superstructure.getInstance();
 
-        fields = new HashMap<>() {
+        fields = new HashMap<String, Supplier<Object>>() {
             {
                 put("MODE", superstructure::getMode);
                 put("ALLIANCE", superstructure::getAlliance);
