@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.cargo.ExtenderControl;
+import frc.robot.util.Constants;
 
 public class CargoExtender extends Subsystem {
 
@@ -17,7 +18,7 @@ public class CargoExtender extends Subsystem {
     }
 
     private CargoExtender() {
-        extenderSolenoid = new DoubleSolenoid(4, 5);
+        extenderSolenoid = new DoubleSolenoid(Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
     }
 
     public void out(){
