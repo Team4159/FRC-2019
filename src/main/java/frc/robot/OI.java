@@ -13,7 +13,7 @@ import frc.robot.util.Constants;
 public class OI {
 
     private static OI instance;
-    private Joystick leftJoy, rightJoy, secondaryJoy;
+    private Joystick leftJoy, rightJoy;
     private static XboxController xbox;
 
     public static OI getInstance() {
@@ -25,7 +25,6 @@ public class OI {
     private OI() {
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
-        secondaryJoy = new Joystick(Constants.getInt("SECONDARY_JOY"));
         xbox = new XboxController(Constants.getInt("XBOX"));
     }
 
@@ -59,10 +58,10 @@ public class OI {
 
     //Random numbers for button IDs (temporary)
     public boolean getFeederIntake() {
-        return secondaryJoy.getRawButtonPressed(2);
+        return xbox.getRawButtonPressed(2);
     }
 
     public boolean getFeederOuttake() {
-        return secondaryJoy.getRawButtonPressed(3);
+        return xbox.getRawButtonPressed(3);
     }
 }
