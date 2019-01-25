@@ -78,4 +78,8 @@ public class OI {
     public boolean getFeederOuttake() {
         return xbox.getRawButtonPressed(3);
     }
+
+    public boolean getExtender() {
+        return xbox.getRawButtonPressed(4);
+    }
 }
