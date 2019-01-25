@@ -78,4 +78,7 @@ public class OI {
     public boolean getFeederOuttake() {
         return xbox.getRawButtonPressed(3);
     }
+
+    public boolean getGrabberIntake() { return xbox.getXButtonPressed(); }
+    public boolean getGrabberOuttake() { return xbox.getYButtonPressed(); }
 }
