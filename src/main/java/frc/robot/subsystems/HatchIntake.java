@@ -5,10 +5,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.MoveHatchIntake;
 import frc.robot.util.Constants;
 
-public class HatchIntake extends Subsystem{
+public class HatchIntake extends Subsystem {
+    
     private static HatchIntake instance;
     public static HatchIntake getInstance(){
-        if(instance==null){
+        if(instance == null){
             instance = new HatchIntake();
         }
         return instance;
@@ -16,25 +17,18 @@ public class HatchIntake extends Subsystem{
 
     public DoubleSolenoid solenoid1;
     public DoubleSolenoid solenoid2;
-    public Constants constants;
 
     private HatchIntake(){
-        constants = Constants.getInstance();
-        solenoid1 = new DoubleSolenoid(constants.getInt("SOLENOID1CHANNEL1"),constants.getInt("SOLENOID1CHANNEL2"));
-        solenoid2 = new DoubleSolenoid(constants.getInt("SOLENOID2CHANNEL1"),constants.getInt("SOLENOID2CHANNEL2"));
+        solenoid = new DoubleSolenoid(Constants.getInt("HATCH_SOLENOID_A"), Constants.getInt("HATCH_SOLENOID_B"));
     }
-    public void outSolenoids(){
-
-        solenoid1.set(DoubleSolenoid.Value.kForward);
-        solenoid2.set(DoubleSolenoid.Value.kForward);
-
-
+    
+    public void outSolenoid(){
+        
+        solenoid.set(DoubleSolenoid.Value.kForward);
+       
     }
-    public void inSolenoids(){
-
-        solenoid1.set(DoubleSolenoid.Value.kReverse);
-        solenoid2.set(DoubleSolenoid.Value.kReverse);
-
+    public void inSolenoid(){
+        solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
 
