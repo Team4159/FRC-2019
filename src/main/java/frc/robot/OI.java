@@ -24,7 +24,6 @@ public class OI {
     private Joystick leftJoy, rightJoy;
     private static XboxController xbox;
 
-    private static Joystick secondaryJoy;
 
     public static OI getInstance() {
         if(instance == null)
@@ -33,11 +32,9 @@ public class OI {
     }
 
     public static boolean getSolenoids() {
-        return secondaryJoy.getRawButton(0);
+        return xbox.getRawButton(0);
     }
 
-
-    private Joystick leftJoy, rightJoy, xbox;
 
     private OI() {
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
