@@ -9,12 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import frc.robot.commands.DriveControl;
 import frc.robot.util.Constants;
 
-/**
- * Add your docs here.
- */
 public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
+    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
 
     public static Drivetrain getInstance() {
         if(instance == null)
@@ -22,28 +20,20 @@ public class Drivetrain extends Subsystem {
         return instance;
     }
 
-    private static Constants constants;
-    private DrivetrainControlState state;
-
-    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
-
     private Drivetrain() {
 
-        constants = Constants.getInstance();
-
-        leftMasterTalon = new TalonSRX(constants.getInt("LEFT_MASTER_TALON"));
-        leftSlaveTalon = new TalonSRX(constants.getInt("LEFT_SLAVE_TALON"));
+        leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
+        leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
         leftSlaveTalon.follow(leftMasterTalon);
 
-        rightMasterTalon = new TalonSRX(constants.getInt("RIGHT_MASTER_TALON"));
-        rightSlaveTalon = new TalonSRX(constants.getInt("RIGHT_SLAVE_TALON"));
+        rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
+        rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
         rightSlaveTalon.follow(rightMasterTalon);
 
         configSensors();
-
     }
 
-    public void rawDrive(@NotNull double left, @NotNull double right) {
+    public void rawDrive(double left, double right) {
 
         leftMasterTalon.set(ControlMode.PercentOutput, left);
         rightMasterTalon.set(ControlMode.PercentOutput, right);
@@ -61,8 +51,12 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public DrivetrainControlState getState() {
-        return state;
+    public void setRawConfig() {
+
+    }
+
+    public void setPathFollowingConfig() {
+
     }
 
     @Override
@@ -70,9 +64,4 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new DriveControl());
     }
 
-    public enum DrivetrainControlState {
-        OPEN_LOOP,
-        VISION,
-        PATH_FOLLOWING
-    }
 }

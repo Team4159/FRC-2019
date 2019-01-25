@@ -8,7 +8,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.util.Constants;
 
 
@@ -16,8 +18,11 @@ import frc.robot.util.Constants;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
     private static OI instance;
+    private Joystick leftJoy, rightJoy;
+    private static XboxController xbox;
 
     private static Joystick secondaryJoy;
 
@@ -33,22 +38,38 @@ public class OI {
 
 
     private Joystick leftJoy, rightJoy, xbox;
-    private Constants constants;
 
     private OI() {
-        constants = Constants.getInstance();
-      
-        leftJoy = new Joystick(constants.getInt("LEFT_JOY"));
-        rightJoy = new Joystick(constants.getInt("RIGHT_JOY"));
-        secondaryJoy = new Joystick(constants.getInt("SECONDARY_JOY"));
-        xbox = new Joystick(constants.getInt("XBOX"));
+        leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
+        rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
+        xbox = new XboxController(Constants.getInt("XBOX"));
+    }
+
+    public boolean hatchOpenButtonPressed() {
+        return rightJoy.getRawButtonPressed(4);
+    }
+
+    public boolean hatchCloseButtonPressed() {
+        return rightJoy.getRawButtonPressed(5);
     }
 
     public double getLeftY() {
-        return leftJoy.getY();
+        return leftJoy.getY(); // in future square it
     }
 
     public double getRightY() {
         return rightJoy.getY();
+    }
+
+    public double getXboxRightStick() {
+        return xbox.getY(GenericHID.Hand.kRight);
+    }
+
+    public double getCargoIntake() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
+    public double getCargoOuttake() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kRight);
     }
 }
