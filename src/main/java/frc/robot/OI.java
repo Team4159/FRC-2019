@@ -79,6 +79,14 @@ public class OI {
         return xbox.getRawButtonPressed(3);
     }
 
+    public boolean getGrabberIntake() { 
+      return xbox.getXButtonPressed();
+    }
+  
+    public boolean getGrabberOuttake() {
+      return xbox.getYButtonPressed();
+    
+    }
     public boolean getExtender() {
         return xbox.getRawButtonPressed(4);
     }
