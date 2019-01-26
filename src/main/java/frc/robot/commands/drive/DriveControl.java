@@ -19,26 +19,33 @@ public class DriveControl extends Command {
 
     @Override
     protected void initialize() {
-        //drivetrain.setState();
     }
 
     @Override
     protected void execute() {
+
         drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
+
     }
 
     @Override
     protected boolean isFinished() {
+
         return false;
+
     }
 
     @Override
     protected void end() {
+
         drivetrain.stop();
+
     }
 
     @Override
     protected void interrupted() {
+
         super.interrupted();
+
     }
 }

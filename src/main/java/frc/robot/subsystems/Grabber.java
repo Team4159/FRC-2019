@@ -3,19 +3,20 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.cargo.GrabberControl;
+import frc.robot.commands.grabber.GrabberControl;
 import frc.robot.util.Constants;
 
 public class Grabber extends Subsystem {
-    private static Grabber instance;
-    private VictorSPX grabberVictor1, grabberVictor2;
 
+    private static Grabber instance;
     public static Grabber getInstance() {
         if (instance == null) {
             instance = new Grabber();
         }
         return instance;
     }
+
+    private VictorSPX grabberVictor1, grabberVictor2;
 
     private Grabber() {
 

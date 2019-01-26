@@ -1,4 +1,4 @@
-package frc.robot.commands.cargo;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
@@ -20,13 +20,20 @@ public class FeederControl extends Command {
 
     @Override
     protected void execute() {
+
         if (oi.getFeederOuttake() == oi.getFeederIntake()) {
             feeder.stop();
+
         } else if (oi.getFeederOuttake()) {
             feeder.outtake();
+
         } else if (oi.getFeederIntake()) {
             feeder.intake();
+
+        } else {
+            feeder.stop();
         }
+
     }
 
     @Override
@@ -45,6 +52,8 @@ public class FeederControl extends Command {
 
     @Override
     protected void interrupted() {
+
         end();
+
     }
 }

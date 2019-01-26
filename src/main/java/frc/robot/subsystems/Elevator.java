@@ -95,7 +95,9 @@ public class Elevator extends Subsystem {
     }
 
     public double getMotionMagicError() {
+
         return elevatorTalon.getClosedLoopError(Constants.getInt("PID_IDX"));
+
     }
 
     public void setLowPosition() {
@@ -117,16 +119,22 @@ public class Elevator extends Subsystem {
     }
 
     public boolean limitSwitchPressed() {
+
         return limitSwitch.get();
+
     }
 
     public int getEncoderPosition() {
+
         return elevatorTalon.getSelectedSensorPosition();
+
     }
 
     @Override
     public void initDefaultCommand() {
+
         setDefaultCommand(new ElevatorControl());
+
     }
 
 }

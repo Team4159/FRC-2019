@@ -14,6 +14,7 @@ public class HatchControl extends Command {
         hatch = Hatch.getInstance();
         oi = OI.getInstance();
         requires(hatch);
+
     }
 
     @Override
@@ -31,10 +32,22 @@ public class HatchControl extends Command {
 
     @Override
     protected boolean isFinished() {
+
         return false;
+
     }
 
     @Override
     protected void end() {
+
+        hatch.close();
+
+    }
+
+    @Override
+    protected void interrupted() {
+
+        super.interrupted();
+
     }
 }
