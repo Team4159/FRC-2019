@@ -20,11 +20,8 @@ public class ExtenderControl extends Command {
     @Override
     protected void execute() {
         if (oi.getExtender()) {
-            extender.out();
-        } else {
-            extender.in();
+            extender.toggle();
         }
-
     }
 
     @Override
