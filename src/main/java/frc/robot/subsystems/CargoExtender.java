@@ -21,18 +21,25 @@ public class CargoExtender extends Subsystem {
         extenderSolenoid = new DoubleSolenoid(Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
     }
 
-    public void out(){
+    private void out(){
         extenderSolenoid.set(DoubleSolenoid.Value.kForward);
-
     }
+
     public void in(){
         extenderSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    public void toggle(){
+        if (extenderSolenoid.get() == DoubleSolenoid.Value.kForward) {
+            in();
+        } else {
+            out();
+        }
     }
 
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new ExtenderControl());
     }
-
 
 }
