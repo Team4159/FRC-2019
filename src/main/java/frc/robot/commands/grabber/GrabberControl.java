@@ -1,4 +1,4 @@
-package frc.robot.commands.cargo;
+package frc.robot.commands.grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
@@ -23,10 +23,15 @@ public class GrabberControl extends Command {
 
         if (oi.getGrabberIntake() == oi.getGrabberOuttake()) {
             grabber.stop();
+
         } else if (oi.getGrabberOuttake()) {
             grabber.outtake();
+
         } else if (oi.getGrabberIntake()) {
             grabber.intake();
+
+        } else {
+            grabber.stop();
         }
 
     }
@@ -49,6 +54,8 @@ public class GrabberControl extends Command {
 
     @Override
     protected void interrupted() {
+
         end();
+
     }
 }

@@ -2,44 +2,51 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.cargo.ExtenderControl;
+import frc.robot.commands.extender.ExtenderControl;
 import frc.robot.util.Constants;
 
-public class CargoExtender extends Subsystem {
+public class Extender extends Subsystem {
 
-    private DoubleSolenoid extenderSolenoid;
-    private static CargoExtender instance;
+    private static Extender instance;
 
-    public static CargoExtender getInstance() {
+    public static Extender getInstance() {
         if (instance == null) {
-            instance = new CargoExtender();
+            instance = new Extender();
         }
         return instance;
     }
 
-    private CargoExtender() {
+    private DoubleSolenoid extenderSolenoid;
+
+    private Extender() {
+
         extenderSolenoid = new DoubleSolenoid(Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
+
     }
 
-    private void out(){
+    public void out() {
+
         extenderSolenoid.set(DoubleSolenoid.Value.kForward);
+
     }
 
-    public void in(){
+    public void in() {
+
         extenderSolenoid.set(DoubleSolenoid.Value.kReverse);
+
     }
 
-    public void toggle(){
-        if (extenderSolenoid.get() == DoubleSolenoid.Value.kForward) {
-            in();
-        } else {
-            out();
-        }
+    public DoubleSolenoid.Value getValue() {
+
+        return extenderSolenoid.get();
+
     }
 
     @Override
     protected void initDefaultCommand() {
+
         setDefaultCommand(new ExtenderControl());
+
     }
 
 }

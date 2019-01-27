@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -11,7 +10,6 @@ import frc.robot.util.Constants;
 public class Superstructure extends Subsystem {
 
     private static Superstructure instance;
-
     public static Superstructure getInstance() {
         if(instance == null)
             instance = new Superstructure();
@@ -62,7 +60,9 @@ public class Superstructure extends Subsystem {
     }
 
     public String getMode() {
+
         return driverStation.isDisabled() ? "DISABLED" : (driverStation.isAutonomous() ? "AUTONOMOUS" : "TELEOPERATED");
+
     }
 
     public void initDefaultCommand() {

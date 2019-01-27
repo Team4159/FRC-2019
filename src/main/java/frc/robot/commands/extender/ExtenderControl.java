@@ -1,16 +1,18 @@
-package frc.robot.commands.cargo;
+package frc.robot.commands.extender;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.CargoExtender;
+import frc.robot.subsystems.Extender;
 
 public class ExtenderControl extends Command {
-    private CargoExtender extender;
+
+    private Extender extender;
     private OI oi;
 
     public ExtenderControl() {
 
-        extender = CargoExtender.getInstance();
+        extender = Extender.getInstance();
         oi = OI.getInstance();
 
         requires(extender);
@@ -19,9 +21,20 @@ public class ExtenderControl extends Command {
 
     @Override
     protected void execute() {
+
         if (oi.getExtender()) {
-            extender.toggle();
+
+            if(extender.getValue() == DoubleSolenoid.Value.kForward) {
+                extender.in();
+
+            } else if (extender.getValue() == DoubleSolenoid.Value.kReverse) {
+                extender.out();
+
+            } else {
+                extender.out();
+            }
         }
+
     }
 
     @Override
@@ -40,6 +53,8 @@ public class ExtenderControl extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+
+        super.interrupted();
+
     }
 }
