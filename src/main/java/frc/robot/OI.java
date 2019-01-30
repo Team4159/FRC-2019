@@ -30,8 +30,6 @@ public class OI {
 
     }
 
-
-
     public double getLeftY() {
 
         return leftJoy.getY(); // in future square it
@@ -44,15 +42,9 @@ public class OI {
 
     }
 
-    public boolean hatchOpenButtonPressed() {
+    public boolean hatchButtonPressed() {
 
         return xbox.getRawButtonPressed(4);
-
-    }
-
-    public boolean hatchCloseButtonPressed() {
-
-        return xbox.getRawButtonPressed(5);
 
     }
 
