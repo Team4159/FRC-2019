@@ -3,11 +3,11 @@ package frc.robot.commands.hatch;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Hatch;
 
-public class CloseHatch extends InstantCommand {
+public class IntakeHatch extends InstantCommand {
 
-    public CloseHatch() {
+    public IntakeHatch() {
 
-        Hatch.getInstance().close();
+        Hatch.getInstance().intake();
 
     }
 

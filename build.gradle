@@ -48,7 +48,11 @@ repositories {
 dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
+
+    // Custom dependencies
     compile group: 'org.jetbrains', name: 'annotations', version: '16.0.3'
+    compile group: 'org.zeromq', name: 'jzmq', version: '3.1.0' // https://mvnrepository.com/artifact/org.zeromq/jzmq
+
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'

@@ -22,21 +22,29 @@ public class Hatch extends Subsystem {
 
     }
 
-    public void open() {
+    public void intake() {
 
         hatchSolenoid.set(DoubleSolenoid.Value.kForward);
 
     }
 
-    public void close() {
+    public void outtake() {
 
         hatchSolenoid.set(DoubleSolenoid.Value.kReverse);
 
     }
 
+    public DoubleSolenoid.Value getValue() {
+
+        return hatchSolenoid.get();
+
+    }
+
     @Override
     protected void initDefaultCommand() {
+
         setDefaultCommand(new HatchControl());
+
     }
 
 }

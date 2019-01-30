@@ -100,21 +100,39 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void setLowPosition() {
+    public void setHatchLowPosition() {
 
-        targetPosition = 0; // arbitrary
-
-    }
-
-    public void setMediumPosition() {
-
-        targetPosition = 5000; // arbitrary
+        targetPosition = Constants.getInt("HATCH_LOW_HEIGHT");
 
     }
 
-    public void setHighPosition() {
+    public void setHatchMedPosition() {
 
-        targetPosition = 10000; // arbitrary
+        targetPosition = Constants.getInt("HATCH_MED_HEIGHT");
+
+    }
+
+    public void setHatchHighPosition() {
+
+        targetPosition = Constants.getInt("HATCH_HIGH_HEIGHT");
+
+    }
+
+    public void setCargoLowPosition() {
+
+        targetPosition = Constants.getInt("CARGO_LOW_HEIGHT");
+
+    }
+
+    public void setCargoMedPosition() {
+
+        targetPosition = Constants.getInt("CARGO_MED_HEIGHT");
+
+    }
+
+    public void setCargoHighPosition() {
+
+        targetPosition = Constants.getInt("CARGO_HIGH_HEIGHT");
 
     }
 
