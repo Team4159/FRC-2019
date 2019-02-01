@@ -14,7 +14,7 @@ public class Vision {
         //  Socket to talk to server
         System.out.println("Connecting to ZMQ server…");
 
-        requester = context.socket(ZMQ.REQ);
+        requester = context.socket(ZMQ.PAIR);
         requester.connect("tcp://localhost:5555"); // TODO: Change
 
     }
@@ -39,4 +39,3 @@ public class Vision {
     }
 
 }
-
