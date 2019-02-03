@@ -5,8 +5,8 @@ import org.zeromq.ZMQ;
 
 public class Vision {
 
-    private Vision instance;
-    public Vision getInstance() {
+    private static Vision instance;
+    public static Vision getInstance() {
 
         if (instance == null) {
             instance = new Vision();
@@ -36,13 +36,19 @@ public class Vision {
 
     }
 
-    public void sendMessage(Messaging.RioMessage.Camera camera) {
+    private void sendMessage(boolean swtichCamera) {
 
         Messaging.RioMessage message = Messaging.RioMessage.newBuilder()
-                .setCamera(camera)
+                .setSwitchCamera(true)
                 .build();
 
         sendData(message.toByteArray());
+
+    }
+
+    public void switchCamera() {
+
+        sendMessage(true);
 
     }
 

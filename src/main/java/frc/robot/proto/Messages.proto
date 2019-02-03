@@ -11,10 +11,5 @@ message JetsonMessage {
 }
 
 message RioMessage {
-    required Camera camera = 1;
-
-    enum Camera {
-        FRONT = 0;
-        BACK = 1;
-    }
+    required bool switchCamera = 1 [default = true];
 }

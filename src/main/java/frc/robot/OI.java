@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.vision.SwitchCamera;
 import frc.robot.util.Constants;
 
 /**
@@ -20,13 +22,17 @@ public class OI {
     }
 
     private Joystick leftJoy, rightJoy;
-    private static XboxController xbox;
+    private XboxController xbox;
+    private JoystickButton cameraSwitchButton;
 
     private OI() {
 
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
         xbox = new XboxController(Constants.getInt("XBOX"));
+
+        cameraSwitchButton = new JoystickButton(xbox, 1);
+        cameraSwitchButton.whenPressed(new SwitchCamera());
 
     }
 
