@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.zeromq.ZMQ;
 
 public class Vision {
@@ -25,10 +26,24 @@ public class Vision {
 
     }
 
-    public byte[] getData() {
+    private byte[] getData() {
 
         return requester.recv(0);
 
+    }
+
+    public Messaging.JetsonMessage getMessage() {
+        Messaging.JetsonMessage message = null;
+
+        byte[] rawMessage = getData();
+
+        try {
+            message = Messaging.JetsonMessage.parseFrom(rawMessage);
+        } catch (InvalidProtocolBufferException pbe) {
+            pbe.printStackTrace();
+        }
+
+        return message;
     }
 
     public void closeConnection() {

@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package frc.robot.proto;
+
+option java_package = "frc.robot.util";
+option java_outer_classname = "Messaging";
+
+message JetsonMessage {
+    required float midpointX = 1;
+    required float midpointY = 2;
+}
