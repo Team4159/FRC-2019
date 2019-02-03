@@ -5,6 +5,16 @@ import org.zeromq.ZMQ;
 
 public class Vision {
 
+    private Vision instance;
+    public Vision getInstance() {
+
+        if (instance == null) {
+            instance = new Vision();
+        }
+        return instance;
+
+    }
+
     private ZMQ.Context context;
     private ZMQ.Socket requester;
 
@@ -20,9 +30,19 @@ public class Vision {
 
     }
 
-    public void sendData(byte[] data) {
+    private void sendData(byte[] data) {
 
         requester.send(data, 0);
+
+    }
+
+    public void sendMessage(Messaging.RioMessage.Camera camera) {
+
+        Messaging.RioMessage message = Messaging.RioMessage.newBuilder()
+                .setCamera(camera)
+                .build();
+
+        sendData(message.toByteArray());
 
     }
 
@@ -33,6 +53,7 @@ public class Vision {
     }
 
     public Messaging.JetsonMessage getMessage() {
+
         Messaging.JetsonMessage message = null;
 
         byte[] rawMessage = getData();
@@ -44,6 +65,7 @@ public class Vision {
         }
 
         return message;
+
     }
 
     public void closeConnection() {

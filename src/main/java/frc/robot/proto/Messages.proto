@@ -9,3 +9,12 @@ message JetsonMessage {
     required float midpointX = 1;
     required float midpointY = 2;
 }
+
+message RioMessage {
+    required Camera camera = 1;
+
+    enum Camera {
+        FRONT = 0;
+        BACK = 1;
+    }
+}
