@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.zeromq.ZMQ;
+import frc.robot.proto.Messaging;
 
 public class Vision {
 

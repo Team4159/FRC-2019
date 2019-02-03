@@ -85,7 +85,10 @@ protobuf {
 sourceSets {
     main {
         proto {
-            srcDir "src/main/java/frc/robot/proto"
+            srcDirs = ["src/main/java/frc/robot/proto"]
+        }
+        java {
+            srcDirs = []
         }
     }
 }
