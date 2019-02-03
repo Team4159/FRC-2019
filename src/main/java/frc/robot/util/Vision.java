@@ -52,16 +52,16 @@ public class Vision {
 
     }
 
-    public Messaging.JetsonMessage getMessage() {
+    public Messaging.JetsonMessage getMessage() throws RuntimeException {
 
-        Messaging.JetsonMessage message = null;
+        Messaging.JetsonMessage message;
 
         byte[] rawMessage = getData();
 
         try {
             message = Messaging.JetsonMessage.parseFrom(rawMessage);
         } catch (InvalidProtocolBufferException pbe) {
-            pbe.printStackTrace();
+            throw new RuntimeException(pbe);
         }
 
         return message;
