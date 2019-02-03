@@ -31,12 +31,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+
         drivetrain = Drivetrain.getInstance();
 
         elevator = Elevator.getInstance();
         oi = OI.getInstance();
 
         RobotLogger.getInstance();
+
     }
 
     @Override

@@ -48,6 +48,7 @@ public class RobotLogger implements Runnable {
     private HashMap<String, Supplier<Object>> fields;
 
     private RobotLogger() {
+
         notifier = new Notifier(this);
         notifier.startPeriodic(0.2);
 
@@ -68,9 +69,11 @@ public class RobotLogger implements Runnable {
             e.printStackTrace();
             System.out.println("Problems with creating the log files, check if the USB is plugged in.");
         }
+
     }
 
     private void initLogger() throws IOException {
+
         String drive = locateDrive();
 
         if (drive != null) {
@@ -85,18 +88,21 @@ public class RobotLogger implements Runnable {
         } else {
             throw new IOException("Unable to locate USB drive.");
         }
+
     }
 
     @Override
     public void run() {
-        logger.info(String.join(",", fields.values()
+
+        logger.info(fields.values()
                 .stream()
                 .map(handler -> handler.get().toString())
-                .collect(Collectors.toList())
-        ));
+                .collect(Collectors.joining(",")));
+
     }
 
     private String locateDrive() {
+
         String[] directories = new File("/media").list(
                 (File dir, String name) -> new File(dir, name).isDirectory()
         );
@@ -118,4 +124,5 @@ public class RobotLogger implements Runnable {
 
         return null;
     }
+
 }
