@@ -26,5 +26,5 @@ message JetsonMessage {
 }
 
 message RioMessage {
-    required bool switchCamera = 1 [default = true];
+    required bool switchCamera = 1;
 }

@@ -37,10 +37,10 @@ public class Vision {
 
     }
 
-    private void sendMessage(boolean swtichCamera) {
+    private void sendMessage(boolean switchCamera) {
 
         Messaging.RioMessage message = Messaging.RioMessage.newBuilder()
-                .setSwitchCamera(true)
+                .setSwitchCamera(switchCamera)
                 .build();
 
         sendData(message.toByteArray());
