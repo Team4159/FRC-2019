@@ -1,10 +1,11 @@
 package frc.robot.util;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
-import frc.robot.proto.Messaging;
 
-public class Vision {
+import java.nio.ByteBuffer;
+
+public class Vision implements Runnable {
 
     private static Vision instance;
     public static Vision getInstance() {
@@ -16,10 +17,18 @@ public class Vision {
 
     }
 
+    private Notifier notifier;
+
     private ZMQ.Context context;
     private ZMQ.Socket requester;
 
+    private float tickTime = 1;
+    private boolean switchCamera = false;
+
     private Vision() {
+
+        notifier = new Notifier(this);
+        notifier.startPeriodic(tickTime);
 
         context = ZMQ.context(1);
 
@@ -37,41 +46,9 @@ public class Vision {
 
     }
 
-    private void sendMessage(boolean switchCamera) {
-
-        Messaging.RioMessage message = Messaging.RioMessage.newBuilder()
-                .setSwitchCamera(switchCamera)
-                .build();
-
-        sendData(message.toByteArray());
-
-    }
-
-    public void switchCamera() {
-
-        sendMessage(true);
-
-    }
-
     private byte[] getData() {
 
         return requester.recv(0);
-
-    }
-
-    public Messaging.JetsonMessage getMessage() throws RuntimeException {
-
-        Messaging.JetsonMessage message;
-
-        byte[] rawMessage = getData();
-
-        try {
-            message = Messaging.JetsonMessage.parseFrom(rawMessage);
-        } catch (InvalidProtocolBufferException pbe) {
-            throw new RuntimeException(pbe);
-        }
-
-        return message;
 
     }
 
@@ -82,4 +59,38 @@ public class Vision {
 
     }
 
+    public void switchCamera() {
+
+        // switch camera on next tick
+        switchCamera = true;
+
+    }
+
+    @Override
+    public void run() {
+
+        byte[] data = getData();
+        double xValueToAlignTo = ByteBuffer
+                .wrap(data)
+                .getDouble();
+
+        System.out.println(xValueToAlignTo); // TODO: send to drivetrain
+
+        if (switchCamera) {
+            sendData(ByteBuffer
+                        .allocate(1)
+                        .putInt(1)
+                        .array()
+            );
+
+            switchCamera = false;
+        } else {
+            sendData(ByteBuffer
+                    .allocate(1)
+                    .putInt(1)
+                    .array()
+            );
+        }
+
+    }
 }

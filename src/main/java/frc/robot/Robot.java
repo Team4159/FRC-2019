@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.util.RobotLogger;
+import frc.robot.util.Vision;
 
 
 /**
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
         oi = OI.getInstance();
 
         RobotLogger.getInstance();
+        Vision.getInstance();
 
     }
 
