@@ -23,7 +23,6 @@ public class Vision implements Runnable {
     private ZMQ.Socket requester;
 
     private float tickTime = 1;
-    private boolean switchCamera = false;
 
     private Vision() {
 
@@ -35,8 +34,8 @@ public class Vision implements Runnable {
         //  Socket to talk to server
         System.out.println("Connecting to ZMQ server…");
 
-        requester = context.socket(ZMQ.PAIR);
-        requester.connect("tcp://localhost:5555"); // TODO: Change
+        requester = context.socket(ZMQ.SUB);
+        requester.connect("tcp://127.0.0.1:5555"); // TODO: Change
 
     }
 
@@ -59,13 +58,6 @@ public class Vision implements Runnable {
 
     }
 
-    public void switchCamera() {
-
-        // switch camera on next tick
-        switchCamera = true;
-
-    }
-
     @Override
     public void run() {
 
@@ -75,22 +67,6 @@ public class Vision implements Runnable {
                 .getDouble();
 
         System.out.println(xValueToAlignTo); // TODO: send to drivetrain
-
-        if (switchCamera) {
-            sendData(ByteBuffer
-                        .allocate(1)
-                        .putInt(1)
-                        .array()
-            );
-
-            switchCamera = false;
-        } else {
-            sendData(ByteBuffer
-                    .allocate(1)
-                    .putInt(1)
-                    .array()
-            );
-        }
 
     }
 }
