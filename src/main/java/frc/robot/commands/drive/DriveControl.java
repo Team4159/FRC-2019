@@ -38,6 +38,7 @@ public class DriveControl extends Command {
             drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
 
         }
+
         drivetrain.logDashboard();
 
     }
