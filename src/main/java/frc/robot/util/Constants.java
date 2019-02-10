@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
