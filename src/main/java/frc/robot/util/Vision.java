@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class Vision implements Runnable {
 
@@ -22,7 +23,10 @@ public class Vision implements Runnable {
     private ZMQ.Context context;
     private ZMQ.Socket requester;
 
-    private float tickTime = 1;
+    private double tickTime = 0.1;
+
+    private double frontCameraError = 0;
+    private double backCameraError = 0;
 
     private Vision() {
 
@@ -62,11 +66,25 @@ public class Vision implements Runnable {
     public void run() {
 
         byte[] data = getData();
-        double xValueToAlignTo = ByteBuffer
+        ByteBuffer buffer = ByteBuffer
                 .wrap(data)
-                .getDouble();
+                .order(ByteOrder.LITTLE_ENDIAN);
 
-        System.out.println(xValueToAlignTo); // TODO: send to drivetrain
+        frontCameraError = buffer.getDouble();
+        backCameraError = buffer.getDouble();
 
     }
+
+    public double getFrontCameraError() {
+
+        return frontCameraError;
+
+    }
+
+    public double getBackCameraError() {
+
+        return backCameraError;
+
+    }
+
 }

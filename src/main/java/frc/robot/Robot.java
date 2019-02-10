@@ -24,6 +24,8 @@ public class Robot extends TimedRobot {
 
     private Elevator elevator;
     private OI oi;
+
+    private Vision vision;
     private Command autoCommand;
 
     /**
@@ -38,8 +40,8 @@ public class Robot extends TimedRobot {
         elevator = Elevator.getInstance();
         oi = OI.getInstance();
 
+        vision = Vision.getInstance();
         RobotLogger.getInstance();
-        Vision.getInstance();
 
     }
 
@@ -93,4 +95,9 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
     }
+
+    public Vision getVision() {
+        return vision;
+    }
+
 }
