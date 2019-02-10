@@ -83,9 +83,16 @@ public class OI {
 
     
     }
+
     public boolean extenderButtonPressed() {
 
         return leftJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
+
+    }
+
+    public boolean peckerButtonPressed() {
+
+        return xbox.getRawButton(Constants.getInt("PECKER_BUTTON"));
 
     }
 }

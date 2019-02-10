@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.util.Constants;
 
-public class Superstructure extends Subsystem {
+public class Infrastructure extends Subsystem {
 
-    private static Superstructure instance;
-    public static Superstructure getInstance() {
+    private static Infrastructure instance;
+    public static Infrastructure getInstance() {
         if(instance == null)
-            instance = new Superstructure();
+            instance = new Infrastructure();
         return instance;
     }
 
@@ -20,7 +20,7 @@ public class Superstructure extends Subsystem {
     private Compressor compressor;
     private DriverStation driverStation;
 
-    private Superstructure() {
+    private Infrastructure() {
 
         compressor = new Compressor();
         pdp = new PowerDistributionPanel(Constants.getInt("PDP"));

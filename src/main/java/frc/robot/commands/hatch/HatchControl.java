@@ -3,18 +3,18 @@ package frc.robot.commands.hatch;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.Beak;
 
 public class HatchControl extends Command {
 
     private OI oi;
-    private Hatch hatch;
+    private Beak beak;
 
     public HatchControl() {
 
-        hatch = Hatch.getInstance();
+        beak = Beak.getInstance();
         oi = OI.getInstance();
-        requires(hatch);
+        requires(beak);
 
     }
 
@@ -23,14 +23,14 @@ public class HatchControl extends Command {
 
         if(oi.hatchButtonPressed()) {
 
-            if(hatch.getValue() == DoubleSolenoid.Value.kReverse) {
-                hatch.intake();
+            if(beak.getValue() == DoubleSolenoid.Value.kReverse) {
+                beak.intake();
 
-            } else if (hatch.getValue() == DoubleSolenoid.Value.kForward) {
-                hatch.outtake();
+            } else if (beak.getValue() == DoubleSolenoid.Value.kForward) {
+                beak.outtake();
 
             } else {
-                hatch.outtake();
+                beak.outtake();
 
             }
         }
@@ -47,7 +47,7 @@ public class HatchControl extends Command {
     @Override
     protected void end() {
 
-        hatch.close();
+        beak.close();
 
     }
 
