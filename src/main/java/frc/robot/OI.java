@@ -77,9 +77,15 @@ public class OI {
 
     
     }
+
     public boolean getExtender() {
 
         return xbox.getRawButtonPressed(4);
+    }
+
+    public boolean getAligner() {
+
+        return xbox.getAButtonPressed();
 
     }
 }

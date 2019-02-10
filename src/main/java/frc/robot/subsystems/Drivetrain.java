@@ -56,6 +56,28 @@ public class Drivetrain extends Subsystem {
 
     }
 
+
+    public void arcadeDrive(double speed, double turn) {
+
+        double left = speed + turn;
+        double right = speed - turn;
+
+        leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
+        rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+
+    }
+
+    private double skim(double v) {
+
+        if (v > 1.0) {
+            return -((v - 1.0) * Constants.getDouble("TURNING_GAIN"));
+        } else if (v < -1.0) {
+            return -((v + 1.0) * Constants.getDouble("TURNING_GAIN"));
+        }
+
+        return 0;
+    }
+
     public void stop() {
 
         leftMasterTalon.set(ControlMode.PercentOutput, 0);
