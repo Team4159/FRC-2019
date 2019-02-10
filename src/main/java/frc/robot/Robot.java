@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Hatch;
 import frc.robot.util.RobotLogger;
 
 
@@ -20,8 +22,11 @@ import frc.robot.util.RobotLogger;
 public class Robot extends TimedRobot {
 
     private Drivetrain drivetrain;
-
     private Elevator elevator;
+    private Extender extender;
+    private Feeder feeder;
+    private Grabber grabber;
+    private Hatch hatch;
     private OI oi;
     private Command autoCommand;
 
@@ -31,11 +36,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+
         drivetrain = Drivetrain.getInstance();
-
         elevator = Elevator.getInstance();
+        extender = Extender.getInstance();
+        feeder = Feeder.getInstance();
+        grabber = Grabber.getInstance();
+        hatch = Hatch.getInstance();
         oi = OI.getInstance();
-
         RobotLogger.getInstance();
     }
 

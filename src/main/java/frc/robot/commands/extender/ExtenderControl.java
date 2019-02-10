@@ -22,7 +22,7 @@ public class ExtenderControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.getExtender()) {
+        if (oi.extenderButtonPressed()) {
 
             if(extender.getValue() == DoubleSolenoid.Value.kForward) {
                 extender.in();
@@ -31,7 +31,7 @@ public class ExtenderControl extends Command {
                 extender.out();
 
             } else {
-                extender.out();
+                extender.in();
             }
         }
 

@@ -44,7 +44,7 @@ public class OI {
 
     public boolean hatchButtonPressed() {
 
-        return xbox.getRawButtonPressed(4);
+        return xbox.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
 
     }
 
@@ -56,12 +56,12 @@ public class OI {
 
     public boolean getFeederIntake() {
 
-        return xbox.getRawButton(3);
+        return xbox.getRawButton(Constants.getInt("FEEDER_IN_BUTTON"));
     }
 
     public boolean getFeederOuttake() {
 
-        return xbox.getRawButton(4);
+        return xbox.getRawButton(Constants.getInt("FEEDER_OUT_BUTTON"));
 
     }
 
@@ -77,9 +77,9 @@ public class OI {
 
     
     }
-    public boolean getExtender() {
+    public boolean extenderButtonPressed() {
 
-        return xbox.getRawButtonPressed(4);
+        return leftJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
 
     }
 }

@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.extender.ExtenderControl;
 import frc.robot.util.Constants;
 
+
 public class Extender extends Subsystem {
 
     private static Extender instance;
-
     public static Extender getInstance() {
         if (instance == null) {
             instance = new Extender();
@@ -20,7 +20,8 @@ public class Extender extends Subsystem {
 
     private Extender() {
 
-        extenderSolenoid = new DoubleSolenoid(Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
+        extenderSolenoid = new DoubleSolenoid(Constants.getInt("PCM"),
+                Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
 
     }
 
