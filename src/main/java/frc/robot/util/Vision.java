@@ -4,6 +4,13 @@ import org.zeromq.ZMQ;
 
 public class Vision {
 
+    private static Vision instance;
+    public static Vision getInstance() {
+        if (instance == null) {
+            instance = new Vision();
+        }
+        return instance;
+    }
     private ZMQ.Context context;
     private ZMQ.Socket requester;
 
