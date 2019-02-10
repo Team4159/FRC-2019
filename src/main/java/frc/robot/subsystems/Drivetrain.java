@@ -60,6 +60,36 @@ public class Drivetrain extends Subsystem {
 
     }
 
+    /**
+     * @param speed [-1, 1] max forward and backwards
+     * @param turn [-1, 1] max left and right
+     */
+    public void arcadeDrive(double speed, double turn) {
+
+        double left = speed + turn;
+        double right = speed - turn;
+
+        leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
+        rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+
+    }
+
+    /**
+     * Takes values greater than 1.0 or less than -1.0 back into range and multiplies it by a gain
+     */
+    private double skim(double v) {
+
+        if (v > 1.0) {
+            return -((v - 1.0) * Constants.getDouble("TURNING_GAIN"));
+
+        } else if (v < -1.0) {
+            return -((v + 1.0) * Constants.getDouble("TURNING_GAIN"));
+
+        }
+
+        return 0;
+    }
+
     private void configSensors() {
 
     }
