@@ -52,7 +52,7 @@ public class RobotLogger implements Runnable {
 
         superstructure = Superstructure.getInstance();
 
-        fields = new HashMap<>() {
+        fields = new HashMap<String, Supplier<Object>>() {
             {
                 put("MODE", superstructure::getMode);
                 put("ALLIANCE", superstructure::getAlliance);
