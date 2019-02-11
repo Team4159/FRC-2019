@@ -32,69 +32,104 @@ public class OI {
 
     }
 
+    /**
+     * @return Left joystick y-axis value squared with original sign
+     */
     public double getLeftY() {
 
-        return leftJoy.getY(); // in future square it
+        return Math.copySign(Math.pow(leftJoy.getY(), 2), leftJoy.getY());
 
     }
 
+    /**
+     * @return Right joystick y-axis value squared with original sign
+     */
     public double getRightY() {
 
-        return rightJoy.getY();
+        return Math.copySign(Math.pow(rightJoy.getY(), 2), rightJoy.getY());
 
     }
 
-    public boolean getRightTrigger() {
+    public boolean alignButtonHeld() {
 
-        return rightJoy.getTrigger();
-
-    }
-
-    public boolean hatchButtonPressed() {
-
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
+        return rightJoy.getRawButton(Constants.getInt("ALIGN_BUTTON"));
 
     }
 
-    public double getXboxRightStick() {
 
-        return xbox.getY(GenericHID.Hand.kRight);
+    public double getSecondaryY() {
 
-    }
-
-    public boolean getFeederIntake() {
-
-        return xbox.getRawButton(Constants.getInt("FEEDER_IN_BUTTON"));
-    }
-
-    public boolean getFeederOuttake() {
-
-        return xbox.getRawButton(Constants.getInt("FEEDER_OUT_BUTTON"));
+        return secondaryJoy.getY();
 
     }
 
-    public boolean getGrabberIntake() {
+    public boolean cargoIntakeButtonHeld() {
 
-      return xbox.getXButtonPressed();
+      return secondaryJoy.getRawButton(Constants.getInt("CARGO_INTAKE_BUTTON"));
 
     }
   
-    public boolean getGrabberOuttake() {
+    public boolean cargoOuttakeButtonHeld() {
 
-      return xbox.getYButtonPressed();
+      return secondaryJoy.getRawButton(Constants.getInt("CARGO_OUTTAKE_BUTTON"));
 
     
     }
 
     public boolean extenderButtonPressed() {
 
-        return leftJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
-
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
     }
+
 
     public boolean peckerButtonPressed() {
 
-        return xbox.getRawButton(Constants.getInt("PECKER_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("PECKER_BUTTON"));
 
     }
+
+    public boolean beakButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_BUTTON"));
+
+    }
+
+    public boolean elevatorBotHatchButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_BOT_HATCH_BUTTON"));
+
+    }
+
+    public boolean elevatorMidHatchButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_MID_HATCH_BUTTON"));
+
+    }
+
+    public boolean elevatorTopHatchButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_TOP_HATCH_BUTTON"));
+
+    }
+
+    public boolean elevatorBotCargoButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_BOT_CARGO_BUTTON"));
+
+    }
+
+    public boolean elevatorMidCargoButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_MID_CARGO_BUTTON"));
+
+    }
+
+    public boolean elevatorTopCargoButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ELEVATOR_TOP_CARGO_BUTTON"));
+
+    }
+
+
+
 }

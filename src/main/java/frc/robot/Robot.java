@@ -3,9 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.subsystems.*;
-import frc.robot.util.RobotLogger;
 
+import frc.robot.subsystems.*;
+
+import frc.robot.util.RobotLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
     private Grabber grabber;
     private Infrastructure infrastructure;
     private Pecker pecker;
+
     private OI oi;
     private Command autoCommand;
 
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
         RobotLogger.getInstance();
+
     }
 
     @Override
