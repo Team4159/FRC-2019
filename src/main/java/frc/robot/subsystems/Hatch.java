@@ -18,7 +18,8 @@ public class Hatch extends Subsystem {
 
     private Hatch() {
 
-        hatchSolenoid = new DoubleSolenoid(Constants.getInt("PCM1"), Constants.getInt("HATCH_A"), Constants.getInt("HATCH_B"));
+        hatchSolenoid = new DoubleSolenoid(Constants.getInt("PCM"),
+                Constants.getInt("HATCH_A"), Constants.getInt("HATCH_B"));
 
     }
 

@@ -1,17 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
 
@@ -25,14 +21,15 @@ public class Drivetrain extends Subsystem {
     }
 
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
+    private PigeonIMU pigeon;
 
     private Drivetrain() {
 
         leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
         leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
-
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
+        pigeon = new PigeonIMU(rightSlaveTalon);
 
         leftMasterTalon.configFactoryDefault();
         leftSlaveTalon.configFactoryDefault();
@@ -123,14 +120,31 @@ public class Drivetrain extends Subsystem {
 
     }
 
+    /**
+     * @return Yaw axis of the robot within -368,640 to +368,640 degrees
+     */
+    private double getYaw() {
+
+        double[] ypr = new double[3];
+        pigeon.getYawPitchRoll(ypr);
+
+        return ypr[0];
+
+    }
+
     private ShuffleboardTab tab = Shuffleboard.getTab("Drive");
-    private NetworkTableEntry leftEntry = tab.add("Left Drivetrain Velocity", 0).withWidget(BuiltInWidgets.kGraph).getEntry();
-    private NetworkTableEntry rightEntry = tab.add("Right Drivetrain Velocity", 0).withWidget(BuiltInWidgets.kGraph).getEntry();
+    private NetworkTableEntry leftEntry =
+            tab.add("Left Drivetrain Velocity", 0).withWidget(BuiltInWidgets.kGraph).getEntry();
+    private NetworkTableEntry rightEntry =
+            tab.add("Right Drivetrain Velocity", 0).withWidget(BuiltInWidgets.kGraph).getEntry();
+    private NetworkTableEntry gyroEntry =
+            tab.add("Gyro", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
 
     public void logDashboard() {
 
         leftEntry.setDouble(getLeftVelocity());
         rightEntry.setDouble(getRightVelocity());
+        gyroEntry.setDouble(getYaw());
 
     }
 
