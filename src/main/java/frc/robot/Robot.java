@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
     private Pecker pecker;
 
     private OI oi;
+
     private Command autoCommand;
 
     /**
