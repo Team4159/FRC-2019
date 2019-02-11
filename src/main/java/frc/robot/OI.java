@@ -1,8 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.util.Constants;
 
 /**
@@ -19,14 +17,18 @@ public class OI {
         return instance;
     }
 
-    private Joystick leftJoy, rightJoy;
-    private static XboxController xbox;
+    /*
+     * We use the Thrustmaster T.16000M joysticks.
+     * See: http://ts.thrustmaster.com/download/accessories/manuals/T16000M/T16000M-User_manual.pdf
+     *      for joystick mappings
+     */
+    private Joystick leftJoy, rightJoy, secondaryJoy;
 
     private OI() {
 
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
-        xbox = new XboxController(Constants.getInt("XBOX"));
+        secondaryJoy = new Joystick(Constants.getInt("SECONDARY_JOY"));
 
     }
 
@@ -50,7 +52,7 @@ public class OI {
 
     public boolean hatchButtonPressed() {
 
-        return xbox.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
 
     }
 
