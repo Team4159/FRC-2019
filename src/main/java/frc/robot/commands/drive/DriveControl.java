@@ -3,6 +3,8 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
+
+import frc.robot.util.Constants;
 import frc.robot.util.Vision;
 
 public class DriveControl extends Command {
@@ -25,20 +27,18 @@ public class DriveControl extends Command {
     @Override
     protected void execute() {
 
-        // Trigger held = auto align
-        if(oi.getRightTrigger()) {
+        if(oi.getAligner()) {
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
-            // double turn = Vision.getInstance().getOffset() * Constants.getDouble("kP_ALIGN");
-            // drivetrain.arcadeDrive(speed, turn);
+            double turn = Vision.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
 
-        // Regular control
+            drivetrain.arcadeDrive(speed, turn);
+
         } else {
 
             drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
 
         }
-
 
         drivetrain.logDashboard();
 

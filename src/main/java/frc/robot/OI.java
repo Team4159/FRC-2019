@@ -20,7 +20,7 @@ public class OI {
     }
 
     private Joystick leftJoy, rightJoy;
-    private static XboxController xbox;
+    private XboxController xbox;
 
     private OI() {
 
@@ -86,7 +86,12 @@ public class OI {
 
     public boolean extenderButtonPressed() {
 
-        return leftJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
+        return xbox.getRawButtonPressed(4);
+    }
+
+    public boolean getAligner() {
+
+        return xbox.getAButtonPressed();
 
     }
 
