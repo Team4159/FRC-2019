@@ -78,8 +78,7 @@ public class OI {
     
     }
 
-
-    public boolean getExtender() {
+    public boolean extenderButtonPressed() {
 
         return xbox.getRawButtonPressed(4);
     }
