@@ -19,7 +19,7 @@ public class Beak extends Subsystem {
     private Beak() {
 
         hatchSolenoid = new DoubleSolenoid(Constants.getInt("PCM"),
-                Constants.getInt("HATCH_A"), Constants.getInt("HATCH_B"));
+                Constants.getInt("BEAK_A"), Constants.getInt("BEAK_B"));
 
     }
 
