@@ -4,12 +4,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Extender;
-import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.*;
+
 import frc.robot.util.RobotLogger;
 
 /**
@@ -21,12 +17,14 @@ import frc.robot.util.RobotLogger;
  */
 public class Robot extends TimedRobot {
 
+    private Beak beak;
     private Drivetrain drivetrain;
     private Elevator elevator;
     private Extender extender;
     private Feeder feeder;
     private Grabber grabber;
-    private Hatch hatch;
+    private Infrastructure infrastructure;
+    private Pecker pecker;
     private OI oi;
 
     private Command autoCommand;
@@ -43,7 +41,9 @@ public class Robot extends TimedRobot {
         extender = Extender.getInstance();
         feeder = Feeder.getInstance();
         grabber = Grabber.getInstance();
-        hatch = Hatch.getInstance();
+        beak = Beak.getInstance();
+        infrastructure = Infrastructure.getInstance();
+        pecker = Pecker.getInstance();
         oi = OI.getInstance();
         RobotLogger.getInstance();
 

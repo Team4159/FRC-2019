@@ -20,6 +20,13 @@ public class Vision implements Runnable {
 
     private Notifier notifier;
 
+    private static Vision instance;
+    public static Vision getInstance() {
+        if (instance == null) {
+            instance = new Vision();
+        }
+        return instance;
+    }
     private ZMQ.Context context;
     private ZMQ.Socket requester;
 

@@ -42,6 +42,12 @@ public class OI {
 
     }
 
+    public boolean getRightTrigger() {
+
+        return rightJoy.getTrigger();
+
+    }
+
     public boolean hatchButtonPressed() {
 
         return xbox.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
@@ -86,6 +92,12 @@ public class OI {
     public boolean getAligner() {
 
         return xbox.getAButtonPressed();
+
+    }
+
+    public boolean peckerButtonPressed() {
+
+        return xbox.getRawButton(Constants.getInt("PECKER_BUTTON"));
 
     }
 }

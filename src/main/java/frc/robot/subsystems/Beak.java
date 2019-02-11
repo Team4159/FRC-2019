@@ -5,21 +5,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.hatch.HatchControl;
 import frc.robot.util.Constants;
 
-public class Hatch extends Subsystem {
+public class Beak extends Subsystem {
 
-    private static Hatch instance;
-    public static Hatch getInstance(){
+    private static Beak instance;
+    public static Beak getInstance(){
         if(instance == null)
-            instance = new Hatch();
+            instance = new Beak();
         return instance;
     }
 
     private DoubleSolenoid hatchSolenoid;
 
-    private Hatch() {
+    private Beak() {
 
         hatchSolenoid = new DoubleSolenoid(Constants.getInt("PCM"),
-                Constants.getInt("HATCH_A"), Constants.getInt("HATCH_B"));
+                Constants.getInt("BEAK_A"), Constants.getInt("BEAK_B"));
 
     }
 

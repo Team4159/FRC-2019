@@ -21,7 +21,7 @@ public class Extender extends Subsystem {
     private Extender() {
 
         extenderSolenoid = new DoubleSolenoid(Constants.getInt("PCM"),
-                Constants.getInt("EXTENDER_SOLENOID_A"), Constants.getInt("EXTENDER_SOLENOID_B"));
+                Constants.getInt("EXTENDER_A"), Constants.getInt("EXTENDER_B"));
 
     }
 
