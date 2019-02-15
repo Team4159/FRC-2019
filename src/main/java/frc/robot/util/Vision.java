@@ -49,15 +49,9 @@ public class Vision implements Runnable {
 
     }
 
-    private void sendData(byte[] data) {
+    private void sendCameraState(byte[] cameraState){
 
-        requester.send(data, 0);
-
-    }
-
-    private void sendCameraState(byte[] cameraLabel){
-
-        cameraSocket.send(cameraLabel, 0);
+        cameraSocket.send(cameraState, 0);
 
     }
 
