@@ -73,25 +73,25 @@ public class OI {
 
     public boolean getGrabberIntake() {
 
-      return xbox.getXButtonPressed();
+      return xbox.getRawButton(Constants.getInt("GRABBER_IN_BUTTON"));
 
     }
   
     public boolean getGrabberOuttake() {
 
-      return xbox.getYButtonPressed();
+      return xbox.getRawButton(Constants.getInt("GRABBER_OUT_BUTTON"));
 
     
     }
 
     public boolean extenderButtonPressed() {
 
-        return xbox.getRawButtonPressed(4);
+        return xbox.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
     }
 
     public boolean getAligner() {
 
-        return xbox.getAButtonPressed();
+        return xbox.getRawButtonPressed(Constants.getInt("ALIGNER_BUTTON"));
 
     }
 
@@ -102,6 +102,8 @@ public class OI {
     }
 
     public boolean getCameraState() {
+
         return xbox.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+
     }
 }
