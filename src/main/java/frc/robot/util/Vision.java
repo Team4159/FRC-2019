@@ -31,6 +31,8 @@ public class Vision implements Runnable {
 
     private Vision() {
 
+        oi = OI.getInstance();
+
         notifier = new Notifier(this);
         notifier.startPeriodic(tickTime);
 
@@ -41,11 +43,10 @@ public class Vision implements Runnable {
 
         requester = context.socket(ZMQ.SUB);
         requester.connect("tcp://127.0.0.1:5802");
+        requester.subscribe(new byte[0]);
 
         cameraSocket = context.socket(ZMQ.PUB);
         cameraSocket.connect("tcp://127.0.0.1:5803");
-
-        oi = OI.getInstance();
 
     }
 
