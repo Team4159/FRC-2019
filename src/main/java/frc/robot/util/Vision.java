@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Notifier;
+import frc.robot.OI;
 import org.zeromq.ZMQ;
 
 import java.nio.ByteBuffer;
@@ -9,6 +10,7 @@ import java.nio.ByteOrder;
 public class Vision implements Runnable {
 
     private Notifier notifier;
+    private OI oi;
 
     private static Vision instance;
     public static Vision getInstance() {
@@ -20,6 +22,7 @@ public class Vision implements Runnable {
 
     private ZMQ.Context context;
     private ZMQ.Socket requester;
+    private ZMQ.Socket cameraSocket;
 
     private double tickTime = 0.1;
 
@@ -37,13 +40,24 @@ public class Vision implements Runnable {
         System.out.println("Connecting to ZMQ server…");
 
         requester = context.socket(ZMQ.SUB);
-        requester.connect("tcp://127.0.0.1:5555"); // TODO: Change
+        requester.connect("tcp://127.0.0.1:5802");
+
+        cameraSocket = context.socket(ZMQ.PUB);
+        cameraSocket.connect("tcp://127.0.0.1:5803");
+
+        oi = OI.getInstance();
 
     }
 
     private void sendData(byte[] data) {
 
         requester.send(data, 0);
+
+    }
+
+    private void sendCameraState(byte[] cameraLabel){
+
+        cameraSocket.send(cameraLabel, 0);
 
     }
 
@@ -70,6 +84,8 @@ public class Vision implements Runnable {
 
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
+
+        sendCameraState(new byte[oi.getCameraState() ? 1 : 0]);
 
     }
 

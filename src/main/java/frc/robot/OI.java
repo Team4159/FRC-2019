@@ -100,4 +100,8 @@ public class OI {
         return xbox.getRawButton(Constants.getInt("PECKER_BUTTON"));
 
     }
+
+    public boolean getCameraState() {
+        return xbox.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+    }
 }
