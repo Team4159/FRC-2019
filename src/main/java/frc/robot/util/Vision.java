@@ -79,8 +79,7 @@ public class Vision implements Runnable {
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
 
-        byte[] cameraState = new byte[1];
-        cameraState[0] = (byte) (oi.getCameraState() ? 1 : 0);
+        byte[] cameraState = { (byte) (oi.getCameraState() ? 1 : 0) };
         sendCameraState(cameraState);
 
     }
