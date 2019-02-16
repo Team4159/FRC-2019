@@ -21,13 +21,13 @@ public class GrabberControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.getGrabberIntake() == oi.getGrabberOuttake()) {
+        if (oi.cargoIntakeButtonHeld() == oi.cargoOuttakeButtonHeld()) {
             grabber.stop();
 
-        } else if (oi.getGrabberOuttake()) {
+        } else if (oi.cargoOuttakeButtonHeld()) {
             grabber.outtake();
 
-        } else if (oi.getGrabberIntake()) {
+        } else if (oi.cargoIntakeButtonHeld()) {
             grabber.intake();
 
         } else {

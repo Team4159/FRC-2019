@@ -27,7 +27,7 @@ public class DriveControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.getAligner()) {
+        if(oi.alignButtonHeld()) {
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
             double turn = Vision.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");

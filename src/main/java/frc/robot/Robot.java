@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
     private Grabber grabber;
     private Infrastructure infrastructure;
     private Pecker pecker;
+
     private OI oi;
 
     private Command autoCommand;

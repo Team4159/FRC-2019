@@ -1,13 +1,13 @@
-package frc.robot.commands.hatch;
+package frc.robot.commands.beak;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Beak;
 
-public class OuttakeHatch extends InstantCommand {
+public class CloseBeak extends InstantCommand {
 
-    public OuttakeHatch() {
+    public CloseBeak() {
 
-        Beak.getInstance().outtake();
+        Beak.getInstance().intake();
 
     }
 
