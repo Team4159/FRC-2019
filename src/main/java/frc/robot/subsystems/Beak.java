@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.hatch.HatchControl;
+import frc.robot.commands.beak.BeakControl;
 import frc.robot.util.Constants;
 
 public class Beak extends Subsystem {
@@ -44,7 +44,7 @@ public class Beak extends Subsystem {
     @Override
     protected void initDefaultCommand() {
 
-        setDefaultCommand(new HatchControl());
+        setDefaultCommand(new BeakControl());
 
     }
 

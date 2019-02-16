@@ -2,7 +2,6 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -33,7 +32,7 @@ public class Vision implements Runnable {
 
         context = ZMQ.context(1);
 
-        //  Socket to talk to server
+        // Socket to talk to server
         System.out.println("Connecting to ZMQ server…");
 
         requester = context.socket(ZMQ.SUB);
