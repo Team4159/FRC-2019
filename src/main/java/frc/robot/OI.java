@@ -130,4 +130,9 @@ public class OI {
 
     }
 
+    public boolean getCameraState() {
+      
+        return xbox.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+      
+    }
 }
