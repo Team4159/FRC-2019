@@ -71,14 +71,12 @@ public class OI {
     public boolean cargoOuttakeButtonHeld() {
 
       return secondaryJoy.getRawButton(Constants.getInt("CARGO_OUTTAKE_BUTTON"));
-
-    
+      
     }
 
     public boolean extenderButtonPressed() {
 
         return secondaryJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
-
     }
 
 

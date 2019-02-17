@@ -74,7 +74,7 @@ public class Elevator extends Subsystem {
 
         /* Zero the sensor */
         elevatorMasterTalon.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
-
+      
     }
 
     public void setPercentOutput(double output) {
