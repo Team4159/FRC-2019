@@ -21,13 +21,13 @@ public class FeederControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.getFeederOuttake() == oi.getFeederIntake()) {
+        if (oi.cargoOuttakeButtonHeld() == oi.cargoIntakeButtonHeld()) {
             feeder.stop();
 
-        } else if (oi.getFeederOuttake()) {
+        } else if (oi.cargoOuttakeButtonHeld()) {
             feeder.outtake();
 
-        } else if (oi.getFeederIntake()) {
+        } else if (oi.cargoIntakeButtonHeld()) {
             feeder.intake();
 
         } else {

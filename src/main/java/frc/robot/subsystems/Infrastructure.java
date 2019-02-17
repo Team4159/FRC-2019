@@ -22,7 +22,7 @@ public class Infrastructure extends Subsystem {
 
     private Infrastructure() {
 
-        compressor = new Compressor();
+        compressor = new Compressor(Constants.getInt("PCM"));
         pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
         driverStation = DriverStation.getInstance();
 
@@ -46,7 +46,9 @@ public class Infrastructure extends Subsystem {
 
     }
 
-    /* Return RED1, RED2, BLUE3, etc. */
+    /**
+     * @return "RED1", "RED2", "BLUE3", etc.
+     */
     public String getAlliance() {
 
         return HAL.getAllianceStation().toString();
@@ -65,9 +67,9 @@ public class Infrastructure extends Subsystem {
 
     }
 
+    @Override
     public void initDefaultCommand() {
-        // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
     }
+
 }
 

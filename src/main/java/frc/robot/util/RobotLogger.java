@@ -52,7 +52,7 @@ public class RobotLogger implements Runnable {
 
         infrastructure = Infrastructure.getInstance();
 
-        fields = new HashMap<>() {
+        fields = new HashMap<String, Supplier<Object>>() {
             {
                 put("MODE", infrastructure::getMode);
                 put("ALLIANCE", infrastructure::getAlliance);
@@ -127,4 +127,5 @@ public class RobotLogger implements Runnable {
         return null;
 
     }
+
 }

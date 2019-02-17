@@ -18,83 +18,80 @@ public class Elevator extends Subsystem {
         return instance;
     }
 
-    private TalonSRX elevatorTalon1, elevatorTalon2, elevatorTalon3, elevatorTalon4;
+    private TalonSRX elevatorMasterTalon, elevatorSlaveTalon;
     private DigitalInput limitSwitch;
 
     private double targetPosition;
 
     private Elevator() {
 
-        elevatorTalon1 = new TalonSRX(Constants.getInt("ELEVATOR_TALON_1"));
-        elevatorTalon2 = new TalonSRX(Constants.getInt("ELEVATOR_TALON_2"));
-        elevatorTalon3 = new TalonSRX(Constants.getInt("ELEVATOR_TALON_3"));
-        elevatorTalon4 = new TalonSRX(Constants.getInt("ELEVATOR_TALON_4"));
+        elevatorMasterTalon = new TalonSRX(Constants.getInt("ELEVATOR_MASTER_TALON"));
+        elevatorSlaveTalon = new TalonSRX(Constants.getInt("ELEVATOR_SLAVE_TALON"));
 
         limitSwitch = new DigitalInput(10);
 
         /* Factory default hardware to prevent unexpected behavior */
-        elevatorTalon1.configFactoryDefault();
-        elevatorTalon2.configFactoryDefault();
-        elevatorTalon3.configFactoryDefault();
-        elevatorTalon4.configFactoryDefault();
+        elevatorMasterTalon.configFactoryDefault();
+        elevatorSlaveTalon.configFactoryDefault();
+
 
         /* Configure Sensor Source for Primary PID */
-        elevatorTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
 
         /* Set Victors to follow Talon output */
-        elevatorTalon2.follow(elevatorTalon1);
-        elevatorTalon3.follow(elevatorTalon1);
-        elevatorTalon4.follow(elevatorTalon1);
+        elevatorSlaveTalon.follow(elevatorMasterTalon);
+
 
         /*
           Configure Talon SRX Output and Sensor direction accordingly
           Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
           Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        elevatorTalon1.setSensorPhase(true);
-        elevatorTalon1.setInverted(false);
+        elevatorMasterTalon.setSensorPhase(true);
+        elevatorMasterTalon.setInverted(false);
         // TODO: Invert elevatorVictors as needed also
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
-        elevatorTalon1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.getInt("TIMEOUT_MS"));
 
         /* Set the peak and nominal outputs */
-        elevatorTalon1.configNominalOutputForward(0, Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.configNominalOutputReverse(0, Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.configPeakOutputForward(1, Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.configPeakOutputReverse(-1, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configNominalOutputForward(0, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configNominalOutputReverse(0, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configPeakOutputForward(1, Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configPeakOutputReverse(-1, Constants.getInt("TIMEOUT_MS"));
 
         /* Set Motion Magic gains in slot0 - see documentation */
-        elevatorTalon1.selectProfileSlot(Constants.getInt("SLOT_IDX"), Constants.getInt("PID_LOOP_IDX"));
-        elevatorTalon1.config_kF(Constants.getInt("SLOT_IDX"), Constants.getDouble("kF_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.config_kP(Constants.getInt("SLOT_IDX"), Constants.getDouble("kP_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.config_kI(Constants.getInt("SLOT_IDX"), Constants.getDouble("kI_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.config_kD(Constants.getInt("SLOT_IDX"), Constants.getDouble("kD_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.selectProfileSlot(Constants.getInt("SLOT_IDX"), Constants.getInt("PID_LOOP_IDX"));
+        elevatorMasterTalon.config_kF(Constants.getInt("SLOT_IDX"), Constants.getDouble("kF_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.config_kP(Constants.getInt("SLOT_IDX"), Constants.getDouble("kP_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.config_kI(Constants.getInt("SLOT_IDX"), Constants.getDouble("kI_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.config_kD(Constants.getInt("SLOT_IDX"), Constants.getDouble("kD_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
 
-        /* Set acceleration and vcruise velocity - see documentation */
-        elevatorTalon1.configMotionCruiseVelocity(Constants.getInt("ELEVATOR_CRUISE_VELOCITY"), Constants.getInt("TIMEOUT_MS"));
-        elevatorTalon1.configMotionAcceleration(Constants.getInt("ELEVATOR_ACCELERATION"), Constants.getInt("TIMEOUT_MS"));
+        /* Set acceleration and cruise velocity - see documentation */
+        elevatorMasterTalon.configMotionCruiseVelocity(Constants.getInt("ELEVATOR_CRUISE_VELOCITY"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configMotionAcceleration(Constants.getInt("ELEVATOR_ACCELERATION"), Constants.getInt("TIMEOUT_MS"));
 
         /* Zero the sensor */
-        elevatorTalon1.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+
     }
 
     public void setPercentOutput(double output) {
 
-        elevatorTalon1.set(ControlMode.PercentOutput, output);
+        elevatorMasterTalon.set(ControlMode.PercentOutput, output);
 
     }
 
     public void updatePosition() {
 
-        elevatorTalon1.set(ControlMode.MotionMagic, targetPosition);
+        elevatorMasterTalon.set(ControlMode.MotionMagic, targetPosition);
 
     }
 
     public double getMotionMagicError() {
 
-        return elevatorTalon1.getClosedLoopError(Constants.getInt("PID_IDX"));
+        return elevatorMasterTalon.getClosedLoopError(Constants.getInt("PID_IDX"));
 
     }
 
@@ -142,7 +139,7 @@ public class Elevator extends Subsystem {
 
     public int getEncoderPosition() {
 
-        return elevatorTalon1.getSelectedSensorPosition();
+        return elevatorMasterTalon.getSelectedSensorPosition();
 
     }
 

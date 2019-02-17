@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.*;
 import frc.robot.util.RobotLogger;
 
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -24,7 +23,9 @@ public class Robot extends TimedRobot {
     private Grabber grabber;
     private Infrastructure infrastructure;
     private Pecker pecker;
+
     private OI oi;
+
     private Command autoCommand;
 
     /**
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
         RobotLogger.getInstance();
+
     }
 
     @Override
@@ -64,6 +66,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
+        infrastructure.disableCompressor();
+
         if (autoCommand != null) {
             autoCommand.start();
         }
@@ -83,6 +87,8 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
+
+        infrastructure.enableCompressor();
 
     }
 

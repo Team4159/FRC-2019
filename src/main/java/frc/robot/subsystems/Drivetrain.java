@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -53,17 +55,7 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public void stop() {
 
-        leftMasterTalon.set(ControlMode.PercentOutput, 0);
-        rightMasterTalon.set(ControlMode.PercentOutput, 0);
-
-    }
-
-    /**
-     * @param speed [-1, 1] max forward and backwards
-     * @param turn [-1, 1] max left and right
-     */
     public void arcadeDrive(double speed, double turn) {
 
         double left = speed + turn;
@@ -74,23 +66,28 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    /**
-     * Takes values greater than 1.0 or less than -1.0 back into range and multiplies it by a gain
-     */
     private double skim(double v) {
 
         if (v > 1.0) {
             return -((v - 1.0) * Constants.getDouble("TURNING_GAIN"));
-
         } else if (v < -1.0) {
             return -((v + 1.0) * Constants.getDouble("TURNING_GAIN"));
-
         }
 
         return 0;
     }
 
+    public void stop() {
+
+        leftMasterTalon.set(ControlMode.PercentOutput, 0);
+        rightMasterTalon.set(ControlMode.PercentOutput, 0);
+
+    }
+
     private void configSensors() {
+
+        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
+        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,1);
 
     }
 

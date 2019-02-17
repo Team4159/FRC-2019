@@ -1,16 +1,16 @@
-package frc.robot.commands.hatch;
+package frc.robot.commands.beak;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Beak;
 
-public class HatchControl extends Command {
+public class BeakControl extends Command {
 
     private OI oi;
     private Beak beak;
 
-    public HatchControl() {
+    public BeakControl() {
 
         beak = Beak.getInstance();
         oi = OI.getInstance();
@@ -21,7 +21,7 @@ public class HatchControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.hatchButtonPressed()) {
+        if(oi.beakButtonPressed()) {
 
             if(beak.getValue() == DoubleSolenoid.Value.kReverse) {
                 beak.intake();

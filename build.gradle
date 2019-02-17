@@ -1,7 +1,6 @@
-
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    id "edu.wpi.first.GradleRIO" version "2019.3.2"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -28,7 +27,7 @@ deploy {
         fileTreeArtifact('frcStaticFileDeploy') {
             // The directory below is the local directory to deploy
             files = fileTree(dir: 'src/main/deploy')
-            // Deploy to RoboRIO target, into /home/lvuser/deploy
+            // Deploy to roboRIO target, into /home/lvuser/deploy
             targets << "roborio"
             directory = '/home/lvuser/deploy'
         }
@@ -66,3 +65,6 @@ jar {
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
 
+wrapper {
+    gradleVersion = '5.0'
+}
