@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -83,6 +85,9 @@ public class Drivetrain extends Subsystem {
     }
 
     private void configSensors() {
+
+        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
+        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,1);
 
     }
 

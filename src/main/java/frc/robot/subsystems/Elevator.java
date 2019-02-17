@@ -68,12 +68,13 @@ public class Elevator extends Subsystem {
         elevatorMasterTalon.config_kI(Constants.getInt("SLOT_IDX"), Constants.getDouble("kI_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
         elevatorMasterTalon.config_kD(Constants.getInt("SLOT_IDX"), Constants.getDouble("kD_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
 
-        /* Set acceleration and vcruise velocity - see documentation */
+        /* Set acceleration and cruise velocity - see documentation */
         elevatorMasterTalon.configMotionCruiseVelocity(Constants.getInt("ELEVATOR_CRUISE_VELOCITY"), Constants.getInt("TIMEOUT_MS"));
         elevatorMasterTalon.configMotionAcceleration(Constants.getInt("ELEVATOR_ACCELERATION"), Constants.getInt("TIMEOUT_MS"));
 
         /* Zero the sensor */
         elevatorMasterTalon.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+      
     }
 
     public void setPercentOutput(double output) {

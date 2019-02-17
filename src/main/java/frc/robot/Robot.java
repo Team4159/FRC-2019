@@ -3,9 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
 import frc.robot.subsystems.*;
-
 import frc.robot.util.RobotLogger;
 
 /**
@@ -68,6 +66,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
+        infrastructure.disableCompressor();
+
         if (autoCommand != null) {
             autoCommand.start();
         }
@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
+
+        infrastructure.enableCompressor();
 
     }
 

@@ -18,7 +18,7 @@ public class OI {
     }
 
     /*
-     * We use the Thrustmaster T.16000M joysticks.
+     * We use Thrustmaster T.16000M joysticks.
      * See: http://ts.thrustmaster.com/download/accessories/manuals/T16000M/T16000M-User_manual.pdf
      *      for joystick mappings
      */
@@ -56,7 +56,6 @@ public class OI {
 
     }
 
-
     public double getSecondaryY() {
 
         return secondaryJoy.getY();
@@ -72,8 +71,7 @@ public class OI {
     public boolean cargoOuttakeButtonHeld() {
 
       return secondaryJoy.getRawButton(Constants.getInt("CARGO_OUTTAKE_BUTTON"));
-
-    
+      
     }
 
     public boolean extenderButtonPressed() {
@@ -132,7 +130,7 @@ public class OI {
 
     public boolean getCameraState() {
       
-        return xbox.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
       
     }
 }
