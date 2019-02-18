@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
         infrastructure = Infrastructure.getInstance();
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
-        RobotLogger.getInstance();
+        //RobotLogger.getInstance();
 
     }
 
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
 
-        infrastructure.enableCompressor();
+        infrastructure.disableCompressor();
 
     }
 

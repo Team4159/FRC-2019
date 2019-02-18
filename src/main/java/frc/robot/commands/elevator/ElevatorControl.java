@@ -25,7 +25,7 @@ public class ElevatorControl extends Command {
     @Override
     protected void execute() {
 
-        elevator.setPercentOutput(oi.getSecondaryY());
+        elevator.setPercentOutput(oi.getSecondaryY() / 2);
 
         /*
          * For testing:
