@@ -50,7 +50,7 @@ public class Camera implements Runnable {
     public void run() {
 
         if (oi.getCameraChange()) {
-            cameraPort ^= 1;
+            cameraPort ^= 1; // my brain expands everyday
             if (cameraPort == 0) {
                 server.setSource(video1);
             } else if (cameraPort == 1) {

@@ -16,7 +16,7 @@ public class Constants {
             input = new FileInputStream("/home/lvuser/deploy/config.properties");
             prop.load(input);
             return Integer.parseInt(prop.getProperty(key));
-
+     
         } catch (IOException ex) {
             ex.printStackTrace();
             return 0;

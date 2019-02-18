@@ -23,22 +23,19 @@ public class Grabber extends Subsystem {
         grabberVictor1 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_1"));
         grabberVictor2 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_2"));
 
-        grabberVictor1.setInverted(true);
-        grabberVictor2.setInverted(true);
-
     }
 
     public void intake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, 1);
-        grabberVictor2.set(ControlMode.PercentOutput, -1);
+        grabberVictor1.set(ControlMode.PercentOutput, -1);
+        grabberVictor2.set(ControlMode.PercentOutput, 1);
 
     }
 
     public void outtake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, -1);
-        grabberVictor2.set(ControlMode.PercentOutput, 1);
+        grabberVictor1.set(ControlMode.PercentOutput, 1);
+        grabberVictor2.set(ControlMode.PercentOutput, -1);
 
     }
 
