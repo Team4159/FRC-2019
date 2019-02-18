@@ -48,8 +48,6 @@ public class RobotLogger implements Runnable {
     private RobotLogger() {
 
         notifier = new Notifier(this);
-        notifier.startPeriodic(0.2);
-
         infrastructure = Infrastructure.getInstance();
 
         fields = new HashMap<String, Supplier<Object>>() {
@@ -62,7 +60,9 @@ public class RobotLogger implements Runnable {
         };
 
         try {
+
             initLogger();
+            notifier.startPeriodic(0.2);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,6 +77,7 @@ public class RobotLogger implements Runnable {
         String drive = locateDrive();
 
         if (drive != null) {
+
             logger = Logger.getLogger("team4159");
 
             String fileName = System.currentTimeMillis() + ".csv";
