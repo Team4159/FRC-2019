@@ -20,7 +20,7 @@ public class Vision implements Runnable {
     }
 
     private ZMQ.Context context;
-    private ZMQ.Socket requester;
+    private ZMQ.Socket alignmentSocket;
     private ZMQ.Socket cameraSocket;
 
     private double tickTime = 0.1;
@@ -40,38 +40,21 @@ public class Vision implements Runnable {
         // Socket to talk to server
         System.out.println("Connecting to ZMQ server…");
 
-        requester = context.socket(ZMQ.SUB);
-        requester.connect("tcp://127.0.0.1:5802");
-        requester.subscribe(new byte[0]);
+        alignmentSocket = context.socket(ZMQ.SUB);
+        alignmentSocket.connect("tcp://127.0.0.1:5802");
+        alignmentSocket.subscribe(new byte[0]);
+        alignmentSocket.setConflate(true);
 
         cameraSocket = context.socket(ZMQ.PUB);
         cameraSocket.connect("tcp://127.0.0.1:5803");
-
-    }
-
-    private void sendCameraState(byte[] cameraState){
-
-        cameraSocket.send(cameraState, 0);
-
-    }
-
-    private byte[] getData() {
-
-        return requester.recv(0);
-
-    }
-
-    public void closeConnection() {
-
-        requester.close();
-        context.term();
+        cameraSocket.setConflate(true);
 
     }
 
     @Override
     public void run() {
 
-        byte[] data = getData();
+        byte[] data = alignmentSocket.recv();
         ByteBuffer buffer = ByteBuffer
                 .wrap(data)
                 .order(ByteOrder.LITTLE_ENDIAN);
@@ -79,8 +62,9 @@ public class Vision implements Runnable {
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
 
-        byte[] cameraState = { (byte) (oi.getCameraState() ? 1 : 0) };
-        sendCameraState(cameraState);
+        if (oi.getCameraChange()) {
+            cameraSocket.send(new byte[0], 0);
+        }
 
     }
 

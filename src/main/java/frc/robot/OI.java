@@ -128,9 +128,10 @@ public class OI {
 
     }
 
-    public boolean getCameraState() {
+    public boolean getCameraChange() {
       
         return secondaryJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
       
     }
+
 }
