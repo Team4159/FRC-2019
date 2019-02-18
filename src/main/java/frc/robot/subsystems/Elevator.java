@@ -34,11 +34,20 @@ public class Elevator extends Subsystem {
         elevatorMasterTalon.configFactoryDefault();
         elevatorSlaveTalon.configFactoryDefault();
 
+        /* Current limiting */
+        elevatorMasterTalon.configPeakCurrentLimit(Constants.getInt("PEAK_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configPeakCurrentDuration(Constants.getInt("PEAK_TIME_MS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.configContinuousCurrentLimit(Constants.getInt("CONTIN_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorMasterTalon.enableCurrentLimit(true);
+        elevatorSlaveTalon.configPeakCurrentLimit(Constants.getInt("PEAK_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorSlaveTalon.configPeakCurrentDuration(Constants.getInt("PEAK_TIME_MS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorSlaveTalon.configContinuousCurrentLimit(Constants.getInt("CONTIN_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
+        elevatorSlaveTalon.enableCurrentLimit(true);
 
         /* Configure Sensor Source for Primary PID */
         elevatorMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
 
-        /* Set Victors to follow Talon output */
+        /* Set Slave Talon to follow Master Talon output */
         elevatorSlaveTalon.follow(elevatorMasterTalon);
 
 
@@ -47,9 +56,9 @@ public class Elevator extends Subsystem {
           Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
           Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        elevatorMasterTalon.setSensorPhase(true);
-        elevatorMasterTalon.setInverted(false);
-        // TODO: Invert elevatorVictors as needed also
+        elevatorMasterTalon.setInverted(true);
+        elevatorSlaveTalon.setInverted(true);
+        //elevatorMasterTalon.setSensorPhase(true);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
         elevatorMasterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.getInt("TIMEOUT_MS"));
