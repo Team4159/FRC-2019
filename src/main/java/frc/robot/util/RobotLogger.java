@@ -39,11 +39,12 @@ public class RobotLogger implements Runnable {
     }
 
     private Notifier notifier;
+
     private Logger logger;
-
     private Infrastructure infrastructure;
-
     private HashMap<String, Supplier<Object>> fields;
+
+    private double tickTime = 0.2;
 
     private RobotLogger() {
 
@@ -62,7 +63,7 @@ public class RobotLogger implements Runnable {
         try {
 
             initLogger();
-            notifier.startPeriodic(0.2);
+            notifier.startPeriodic(tickTime);
 
         } catch (IOException e) {
             e.printStackTrace();

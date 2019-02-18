@@ -8,9 +8,6 @@ import java.nio.ByteOrder;
 
 public class Vision implements Runnable {
 
-    private Notifier notifier;
-    private OI oi;
-
     private static Vision instance;
     public static Vision getInstance() {
         if (instance == null) {
@@ -19,21 +16,17 @@ public class Vision implements Runnable {
         return instance;
     }
 
+    private Notifier notifier;
+
     private ZMQ.Context context;
     private ZMQ.Socket alignmentSocket;
-    private ZMQ.Socket cameraSocket;
 
-    private double tickTime = 0.1;
+    private double tickTime = 0.2;
 
     private double frontCameraError = 0;
     private double backCameraError = 0;
 
     private Vision() {
-
-        oi = OI.getInstance();
-
-        notifier = new Notifier(this);
-        notifier.startPeriodic(tickTime);
 
         context = ZMQ.context(1);
 
@@ -45,9 +38,8 @@ public class Vision implements Runnable {
         alignmentSocket.subscribe(new byte[0]);
         alignmentSocket.setConflate(true);
 
-        cameraSocket = context.socket(ZMQ.PUB);
-        cameraSocket.connect("tcp://127.0.0.1:5803");
-        cameraSocket.setConflate(true);
+        notifier = new Notifier(this);
+        notifier.startPeriodic(tickTime);
 
     }
 
@@ -61,10 +53,6 @@ public class Vision implements Runnable {
 
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
-
-        if (oi.getCameraChange()) {
-            cameraSocket.send(new byte[0], 0);
-        }
 
     }
 

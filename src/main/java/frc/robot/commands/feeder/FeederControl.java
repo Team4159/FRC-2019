@@ -21,15 +21,8 @@ public class FeederControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.cargoOuttakeButtonHeld() == oi.cargoIntakeButtonHeld()) {
-            feeder.stop();
-
-        } else if (oi.cargoOuttakeButtonHeld()) {
-            feeder.outtake();
-
-        } else if (oi.cargoIntakeButtonHeld()) {
+        if (oi.cargoIntakeButtonHeld()) {
             feeder.intake();
-
         } else {
             feeder.stop();
         }
