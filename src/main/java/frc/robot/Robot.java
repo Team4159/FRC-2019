@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
         //pecker = Pecker.getInstance();
         oi = OI.getInstance();
         //robotLogger = RobotLogger.getInstance();
-        camera = Camera.getInstance();
+        camera = new Camera();
         //vision = Vision.getInstance();
 
         //robotLogger.start();

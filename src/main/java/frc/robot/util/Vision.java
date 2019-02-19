@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Notifier;
-import frc.robot.OI;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
