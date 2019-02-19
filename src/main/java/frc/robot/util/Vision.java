@@ -21,10 +21,10 @@ public class Vision implements Runnable {
     private ZMQ.Context context;
     private ZMQ.Socket alignmentSocket;
 
-    private double tickTime = 0.2;
-
     private double frontCameraError = 0;
     private double backCameraError = 0;
+
+    private double tickTime = (double) 1 / 60;
 
     private Vision() {
 
@@ -38,8 +38,17 @@ public class Vision implements Runnable {
         alignmentSocket.subscribe(new byte[0]);
         alignmentSocket.setConflate(true);
 
-        notifier = new Notifier(this);
-        notifier.startPeriodic(tickTime);
+    }
+
+    public double getFrontCameraError() {
+
+        return frontCameraError;
+
+    }
+
+    public double getBackCameraError() {
+
+        return backCameraError;
 
     }
 
@@ -56,15 +65,12 @@ public class Vision implements Runnable {
 
     }
 
-    public double getFrontCameraError() {
+    public void start() {
 
-        return frontCameraError;
-
-    }
-
-    public double getBackCameraError() {
-
-        return backCameraError;
+        if (notifier == null) {
+            notifier = new Notifier(this);
+            notifier.startPeriodic(tickTime);
+        }
 
     }
 

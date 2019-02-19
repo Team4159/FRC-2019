@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.*;
+import frc.robot.util.Camera;
 import frc.robot.util.RobotLogger;
+import frc.robot.util.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +26,10 @@ public class Robot extends TimedRobot {
     private Infrastructure infrastructure;
     private Pecker pecker;
 
+    private RobotLogger robotLogger;
+    private Camera camera;
+    private Vision vision;
+
     private OI oi;
 
     private Command autoCommand;
@@ -35,16 +41,22 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        drivetrain = Drivetrain.getInstance();
-        elevator = Elevator.getInstance();
-        extender = Extender.getInstance();
-        feeder = Feeder.getInstance();
-        grabber = Grabber.getInstance();
-        beak = Beak.getInstance();
-        infrastructure = Infrastructure.getInstance();
-        pecker = Pecker.getInstance();
+        //drivetrain = Drivetrain.getInstance();
+        //elevator = Elevator.getInstance();
+        //extender = Extender.getInstance();
+        //feeder = Feeder.getInstance();
+        //grabber = Grabber.getInstance();
+        //beak = Beak.getInstance();
+        //infrastructure = Infrastructure.getInstance();
+        //pecker = Pecker.getInstance();
         oi = OI.getInstance();
-        //RobotLogger.getInstance();
+        //robotLogger = RobotLogger.getInstance();
+        camera = Camera.getInstance();
+        //vision = Vision.getInstance();
+
+        //robotLogger.start();
+        camera.start();
+        //vision.start();
 
     }
 

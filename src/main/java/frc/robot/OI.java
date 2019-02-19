@@ -50,12 +50,6 @@ public class OI {
 
     }
 
-    public boolean alignButtonHeld() {
-
-        return rightJoy.getRawButton(Constants.getInt("ALIGN_BUTTON"));
-
-    }
-
     public double getSecondaryY() {
 
         return secondaryJoy.getY();
@@ -128,10 +122,16 @@ public class OI {
 
     }
 
-    public boolean getCameraChange() {
+    public boolean alignButtonHeld() {
+
+        return rightJoy.getRawButton(Constants.getInt("ALIGN_BUTTON"));
+
+    }
+
+    public boolean getCameraButtonPressed() {
       
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
-      
+        return leftJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+
     }
 
 }
