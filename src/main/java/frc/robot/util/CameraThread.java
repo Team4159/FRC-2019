@@ -24,7 +24,7 @@ public class CameraThread extends Thread {
         video2.setResolution(640, 480);
 
         CvSink cvSink = CameraServer.getInstance().getVideo();
-        CvSource cvSource = CameraServer.getInstance().putVideo("Driver CameraThread", 640, 480);
+        CvSource cvSource = CameraServer.getInstance().putVideo("Driver Camera", 640, 480);
 
         video1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
         video2.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
