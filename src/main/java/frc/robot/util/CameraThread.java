@@ -11,7 +11,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class Camera extends Thread {
+public class CameraThread extends Thread {
 
     @Override
     public void run() {
@@ -24,7 +24,7 @@ public class Camera extends Thread {
         video2.setResolution(640, 480);
 
         CvSink cvSink = CameraServer.getInstance().getVideo();
-        CvSource cvSource = CameraServer.getInstance().putVideo("Driver Camera", 640, 480);
+        CvSource cvSource = CameraServer.getInstance().putVideo("Driver CameraThread", 640, 480);
 
         video1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
         video2.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);

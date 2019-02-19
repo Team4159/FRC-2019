@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.*;
-import frc.robot.util.Camera;
+import frc.robot.util.CameraThread;
 import frc.robot.util.RobotLogger;
 import frc.robot.util.Vision;
 
@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
     private Pecker pecker;
 
     private RobotLogger robotLogger;
-    private Camera camera;
+    private CameraThread cameraThread;
     private Vision vision;
 
     private OI oi;
@@ -51,12 +51,11 @@ public class Robot extends TimedRobot {
         //pecker = Pecker.getInstance();
         oi = OI.getInstance();
         //robotLogger = RobotLogger.getInstance();
-        camera = new Camera();
         //vision = Vision.getInstance();
 
         //robotLogger.start();
-        camera.start();
         //vision.start();
+        new CameraThread().start();
 
     }
 
