@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.drive.DriveControl;
+import frc.robot.state.OrientationState;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
 import frc.robot.util.RobotLogger;
-import frc.robot.util.Vision;
+import frc.robot.util.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,7 +30,7 @@ public class Robot extends TimedRobot {
 
     private RobotLogger robotLogger;
     private CameraThread cameraThread;
-    private Vision vision;
+    private VisionThread visionThread;
 
     private OI oi;
 
@@ -41,7 +43,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        //drivetrain = Drivetrain.getInstance();
+        drivetrain = Drivetrain.getInstance();
         //elevator = Elevator.getInstance();
         //extender = Extender.getInstance();
         //feeder = Feeder.getInstance();
@@ -51,16 +53,20 @@ public class Robot extends TimedRobot {
         //pecker = Pecker.getInstance();
         oi = OI.getInstance();
         //robotLogger = RobotLogger.getInstance();
-        //vision = Vision.getInstance();
+        visionThread = VisionThread.getInstance();
+        cameraThread = CameraThread.getInstance();
 
         //robotLogger.start();
-        //vision.start();
-        new CameraThread().start();
+        visionThread.start();
+        cameraThread.start();
 
     }
 
     @Override
     public void robotPeriodic() {
+        if (oi.getFlipButtonPressed()) {
+            OrientationState.toggleState();
+        }
     }
 
     @Override
@@ -77,7 +83,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        infrastructure.disableCompressor();
+        // infrastructure.disableCompressor();
 
         if (autoCommand != null) {
             autoCommand.start();

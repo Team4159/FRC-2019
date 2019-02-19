@@ -128,7 +128,7 @@ public class OI {
 
     }
 
-    public boolean getCameraButtonPressed() {
+    public boolean getFlipButtonPressed() {
       
         return leftJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
 

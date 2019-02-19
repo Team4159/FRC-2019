@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.drive.DriveControl;
+import frc.robot.state.OrientationState;
 import frc.robot.util.Constants;
 
 public class Drivetrain extends Subsystem {
@@ -50,8 +51,13 @@ public class Drivetrain extends Subsystem {
 
     public void rawDrive(double left, double right) {
 
-        leftMasterTalon.set(ControlMode.PercentOutput, left);
-        rightMasterTalon.set(ControlMode.PercentOutput, right);
+        if (OrientationState.getState() == OrientationState.Orientation.Front) {
+            leftMasterTalon.set(ControlMode.PercentOutput, left);
+            rightMasterTalon.set(ControlMode.PercentOutput, right);
+        } else {
+            leftMasterTalon.set(ControlMode.PercentOutput, -left);
+            rightMasterTalon.set(ControlMode.PercentOutput, -right);
+        }
 
     }
 
@@ -61,8 +67,13 @@ public class Drivetrain extends Subsystem {
         double left = speed + turn;
         double right = speed - turn;
 
-        leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
-        rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+        if (OrientationState.getState() == OrientationState.Orientation.Front) {
+            leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
+            rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+        } else {
+            leftMasterTalon.set(ControlMode.PercentOutput, -left + skim(-right));
+            rightMasterTalon.set(ControlMode.PercentOutput, -right + skim(-left));
+        }
 
     }
 
