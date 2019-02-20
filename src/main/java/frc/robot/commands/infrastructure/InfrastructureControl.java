@@ -1,16 +1,15 @@
 package frc.robot.commands.infrastructure;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Infrastructure;
 
-public class ToggleOrientation extends Command {
+public class InfrastructureControl extends Command {
 
     private Infrastructure infrastructure;
     private OI oi;
 
-    public ToggleOrientation() {
+    public InfrastructureControl() {
 
         infrastructure = Infrastructure.getInstance();
         oi = OI.getInstance();
@@ -26,7 +25,7 @@ public class ToggleOrientation extends Command {
     protected void execute() {
 
         if (oi.getFlipButtonPressed()) {
-            
+            infrastructure.toggleOrientation();
         }
 
     }

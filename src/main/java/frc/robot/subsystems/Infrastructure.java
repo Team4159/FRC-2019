@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.infrastructure.ToggleOrientation;
+import frc.robot.commands.infrastructure.InfrastructureControl;
 import frc.robot.util.Constants;
 
 public class Infrastructure extends Subsystem {
@@ -19,7 +19,11 @@ public class Infrastructure extends Subsystem {
 
     public enum Orientation {
         Front,
-        Back
+        Back;
+
+        public Orientation toggle() {
+            return this.equals(Front) ? Back : Front;
+        }
     }
 
     private static Orientation orientation = Orientation.Front;
@@ -36,12 +40,8 @@ public class Infrastructure extends Subsystem {
 
     }
 
-    public void toggleState() {
-        if (orientation == Orientation.Front) {
-            orientation = Orientation.Back;
-        } else {
-            orientation = Orientation.Front;
-        }
+    public void toggleOrientation() {
+        orientation = orientation.toggle();
     }
 
     public Orientation getOrientation() {
@@ -89,7 +89,7 @@ public class Infrastructure extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ToggleOrientation());
+        setDefaultCommand(new InfrastructureControl());
     }
 
 }
