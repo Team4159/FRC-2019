@@ -12,8 +12,8 @@ public class GrabberControl extends Command {
 
     public GrabberControl() {
 
-        oi = OI.getInstance();
         grabber = Grabber.getInstance();
+        oi = OI.getInstance();
         requires(grabber);
 
     }
@@ -32,6 +32,7 @@ public class GrabberControl extends Command {
 
         } else {
             grabber.stop();
+
         }
 
     }

@@ -160,7 +160,7 @@ public class Drivetrain extends Subsystem {
 
         leftEntry.setDouble(getLeftVelocity());
         rightEntry.setDouble(getRightVelocity());
-        gyroEntry.setDouble(getYaw());
+        //gyroEntry.setDouble(getYaw());
 
     }
 

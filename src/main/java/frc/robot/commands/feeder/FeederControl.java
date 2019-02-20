@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Feeder;
 
+
 public class FeederControl extends Command {
 
     private Feeder feeder;
@@ -13,7 +14,6 @@ public class FeederControl extends Command {
 
         feeder = Feeder.getInstance();
         oi = OI.getInstance();
-
         requires(feeder);
 
     }
@@ -21,10 +21,19 @@ public class FeederControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.cargoIntakeButtonHeld()) {
+        if (oi.cargoIntakeButtonHeld() == oi.cargoOuttakeButtonHeld()) {
+            feeder.stop();
+
+        } else if (oi.cargoOuttakeButtonHeld()) {
+            feeder.outtake();
+
+        } else if (oi.cargoIntakeButtonHeld()) {
             feeder.intake();
+
+
         } else {
             feeder.stop();
+
         }
 
     }

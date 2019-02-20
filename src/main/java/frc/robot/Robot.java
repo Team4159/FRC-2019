@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.commands.drive.DriveControl;
 import frc.robot.state.OrientationState;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
@@ -28,9 +27,9 @@ public class Robot extends TimedRobot {
     private Infrastructure infrastructure;
     private Pecker pecker;
 
-    private RobotLogger robotLogger;
-    private CameraThread cameraThread;
-    private VisionThread visionThread;
+//    private RobotLogger robotLogger;
+//    private CameraThread cameraThread;
+//    private VisionThread visionThread;
 
     private OI oi;
 
@@ -44,29 +43,29 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-        //elevator = Elevator.getInstance();
-        //extender = Extender.getInstance();
-        //feeder = Feeder.getInstance();
-        //grabber = Grabber.getInstance();
-        //beak = Beak.getInstance();
-        //infrastructure = Infrastructure.getInstance();
-        //pecker = Pecker.getInstance();
+        elevator = Elevator.getInstance();
+        extender = Extender.getInstance();
+        feeder = Feeder.getInstance();
+        grabber = Grabber.getInstance();
+        beak = Beak.getInstance();
+        infrastructure = Infrastructure.getInstance();
+        pecker = Pecker.getInstance();
         oi = OI.getInstance();
-        //robotLogger = RobotLogger.getInstance();
-        visionThread = VisionThread.getInstance();
-        cameraThread = CameraThread.getInstance();
-
-        //robotLogger.start();
-        visionThread.start();
-        cameraThread.start();
+//        //robotLogger = RobotLogger.getInstance();
+//        visionThread = VisionThread.getInstance();
+//        cameraThread = CameraThread.getInstance();
+//
+//        //robotLogger.start();
+//        visionThread.start();
+//        cameraThread.start();
 
     }
 
     @Override
     public void robotPeriodic() {
-        if (oi.getFlipButtonPressed()) {
-            OrientationState.toggleState();
-        }
+//        if (oi.getFlipButtonPressed()) {
+//            OrientationState.toggleState();
+//        }
     }
 
     @Override
@@ -105,7 +104,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
 
-        infrastructure.disableCompressor();
+        infrastructure.enableCompressor();
 
     }
 

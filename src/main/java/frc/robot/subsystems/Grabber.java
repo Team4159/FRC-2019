@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.grabber.GrabberControl;
 import frc.robot.util.Constants;
@@ -16,33 +16,33 @@ public class Grabber extends Subsystem {
         return instance;
     }
 
-    private VictorSPX grabberVictor1, grabberVictor2;
+    private TalonSRX grabberTalon1, grabberTalon2;
 
     private Grabber() {
 
-        grabberVictor1 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_1"));
-        grabberVictor2 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_2"));
+        grabberTalon1 = new TalonSRX(Constants.getInt("GRABBER_TALON_1"));
+        grabberTalon2 = new TalonSRX(Constants.getInt("GRABBER_TALON_2"));
 
     }
 
     public void intake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, -1);
-        grabberVictor2.set(ControlMode.PercentOutput, 1);
+        grabberTalon1.set(ControlMode.PercentOutput, 1.0);
+        grabberTalon2.set(ControlMode.PercentOutput, -1.0);
 
     }
 
     public void outtake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, 1);
-        grabberVictor2.set(ControlMode.PercentOutput, -1);
+        grabberTalon1.set(ControlMode.PercentOutput, -1.0);
+        grabberTalon2.set(ControlMode.PercentOutput, 1.0);
 
     }
 
     public void stop() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, 0);
-        grabberVictor2.set(ControlMode.PercentOutput, 0);
+        grabberTalon1.set(ControlMode.PercentOutput, 0);
+        grabberTalon2.set(ControlMode.PercentOutput, 0);
 
     }
 
@@ -50,6 +50,5 @@ public class Grabber extends Subsystem {
     protected void initDefaultCommand() {
         setDefaultCommand(new GrabberControl());
     }
-
 
 }
