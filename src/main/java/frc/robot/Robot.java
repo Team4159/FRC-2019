@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.state.OrientationState;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
 import frc.robot.util.RobotLogger;
@@ -51,11 +50,11 @@ public class Robot extends TimedRobot {
         infrastructure = Infrastructure.getInstance();
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
-//        //robotLogger = RobotLogger.getInstance();
+//        robotLogger = RobotLogger.getInstance();
 //        visionThread = VisionThread.getInstance();
 //        cameraThread = CameraThread.getInstance();
 //
-//        //robotLogger.start();
+//        robotLogger.start();
 //        visionThread.start();
 //        cameraThread.start();
 

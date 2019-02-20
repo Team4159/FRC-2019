@@ -5,7 +5,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
-import frc.robot.state.OrientationState;
+import frc.robot.subsystems.Infrastructure;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -26,6 +26,7 @@ public class CameraThread extends Thread {
 
     @Override
     public void run() {
+        Infrastructure infrastructure = Infrastructure.getInstance();
         UsbCamera video1 = CameraServer.getInstance().startAutomaticCapture(0);
         UsbCamera video2 = CameraServer.getInstance().startAutomaticCapture(1);
 
@@ -47,7 +48,7 @@ public class CameraThread extends Thread {
         Scalar red = new Scalar(0, 0, 255);
 
         while (!interrupted()) {
-            if (OrientationState.getState() == OrientationState.Orientation.Front) {
+            if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
                 cvSink.setSource(video1);
             } else {
                 cvSink.setSource(video2);
@@ -55,7 +56,7 @@ public class CameraThread extends Thread {
 
             cvSink.grabFrame(image);
             if (!image.empty() && image.rows() > 50 && image.cols() > 50) {
-                Imgproc.rectangle(image, new Point(25, 25), new Point(50, 50), OrientationState.getState() == OrientationState.Orientation.Front ? blue : red, 25);
+                Imgproc.rectangle(image, new Point(25, 25), new Point(50, 50), infrastructure.getOrientation() == Infrastructure.Orientation.Front ? blue : red, 25);
                 cvSource.putFrame(image);
             }
         }
