@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.drive.DriveControl;
-import frc.robot.state.OrientationState;
 import frc.robot.util.Constants;
 
 public class Drivetrain extends Subsystem {
@@ -25,6 +24,7 @@ public class Drivetrain extends Subsystem {
 
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
     private PigeonIMU pigeon;
+    private Infrastructure infrastructure;
 
     private Drivetrain() {
 
@@ -33,6 +33,7 @@ public class Drivetrain extends Subsystem {
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
         pigeon = new PigeonIMU(rightSlaveTalon);
+        infrastructure = Infrastructure.getInstance();
 
         leftMasterTalon.configFactoryDefault();
         leftSlaveTalon.configFactoryDefault();
@@ -51,7 +52,7 @@ public class Drivetrain extends Subsystem {
 
     public void rawDrive(double left, double right) {
 
-        if (OrientationState.getState() == OrientationState.Orientation.Front) {
+        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
             leftMasterTalon.set(ControlMode.PercentOutput, left);
             rightMasterTalon.set(ControlMode.PercentOutput, right);
         } else {
@@ -67,7 +68,7 @@ public class Drivetrain extends Subsystem {
         double left = speed + turn;
         double right = speed - turn;
 
-        if (OrientationState.getState() == OrientationState.Orientation.Front) {
+        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
             leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
             rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
         } else {

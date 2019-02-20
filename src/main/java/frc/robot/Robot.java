@@ -3,8 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.commands.drive.DriveControl;
-import frc.robot.state.OrientationState;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
 import frc.robot.util.RobotLogger;
@@ -44,19 +42,19 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-        //elevator = Elevator.getInstance();
-        //extender = Extender.getInstance();
-        //feeder = Feeder.getInstance();
-        //grabber = Grabber.getInstance();
-        //beak = Beak.getInstance();
-        //infrastructure = Infrastructure.getInstance();
-        //pecker = Pecker.getInstance();
+        elevator = Elevator.getInstance();
+        extender = Extender.getInstance();
+        feeder = Feeder.getInstance();
+        grabber = Grabber.getInstance();
+        beak = Beak.getInstance();
+        infrastructure = Infrastructure.getInstance();
+        pecker = Pecker.getInstance();
         oi = OI.getInstance();
-        //robotLogger = RobotLogger.getInstance();
+        robotLogger = RobotLogger.getInstance();
         visionThread = VisionThread.getInstance();
         cameraThread = CameraThread.getInstance();
 
-        //robotLogger.start();
+        robotLogger.start();
         visionThread.start();
         cameraThread.start();
 
@@ -64,9 +62,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        if (oi.getFlipButtonPressed()) {
-            OrientationState.toggleState();
-        }
     }
 
     @Override
