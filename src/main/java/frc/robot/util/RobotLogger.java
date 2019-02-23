@@ -44,8 +44,6 @@ public class RobotLogger implements Runnable {
     private Infrastructure infrastructure;
     private HashMap<String, Supplier<Object>> fields;
 
-    private double tickTime = (double) 1 / 5;
-
     private RobotLogger() {
 
         notifier = new Notifier(this);
@@ -134,7 +132,7 @@ public class RobotLogger implements Runnable {
 
         if (notifier == null) {
             notifier = new Notifier(this);
-            notifier.startPeriodic(tickTime);
+            notifier.startPeriodic(0.2);
         }
 
     }

@@ -21,6 +21,8 @@ public class CameraThread implements Runnable {
         return instance;
     }
 
+    private Notifier notifier;
+
     private Infrastructure infrastructure;
     private CvSink cvSink;
     private CvSource cvSource;
@@ -51,9 +53,6 @@ public class CameraThread implements Runnable {
         blue = new Scalar(255, 0, 0);
         red = new Scalar(0, 0, 255);
 
-        Notifier notifier = new Notifier(this);
-        notifier.startPeriodic(0.01);
-
     }
 
 
@@ -73,6 +72,16 @@ public class CameraThread implements Runnable {
             Imgproc.rectangle(image, new Point(25, 25), new Point(50, 50), infrastructure.getOrientation() == Infrastructure.Orientation.Front ? blue : red, 25);
             cvSource.putFrame(image);
         }
+
+    }
+
+    public void start() {
+
+        if (notifier == null) {
+            notifier = new Notifier(this);
+            notifier.startPeriodic(0.2);
+        }
+
     }
 
 }

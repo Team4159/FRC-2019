@@ -61,6 +61,8 @@ public class Robot extends TimedRobot {
         cameraThread = CameraThread.getInstance();
 
         robotLogger.start();
+        visionThread.start();
+        cameraThread.start();
 
 
         odometry = Odometry.getInstance();

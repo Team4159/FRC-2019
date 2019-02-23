@@ -14,15 +14,10 @@ public class VisionThread implements Runnable {
         return instance;
     }
 
+    private Notifier notifier;
+
     private double frontCameraError = 0;
     private double backCameraError = 0;
-
-    private VisionThread() {
-
-        Notifier notifier = new Notifier(this);
-        notifier.startPeriodic(0.01);
-
-    }
 
     public double getFrontCameraError() {
 
@@ -55,6 +50,15 @@ public class VisionThread implements Runnable {
 
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
+
+    }
+
+    public void start() {
+
+        if (notifier == null) {
+            notifier = new Notifier(this);
+            notifier.startPeriodic(0.01);
+        }
 
     }
 
