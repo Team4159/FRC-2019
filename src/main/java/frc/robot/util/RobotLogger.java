@@ -39,11 +39,12 @@ public class RobotLogger implements Runnable {
     }
 
     private Notifier notifier;
+
     private Logger logger;
-
     private Infrastructure infrastructure;
-
     private HashMap<String, Supplier<Object>> fields;
+
+    private double tickTime = (double) 1 / 5;
 
     private RobotLogger() {
 
@@ -62,9 +63,9 @@ public class RobotLogger implements Runnable {
         try {
 
             initLogger();
-            notifier.startPeriodic(0.2);
 
         } catch (IOException e) {
+
             e.printStackTrace();
             System.out.println("Problems with creating the log files, check if the USB is plugged in.");
 
@@ -94,16 +95,6 @@ public class RobotLogger implements Runnable {
 
     }
 
-    @Override
-    public void run() {
-
-        logger.info(fields.values()
-                .stream()
-                .map(handler -> handler.get().toString())
-                .collect(Collectors.joining(",")));
-
-    }
-
     private String locateDrive() {
 
         String[] directories = new File("/media").list(
@@ -126,6 +117,25 @@ public class RobotLogger implements Runnable {
         }
 
         return null;
+
+    }
+
+    @Override
+    public void run() {
+
+        logger.info(fields.values()
+                .stream()
+                .map(handler -> handler.get().toString())
+                .collect(Collectors.joining(",")));
+
+    }
+
+    public void start() {
+
+        if (notifier == null) {
+            notifier = new Notifier(this);
+            notifier.startPeriodic(tickTime);
+        }
 
     }
 

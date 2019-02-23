@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
+import frc.robot.subsystems.Infrastructure;
 import frc.robot.util.Constants;
-import frc.robot.util.Vision;
+import frc.robot.util.VisionThread;
 
 public class DriveControl extends Command {
 
@@ -27,10 +28,16 @@ public class DriveControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.alignButtonHeld()) {
+        if (oi.alignButtonHeld()) {
+            double turn;
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
-            double turn = Vision.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
+
+            if (Infrastructure.getInstance().getOrientation() == Infrastructure.Orientation.Front) {
+                turn = VisionThread.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
+            } else {
+                turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");
+            }
 
             drivetrain.arcadeDrive(speed, turn);
 

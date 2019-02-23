@@ -26,13 +26,13 @@ public class Feeder extends Subsystem {
 
     public void intake() {
 
-        feederVictor.set(ControlMode.PercentOutput, 1);
+        feederVictor.set(ControlMode.PercentOutput, 1.0);
 
     }
 
     public void outtake() {
 
-        feederVictor.set(ControlMode.PercentOutput, -1);
+        feederVictor.set(ControlMode.PercentOutput, 1.0);
 
     }
 

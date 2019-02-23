@@ -24,6 +24,7 @@ public class Drivetrain extends Subsystem {
 
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
     private PigeonIMU pigeon;
+    private Infrastructure infrastructure;
 
     private Drivetrain() {
 
@@ -32,6 +33,7 @@ public class Drivetrain extends Subsystem {
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
         pigeon = new PigeonIMU(rightSlaveTalon);
+        infrastructure = Infrastructure.getInstance();
 
         leftMasterTalon.configFactoryDefault();
         leftSlaveTalon.configFactoryDefault();
@@ -50,8 +52,13 @@ public class Drivetrain extends Subsystem {
 
     public void rawDrive(double left, double right) {
 
-        leftMasterTalon.set(ControlMode.PercentOutput, left);
-        rightMasterTalon.set(ControlMode.PercentOutput, right);
+        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
+            leftMasterTalon.set(ControlMode.PercentOutput, left);
+            rightMasterTalon.set(ControlMode.PercentOutput, right);
+        } else {
+            leftMasterTalon.set(ControlMode.PercentOutput, -left);
+            rightMasterTalon.set(ControlMode.PercentOutput, -right);
+        }
 
     }
 
@@ -61,8 +68,13 @@ public class Drivetrain extends Subsystem {
         double left = speed + turn;
         double right = speed - turn;
 
-        leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
-        rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
+            leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
+            rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
+        } else {
+            leftMasterTalon.set(ControlMode.PercentOutput, -left + skim(-right));
+            rightMasterTalon.set(ControlMode.PercentOutput, -right + skim(-left));
+        }
 
     }
 
@@ -149,7 +161,7 @@ public class Drivetrain extends Subsystem {
 
         leftEntry.setDouble(getLeftVelocity());
         rightEntry.setDouble(getRightVelocity());
-        gyroEntry.setDouble(getYaw());
+        //gyroEntry.setDouble(getYaw());
 
     }
 
