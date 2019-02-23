@@ -24,7 +24,6 @@ public class VisionThread implements Runnable {
 
     }
 
-
     public double getFrontCameraError() {
 
         return frontCameraError;
