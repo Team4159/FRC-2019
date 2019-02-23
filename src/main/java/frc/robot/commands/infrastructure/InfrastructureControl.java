@@ -42,6 +42,8 @@ public class InfrastructureControl extends Command {
 
     @Override
     protected void interrupted() {
+
         super.interrupted();
+
     }
 }

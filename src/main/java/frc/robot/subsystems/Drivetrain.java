@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
+import frc.robot.util.RobotMath;
 
 public class Drivetrain extends Subsystem {
 
@@ -119,28 +121,48 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    /**
-     * @return Left side drivetrain velocity in feet/sec
-     */
-    private double getLeftVelocity() {
+    public void setVelocity(double left, double right, double acceleration) {
 
-        return leftMasterTalon.getSelectedSensorVelocity() * 4.60194236366; // assuming 1 rev = 4096 ticks
+        leftMasterTalon.set(ControlMode.Velocity, RobotMath.feetToTicks(left)/10, DemandType.ArbitraryFeedForward, 0.1 + acceleration * Constants.getDouble("kA_DT"));
+        rightMasterTalon.set(ControlMode.Velocity, RobotMath.feetToTicks(right)/10, DemandType.ArbitraryFeedForward, 0.1 + acceleration * Constants.getDouble("kA_DT"));
+
+    }
+
+    public double getleftEncoderCount() {
+
+        return leftMasterTalon.getSelectedSensorPosition();
+
+    }
+
+    public double getRightEncoderCount() {
+
+        return rightMasterTalon.getSelectedSensorPosition();
+
+    }
+
+
+    /**
+     * @return Left side drivetrain velocity in sensor units/100ms
+     */
+    public double getLeftVelocity() {
+
+        return leftMasterTalon.getSelectedSensorVelocity();
 
     }
 
     /**
-     * @return Right side drivetrain velocity in feet/sec
+     * @return Right side drivetrain velocity in sensor units/100ms
      */
-    private double getRightVelocity() {
+    public double getRightVelocity() {
 
-        return rightMasterTalon.getSelectedSensorVelocity() * 4.60194236366; // assuming 1 rev = 4096 ticks
+        return rightMasterTalon.getSelectedSensorVelocity();
 
     }
 
     /**
      * @return Yaw axis of the robot within -368,640 to +368,640 degrees
      */
-    private double getYaw() {
+    public double getYaw() {
 
         double[] ypr = new double[3];
         pigeon.getYawPitchRoll(ypr);

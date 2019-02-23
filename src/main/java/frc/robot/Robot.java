@@ -1,12 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
 import frc.robot.util.RobotLogger;
+import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
+import frc.robot.util.motion.Odometry;
+import jaci.pathfinder.Pathfinder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,6 +29,8 @@ public class Robot extends TimedRobot {
     private Grabber grabber;
     private Infrastructure infrastructure;
     private Pecker pecker;
+
+    private Odometry odometry;
 
     private RobotLogger robotLogger;
     private CameraThread cameraThread;
@@ -56,6 +62,21 @@ public class Robot extends TimedRobot {
         cameraThread = CameraThread.getInstance();
 
         robotLogger.start();
+
+
+        odometry = Odometry.getInstance();
+        new Notifier(() -> {
+
+            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
+            odometry.setDeltaPosition(RobotMath.ticksToFeet(odometry.getCurrentEncoderPosition() - odometry.getLastPosition()));
+            odometry.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(drivetrain.getYaw())));
+
+            odometry.addX(Math.cos(odometry.getTheta()) * odometry.getDeltaPosition());
+            odometry.addY(Math.sin(odometry.getTheta()) * odometry.getDeltaPosition());
+
+            odometry.setLastPosition(odometry.getCurrentEncoderPosition());
+
+        }).startPeriodic(0.01);
 
     }
 
