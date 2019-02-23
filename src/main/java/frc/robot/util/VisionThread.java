@@ -1,10 +1,11 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class VisionThread extends Thread {
+public class VisionThread implements Runnable {
 
     private static VisionThread instance;
     public static VisionThread getInstance() {
@@ -18,7 +19,9 @@ public class VisionThread extends Thread {
 
     private VisionThread() {
 
-        super();
+        Notifier notifier = new Notifier(this);
+        notifier.startPeriodic(0.01);
+
     }
 
 
