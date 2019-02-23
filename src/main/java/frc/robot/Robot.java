@@ -50,13 +50,12 @@ public class Robot extends TimedRobot {
         infrastructure = Infrastructure.getInstance();
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
+
         robotLogger = RobotLogger.getInstance();
         visionThread = VisionThread.getInstance();
         cameraThread = CameraThread.getInstance();
 
         robotLogger.start();
-        visionThread.start();
-        cameraThread.start();
 
     }
 
@@ -78,7 +77,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        // infrastructure.disableCompressor();
+        infrastructure.disableCompressor();
 
         if (autoCommand != null) {
             autoCommand.start();
