@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class VisionThread extends Thread {
+
     private static VisionThread instance;
     public static VisionThread getInstance() {
         if (instance == null)
@@ -12,13 +13,14 @@ public class VisionThread extends Thread {
         return instance;
     }
 
+    private double frontCameraError = 0;
+    private double backCameraError = 0;
+
     private VisionThread() {
+
         super();
     }
 
-
-    private double frontCameraError = 0;
-    private double backCameraError = 0;
 
     public double getFrontCameraError() {
 

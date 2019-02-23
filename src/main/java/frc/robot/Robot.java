@@ -26,9 +26,9 @@ public class Robot extends TimedRobot {
     private Infrastructure infrastructure;
     private Pecker pecker;
 
-//    private RobotLogger robotLogger;
-//    private CameraThread cameraThread;
-//    private VisionThread visionThread;
+    private RobotLogger robotLogger;
+    private CameraThread cameraThread;
+    private VisionThread visionThread;
 
     private OI oi;
 
@@ -50,13 +50,13 @@ public class Robot extends TimedRobot {
         infrastructure = Infrastructure.getInstance();
         pecker = Pecker.getInstance();
         oi = OI.getInstance();
-//        robotLogger = RobotLogger.getInstance();
-//        visionThread = VisionThread.getInstance();
-//        cameraThread = CameraThread.getInstance();
-//
-//        robotLogger.start();
-//        visionThread.start();
-//        cameraThread.start();
+        robotLogger = RobotLogger.getInstance();
+        visionThread = VisionThread.getInstance();
+        cameraThread = CameraThread.getInstance();
+
+        robotLogger.start();
+        visionThread.start();
+        cameraThread.start();
 
     }
 
