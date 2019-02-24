@@ -160,3 +160,8 @@ bin/
 
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
+
+# IntelliJ files
+FRC-2019.iml
+FRC-2019.ipr
+FRC-2019.iws

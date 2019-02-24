@@ -11,7 +11,6 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
 import frc.robot.util.motion.Odometry;
 import jaci.pathfinder.Pathfinder;
-import frc.robot.util.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,9 +33,7 @@ public class Robot extends TimedRobot {
     private RobotLogger robotLogger;
     private CameraThread cameraThread;
     private VisionThread visionThread;
-
     private OI oi;
-
     private Command autoCommand;
 
     /**
@@ -99,7 +96,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        // infrastructure.disableCompressor();
+        infrastructure.disableCompressor();
 
         if (autoCommand != null) {
             autoCommand.start();

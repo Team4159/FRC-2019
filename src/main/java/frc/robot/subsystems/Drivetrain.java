@@ -45,7 +45,6 @@ public class Drivetrain extends Subsystem {
         rightMasterTalon.setInverted(true);
         rightSlaveTalon.setInverted(true);
 
-
         leftSlaveTalon.follow(leftMasterTalon);
         rightSlaveTalon.follow(rightMasterTalon);
 
@@ -57,9 +56,10 @@ public class Drivetrain extends Subsystem {
         if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
             leftMasterTalon.set(ControlMode.PercentOutput, left);
             rightMasterTalon.set(ControlMode.PercentOutput, right);
+
         } else {
-            leftMasterTalon.set(ControlMode.PercentOutput, -left);
-            rightMasterTalon.set(ControlMode.PercentOutput, -right);
+            leftMasterTalon.set(ControlMode.PercentOutput, -right);
+            rightMasterTalon.set(ControlMode.PercentOutput, -left);
         }
 
     }
