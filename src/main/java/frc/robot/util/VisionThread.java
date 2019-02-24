@@ -1,10 +1,12 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class VisionThread extends Thread {
+public class VisionThread implements Runnable {
+
     private static VisionThread instance;
     public static VisionThread getInstance() {
         if (instance == null)
@@ -12,10 +14,7 @@ public class VisionThread extends Thread {
         return instance;
     }
 
-    private VisionThread() {
-        super();
-    }
-
+    private Notifier notifier;
 
     private double frontCameraError = 0;
     private double backCameraError = 0;
@@ -51,6 +50,15 @@ public class VisionThread extends Thread {
 
         frontCameraError = buffer.getDouble();
         backCameraError = buffer.getDouble();
+
+    }
+
+    public void start() {
+
+        if (notifier == null) {
+            notifier = new Notifier(this);
+            notifier.startPeriodic(0.01);
+        }
 
     }
 

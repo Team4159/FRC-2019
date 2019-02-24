@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.util.Constants;
 
@@ -16,6 +18,8 @@ public class OI {
             instance = new OI();
         return instance;
     }
+
+    public static NetworkTable liveDashboardTable = NetworkTableInstance.getDefault().getTable("Live Dashboard");
 
     /*
      * We use Thrustmaster T.16000M joysticks.
