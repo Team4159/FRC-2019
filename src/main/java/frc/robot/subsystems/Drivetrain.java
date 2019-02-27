@@ -1,13 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -37,18 +34,41 @@ public class Drivetrain extends Subsystem {
         pigeon = new PigeonIMU(rightSlaveTalon);
         infrastructure = Infrastructure.getInstance();
 
+        /* Factory default hardware to prevent unexpected behavior */
         leftMasterTalon.configFactoryDefault();
         leftSlaveTalon.configFactoryDefault();
         rightMasterTalon.configFactoryDefault();
         rightSlaveTalon.configFactoryDefault();
 
+        /* Configure output direction */
         rightMasterTalon.setInverted(true);
         rightSlaveTalon.setInverted(true);
 
+        /* Set to brake mode */
+        leftMasterTalon.setNeutralMode(NeutralMode.Brake);
+        leftSlaveTalon.setNeutralMode(NeutralMode.Brake);
+        rightMasterTalon.setNeutralMode(NeutralMode.Brake);
+        rightSlaveTalon.setNeutralMode(NeutralMode.Brake);
+
+        /* Voltage compensation */
+        leftMasterTalon.configVoltageCompSaturation(Constants.getInt("MAX_VOLTAGE"), Constants.getInt("TIMEOUT_MS"));
+        leftMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
+        leftMasterTalon.enableVoltageCompensation(true);
+        rightMasterTalon.configVoltageCompSaturation(Constants.getInt("MAX_VOLTAGE"), Constants.getInt("TIMEOUT_MS"));
+        rightMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
+        rightMasterTalon.enableVoltageCompensation(true);
+
+        /* Set slave talons to follow master talons */
         leftSlaveTalon.follow(leftMasterTalon);
         rightSlaveTalon.follow(rightMasterTalon);
 
-        configSensors();
+        /*
+         * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
+         * over the CAN bus. Fix: Swap encoder connections at SFR.
+         */
+        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
+        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
+
     }
 
     public void rawDrive(double left, double right) {
@@ -98,26 +118,14 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    private void configSensors() {
-
-        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
-        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,1);
-
-    }
-
     public void setRawConfig() {
 
-
-    }
-
-    public void setPathFollowingConfig() {
 
     }
 
     public void setBrownoutPreventionConfig() {
 
         // ramping
-        // voltage compensation
 
     }
 
@@ -171,6 +179,7 @@ public class Drivetrain extends Subsystem {
 
     }
 
+    /* Testing shuffleboard stuff */
     private ShuffleboardTab tab = Shuffleboard.getTab("Drive");
     private NetworkTableEntry leftEntry =
             tab.add("Left Drivetrain Velocity", 0).withWidget(BuiltInWidgets.kGraph).getEntry();
@@ -181,9 +190,9 @@ public class Drivetrain extends Subsystem {
 
     public void logDashboard() {
 
-        leftEntry.setDouble(getLeftVelocity());
-        rightEntry.setDouble(getRightVelocity());
-        //gyroEntry.setDouble(getYaw());
+        leftEntry.setDouble(RobotMath.ticksToFeet(getLeftVelocity()));
+        rightEntry.setDouble(RobotMath.ticksToFeet(getRightVelocity()));
+        gyroEntry.setDouble(getYaw());
 
     }
 

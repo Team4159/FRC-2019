@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.feeder.FeederControl;
@@ -21,6 +22,12 @@ public class Feeder extends Subsystem {
     private Feeder() {
 
         feederVictor = new VictorSPX(Constants.getInt("FEEDER_VICTOR"));
+
+        /* Factory default to prevent unexpected behavior */
+        feederVictor.configFactoryDefault();
+
+        /* Set brake mode */
+        feederVictor.setNeutralMode(NeutralMode.Brake);
 
     }
 

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.grabber.GrabberControl;
@@ -22,6 +23,14 @@ public class Grabber extends Subsystem {
 
         grabberTalon1 = new TalonSRX(Constants.getInt("GRABBER_TALON_1"));
         grabberTalon2 = new TalonSRX(Constants.getInt("GRABBER_TALON_2"));
+
+        /* Factory default hardware to prevent unexpected behavior */
+        grabberTalon1.configFactoryDefault();
+        grabberTalon2.configFactoryDefault();
+
+        /* Set brake mode */
+        grabberTalon1.setNeutralMode(NeutralMode.Brake);
+        grabberTalon2.setNeutralMode(NeutralMode.Brake);
 
     }
 
