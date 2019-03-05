@@ -34,29 +34,33 @@ public class Infrastructure extends Subsystem {
 
     private Infrastructure() {
 
-        compressor = new Compressor(Constants.getInt("PCM"));
-        pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
+        //compressor = new Compressor(Constants.getInt("PCM"));
+        //pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
         driverStation = DriverStation.getInstance();
 
     }
 
     public void toggleOrientation() {
+
         orientation = orientation.toggle();
+
     }
 
     public Orientation getOrientation() {
+
         return orientation;
+
     }
 
     public void disableCompressor() {
 
-        compressor.setClosedLoopControl(false);
+        //compressor.setClosedLoopControl(false);
 
     }
 
     public void enableCompressor() {
 
-        compressor.setClosedLoopControl(true);
+        //compressor.setClosedLoopControl(true);
 
     }
 

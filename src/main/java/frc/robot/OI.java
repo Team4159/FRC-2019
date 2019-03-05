@@ -54,6 +54,12 @@ public class OI {
 
     }
 
+    public double getRightX() {
+
+        return rightJoy.getX();
+
+    }
+
     public double getSecondaryY() {
 
         return secondaryJoy.getY();

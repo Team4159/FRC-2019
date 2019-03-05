@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -31,7 +35,7 @@ public class Drivetrain extends Subsystem {
         leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
-        pigeon = new PigeonIMU(rightSlaveTalon);
+        //pigeon = new PigeonIMU(rightSlaveTalon);
         infrastructure = Infrastructure.getInstance();
 
         /* Factory default hardware to prevent unexpected behavior */
@@ -66,8 +70,8 @@ public class Drivetrain extends Subsystem {
          * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
          * over the CAN bus. Fix: Swap encoder connections at SFR.
          */
-        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
-        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
+//        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
+//        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
 
     }
 
@@ -87,8 +91,8 @@ public class Drivetrain extends Subsystem {
 
     public void arcadeDrive(double speed, double turn) {
 
-        double left = speed + turn;
-        double right = speed - turn;
+        double left = speed - turn;
+        double right = speed + turn;
 
         if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
             leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
@@ -190,9 +194,9 @@ public class Drivetrain extends Subsystem {
 
     public void logDashboard() {
 
-        leftEntry.setDouble(RobotMath.ticksToFeet(getLeftVelocity()));
-        rightEntry.setDouble(RobotMath.ticksToFeet(getRightVelocity()));
-        gyroEntry.setDouble(getYaw());
+        //leftEntry.setDouble(RobotMath.ticksToFeet(getLeftVelocity()));
+        //rightEntry.setDouble(RobotMath.ticksToFeet(getRightVelocity()));
+        //gyroEntry.setDouble(getYaw());
 
     }
 

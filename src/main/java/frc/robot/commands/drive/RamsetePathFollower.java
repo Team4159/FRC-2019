@@ -57,8 +57,8 @@ public class RamsetePathFollower extends Command {
         SmartDashboard.putNumber("Path Left Wheel Velocity", driveSignal.getLeft());
         SmartDashboard.putNumber("Path Right Wheel Velocity", driveSignal.getRight());
 
-        SmartDashboard.putNumber("Robot Left Velocity", drivetrain.getLeftVelocity());
-        SmartDashboard.putNumber("Robot Right Velocity", drivetrain.getRightVelocity());
+        //SmartDashboard.putNumber("Robot Left Velocity", drivetrain.getLeftVelocity());
+        //SmartDashboard.putNumber("Robot Right Velocity", drivetrain.getRightVelocity());
 
     }
 

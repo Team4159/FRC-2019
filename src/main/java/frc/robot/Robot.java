@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.auto.Auto;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
+import frc.robot.util.REVDigitBoard;
 import frc.robot.util.RobotLogger;
-import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
+import frc.robot.util.RobotMath;
 import frc.robot.util.motion.Odometry;
 import jaci.pathfinder.Pathfinder;
 
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
     private CameraThread cameraThread;
     private VisionThread visionThread;
     private OI oi;
+    private REVDigitBoard digitBoard;
     private Command autoCommand;
 
     /**
@@ -44,37 +47,39 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-        elevator = Elevator.getInstance();
-        extender = Extender.getInstance();
-        feeder = Feeder.getInstance();
-        grabber = Grabber.getInstance();
-        beak = Beak.getInstance();
+       // elevator = Elevator.getInstance();
+      //  extender = Extender.getInstance();
+     //   feeder = Feeder.getInstance();
+      //  grabber = Grabber.getInstance();
+      //  beak = Beak.getInstance();
         infrastructure = Infrastructure.getInstance();
-        pecker = Pecker.getInstance();
+       // pecker = Pecker.getInstance();
         oi = OI.getInstance();
+        digitBoard = REVDigitBoard.getInstance();
 
-        robotLogger = RobotLogger.getInstance();
-        visionThread = VisionThread.getInstance();
-        cameraThread = CameraThread.getInstance();
+        autoCommand = new Auto();
 
-        robotLogger.start();
-        visionThread.start();
-        cameraThread.start();
-
+//        robotLogger = RobotLogger.getInstance();
+//        visionThread = VisionThread.getInstance();
+//        cameraThread = CameraThread.getInstance();
+//
+//        robotLogger.start();
+//        visionThread.start();
+//        cameraThread.start();
 
         odometry = Odometry.getInstance();
-        new Notifier(() -> {
-
-            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
-            odometry.setDeltaPosition(RobotMath.ticksToFeet(odometry.getCurrentEncoderPosition() - odometry.getLastPosition()));
-            odometry.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(drivetrain.getYaw())));
-
-            odometry.addX(Math.cos(odometry.getTheta()) * odometry.getDeltaPosition());
-            odometry.addY(Math.sin(odometry.getTheta()) * odometry.getDeltaPosition());
-
-            odometry.setLastPosition(odometry.getCurrentEncoderPosition());
-
-        }).startPeriodic(0.01);
+//        new Notifier(() -> {
+//
+//            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
+//            odometry.setDeltaPosition(RobotMath.ticksToFeet(odometry.getCurrentEncoderPosition() - odometry.getLastPosition()));
+//            odometry.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(drivetrain.getYaw())));
+//
+//            odometry.addX(Math.cos(odometry.getTheta()) * odometry.getDeltaPosition());
+//            odometry.addY(Math.sin(odometry.getTheta()) * odometry.getDeltaPosition());
+//
+//            odometry.setLastPosition(odometry.getCurrentEncoderPosition());
+//
+//        }).startPeriodic(0.01);
 
     }
 
@@ -88,6 +93,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+
+        digitBoard.update();
 
         Scheduler.getInstance().run();
 
