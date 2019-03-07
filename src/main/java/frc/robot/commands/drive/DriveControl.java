@@ -43,8 +43,8 @@ public class DriveControl extends Command {
 
         } else {
 
-            //drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
-            drivetrain.arcadeDrive(oi.getLeftY(), oi.getRightX());
+            drivetrain.rawDrive(oi.getLeftY(), oi.getRightY());
+            //drivetrain.arcadeDrive(oi.getLeftY(), oi.getRightX());
 
         }
 

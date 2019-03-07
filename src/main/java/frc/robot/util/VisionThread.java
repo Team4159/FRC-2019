@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 public class VisionThread implements Runnable {
 
@@ -31,26 +32,31 @@ public class VisionThread implements Runnable {
 
     }
 
-    @Override
-    public void run() {
+    private ZMQ.Socket alignmentSocket;
 
+    private VisionThread() {
         ZMQ.Context context = ZMQ.context(1);
-        System.out.println("Connecting to ZMQ server…");
+        System.out.println("Connecting to zmq server");
 
         // Socket to talk to server
-        ZMQ.Socket alignmentSocket = context.socket(ZMQ.SUB);
-        alignmentSocket.connect("tcp://127.0.0.1:5802");
+        alignmentSocket = context.socket(ZMQ.SUB);
+        alignmentSocket.connect("tcp://10.41.59.10:5555");
         alignmentSocket.subscribe(new byte[0]);
         alignmentSocket.setConflate(true);
+    }
 
-        byte[] data = alignmentSocket.recv();
-        ByteBuffer buffer = ByteBuffer
-                .wrap(data)
-                .order(ByteOrder.LITTLE_ENDIAN);
+    @Override
+    public void run() {
+       /*
+       byte[] data = alignmentSocket.recv();
+       ByteBuffer buffer = ByteBuffer
+               .wrap(data)
+               .order(ByteOrder.LITTLE_ENDIAN);
 
-        frontCameraError = buffer.getDouble();
-        backCameraError = buffer.getDouble();
-
+       frontCameraError = buffer.getDouble();
+       backCameraError = buffer.getDouble();
+       */
+        System.out.println(Arrays.toString(alignmentSocket.recv()));
     }
 
     public void start() {
