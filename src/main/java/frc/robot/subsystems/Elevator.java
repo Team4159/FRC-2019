@@ -103,6 +103,10 @@ public class Elevator extends Subsystem {
 
     public void updatePosition() {
 
+        if(limitSwitchPressed()) {
+            elevatorMasterTalon.setSelectedSensorPosition(0);
+        }
+
         elevatorMasterTalon.set(ControlMode.MotionMagic, targetPosition);
 
     }
@@ -113,37 +117,37 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void setHatchLowPosition() {
+    public void setHatchBotPosition() {
 
         targetPosition = Constants.getInt("HATCH_LOW_HEIGHT");
 
     }
 
-    public void setHatchMedPosition() {
+    public void setHatchMidPosition() {
 
         targetPosition = Constants.getInt("HATCH_MED_HEIGHT");
 
     }
 
-    public void setHatchHighPosition() {
+    public void setHatchTopPosition() {
 
         targetPosition = Constants.getInt("HATCH_HIGH_HEIGHT");
 
     }
 
-    public void setCargoLowPosition() {
+    public void setCargoBotPosition() {
 
         targetPosition = Constants.getInt("CARGO_LOW_HEIGHT");
 
     }
 
-    public void setCargoMedPosition() {
+    public void setCargoMidPosition() {
 
         targetPosition = Constants.getInt("CARGO_MED_HEIGHT");
 
     }
 
-    public void setCargoHighPosition() {
+    public void setCargoTopPosition() {
 
         targetPosition = Constants.getInt("CARGO_HIGH_HEIGHT");
 
