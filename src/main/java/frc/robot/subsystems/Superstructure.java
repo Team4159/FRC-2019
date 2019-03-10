@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.superstructure.SuperstructureControl;
 import frc.robot.util.CameraThread;
 import frc.robot.util.Constants;
-import frc.robot.util.VisionThread;
 import frc.robot.util.enums.Orientation;
 
 

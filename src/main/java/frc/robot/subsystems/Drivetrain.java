@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -72,6 +73,12 @@ public class Drivetrain extends Subsystem {
 //        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
 //        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
 
+        leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        leftMasterTalon.setSensorPhase(false); // TODO: check
+
+        rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        rightMasterTalon.setSensorPhase(false); // TODO: check
+
     }
 
     public void setOrientation(Orientation orientation) {
@@ -80,11 +87,14 @@ public class Drivetrain extends Subsystem {
 
             rightMasterTalon.setInverted(true);
             rightSlaveTalon.setInverted(true);
+            rightMasterTalon.setSensorPhase(true); // TODO: check
+
 
         } else {
 
             rightMasterTalon.setInverted(false);
             rightSlaveTalon.setInverted(false);
+            rightMasterTalon.setSensorPhase(true); // TODO: check
 
         }
 
@@ -98,7 +108,6 @@ public class Drivetrain extends Subsystem {
             rightMasterTalon.set(ControlMode.PercentOutput, right);
 
         } else {
-
             /* Switch outputs to opposite side */
             leftMasterTalon.set(ControlMode.PercentOutput, right);
             rightMasterTalon.set(ControlMode.PercentOutput, left);

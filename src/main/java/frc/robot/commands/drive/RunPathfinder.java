@@ -15,7 +15,6 @@ public class RunPathfinder extends Command implements Runnable {
 
     private Notifier notifier;
     private Drivetrain drivetrain;
-    private double kP_TURN;
     private EncoderFollower left, right;
     private String leftCSV, rightCSV;
 
@@ -89,7 +88,7 @@ public class RunPathfinder extends Command implements Runnable {
         double desired_heading = Pathfinder.r2d(left.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-        double kG = Constants.getDouble("kP_turn") * (-1.0/80.0); // TODO: Maybe change
+        double kG = Constants.getDouble("kP_TURN") * (-1.0/80.0); // TODO: Maybe change
         double turn = kG * angleDifference;
 
         drivetrain.rawDrive(l + turn, r - turn);
