@@ -134,13 +134,13 @@ public class OI {
 
     public boolean alignButtonHeld() {
 
-        return rightJoy.getRawButton(Constants.getInt("ALIGN_BUTTON"));
+        return rightJoy.getTrigger();
 
     }
 
-    public boolean getFlipButtonPressed() {
+    public boolean reverseButtonPressed() {
       
-        return leftJoy.getRawButtonPressed(Constants.getInt("CAMERA_TOGGLE_BUTTON"));
+        return rightJoy.getRawButtonPressed(Constants.getInt("REVERSE_BUTTON"));
 
     }
 

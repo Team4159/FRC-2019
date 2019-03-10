@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
-import frc.robot.subsystems.Infrastructure;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.util.Constants;
 import frc.robot.util.VisionThread;
 
@@ -33,7 +33,7 @@ public class DriveControl extends Command {
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
 
-            if (Infrastructure.getInstance().getOrientation() == Infrastructure.Orientation.Front) {
+            if (Superstructure.getInstance().getOrientation() == Superstructure.Orientation.Front) {
                 turn = VisionThread.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
             } else {
                 turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");

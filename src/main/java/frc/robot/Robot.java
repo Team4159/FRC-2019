@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -11,9 +9,7 @@ import frc.robot.util.CameraThread;
 import frc.robot.util.REVDigitBoard;
 import frc.robot.util.RobotLogger;
 import frc.robot.util.VisionThread;
-import frc.robot.util.RobotMath;
 import frc.robot.util.motion.Odometry;
-import jaci.pathfinder.Pathfinder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +26,7 @@ public class Robot extends TimedRobot {
     private Extender extender;
     private Feeder feeder;
     private Grabber grabber;
-    private Infrastructure infrastructure;
+    private Superstructure superstructure;
     private Pecker pecker;
     private Odometry odometry;
     private RobotLogger robotLogger;
@@ -53,7 +49,7 @@ public class Robot extends TimedRobot {
      //   feeder = Feeder.getInstance();
       //  grabber = Grabber.getInstance();
       //  beak = Beak.getInstance();
-        infrastructure = Infrastructure.getInstance();
+        superstructure = Superstructure.getInstance();
        // pecker = Pecker.getInstance();
         oi = OI.getInstance();
         digitBoard = REVDigitBoard.getInstance();
@@ -104,7 +100,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        infrastructure.disableCompressor();
+        superstructure.disableCompressor();
 
         if (autoCommand != null) {
             autoCommand.start();
@@ -126,7 +122,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
 
-        infrastructure.enableCompressor();
+        superstructure.enableCompressor();
 
     }
 
