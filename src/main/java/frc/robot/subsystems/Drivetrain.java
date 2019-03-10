@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
 import frc.robot.util.RobotMath;
+import frc.robot.util.VisionThread;
 import frc.robot.util.enums.Orientation;
 
 public class Drivetrain extends Subsystem {
@@ -84,14 +85,12 @@ public class Drivetrain extends Subsystem {
     public void setOrientation(Orientation orientation) {
 
         if(orientation == Orientation.FRONT_HATCH) {
-
             rightMasterTalon.setInverted(true);
             rightSlaveTalon.setInverted(true);
             rightMasterTalon.setSensorPhase(true); // TODO: check
 
 
         } else {
-
             rightMasterTalon.setInverted(false);
             rightSlaveTalon.setInverted(false);
             rightMasterTalon.setSensorPhase(true); // TODO: check
@@ -103,7 +102,7 @@ public class Drivetrain extends Subsystem {
 
     public void rawDrive(double left, double right) {
 
-        if (superstructure.getOrientation() == Orientation.FRONT_HATCH) {
+        if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
             leftMasterTalon.set(ControlMode.PercentOutput, left);
             rightMasterTalon.set(ControlMode.PercentOutput, right);
 
@@ -114,6 +113,20 @@ public class Drivetrain extends Subsystem {
 
         }
 
+    }
+
+    public void autoAlign(double speed) {
+
+        double turn;
+
+        if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
+            turn = VisionThread.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
+
+        } else {
+            turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");
+        }
+
+        arcadeDrive(speed, turn);
     }
 
 

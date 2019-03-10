@@ -29,17 +29,9 @@ public class DriveControl extends Command {
     protected void execute() {
 
         if (oi.alignButtonHeld()) {
-            double turn;
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
-
-            if (Superstructure.getInstance().getOrientation() == Superstructure.Orientation.Front) {
-                turn = VisionThread.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
-            } else {
-                turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");
-            }
-
-            drivetrain.arcadeDrive(speed, turn);
+            drivetrain.autoAlign(speed);
 
         } else {
 
