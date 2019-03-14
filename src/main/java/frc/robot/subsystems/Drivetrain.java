@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -46,8 +47,10 @@ public class Drivetrain extends Subsystem {
         rightSlaveTalon.configFactoryDefault();
 
         /* Configure output direction */
-        rightMasterTalon.setInverted(true);
-        rightSlaveTalon.setInverted(true);
+        rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
+        rightSlaveTalon.setInverted(InvertType.FollowMaster);
+        leftMasterTalon.setInverted(InvertType.None);
+        leftSlaveTalon.setInverted(InvertType.FollowMaster);
 
         /* Set to brake mode */
         leftMasterTalon.setNeutralMode(NeutralMode.Brake);
@@ -85,14 +88,18 @@ public class Drivetrain extends Subsystem {
     public void setOrientation(Orientation orientation) {
 
         if(orientation == Orientation.FRONT_HATCH) {
-            rightMasterTalon.setInverted(true);
-            rightSlaveTalon.setInverted(true);
+            rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
+            rightSlaveTalon.setInverted(InvertType.FollowMaster);
+            leftMasterTalon.setInverted(InvertType.None);
+            leftSlaveTalon.setInverted(InvertType.FollowMaster);
             rightMasterTalon.setSensorPhase(true); // TODO: check
 
 
         } else {
-            rightMasterTalon.setInverted(false);
-            rightSlaveTalon.setInverted(false);
+            rightMasterTalon.setInverted(InvertType.None);
+            rightSlaveTalon.setInverted(InvertType.FollowMaster);
+            leftMasterTalon.setInverted(InvertType.InvertMotorOutput);
+            leftSlaveTalon.setInverted(InvertType.FollowMaster);
             rightMasterTalon.setSensorPhase(true); // TODO: check
 
         }
@@ -120,11 +127,13 @@ public class Drivetrain extends Subsystem {
         double turn;
 
         if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
-            turn = VisionThread.getInstance().getFrontCameraError() * Constants.getDouble("kP_ALIGN");
+            turn = (VisionThread.getInstance().getFrontCameraError()+.38) * Constants.getDouble("kP_ALIGN");
 
         } else {
             turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");
         }
+
+        System.out.println("turn: " + turn);
 
         arcadeDrive(speed, turn);
     }

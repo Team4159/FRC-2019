@@ -52,16 +52,16 @@ public class Robot extends TimedRobot {
         superstructure = Superstructure.getInstance();
        // pecker = Pecker.getInstance();
         oi = OI.getInstance();
-        digitBoard = REVDigitBoard.getInstance();
+        //digitBoard = REVDigitBoard.getInstance();
 
         autoCommand = new Auto();
 
 //        robotLogger = RobotLogger.getInstance();
-//        visionThread = VisionThread.getInstance();
+        visionThread = VisionThread.getInstance();
 //        cameraThread = CameraThread.getInstance();
 //
 //        robotLogger.start();
-//        visionThread.start();
+        visionThread.start();
 //        cameraThread.start();
 
         odometry = Odometry.getInstance();
@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
 
-        digitBoard.update();
+        //digitBoard.update();
 
         Scheduler.getInstance().run();
 

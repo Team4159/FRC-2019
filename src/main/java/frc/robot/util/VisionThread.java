@@ -5,7 +5,6 @@ import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 
 public class VisionThread implements Runnable {
 
@@ -20,6 +19,9 @@ public class VisionThread implements Runnable {
 
     private double frontCameraError = 0;
     private double backCameraError = 0;
+    private double frontCameraArea = 0;
+    private double backCameraArea = 0;
+    private double distance = 0;
 
     public double getFrontCameraError() {
 
@@ -33,6 +35,24 @@ public class VisionThread implements Runnable {
 
     }
 
+    public double getFrontCameraArea() {
+
+        return frontCameraArea;
+
+    }
+
+    public double getBackCameraArea() {
+
+        return backCameraArea;
+
+    }
+
+    public double getDistance() {
+
+        return frontCameraArea;
+
+    }
+
     private ZMQ.Socket alignmentSocket;
 
     private VisionThread() {
@@ -42,7 +62,7 @@ public class VisionThread implements Runnable {
 
         // Socket to talk to server
         alignmentSocket = context.socket(SocketType.SUB);
-        alignmentSocket.connect("tcp://10.41.59.10:5555");
+        alignmentSocket.connect("tcp://10.41.59.10:5801");
         alignmentSocket.subscribe(new byte[0]);
         alignmentSocket.setConflate(true);
 
@@ -57,9 +77,11 @@ public class VisionThread implements Runnable {
                .order(ByteOrder.LITTLE_ENDIAN);
 
        frontCameraError = buffer.getDouble();
-       backCameraError = buffer.getDouble();
+       frontCameraArea  = buffer.getDouble();
+       backCameraError  = buffer.getDouble();
+       backCameraArea   = buffer.getDouble();
 
-       System.out.println(Arrays.toString(alignmentSocket.recv()));
+       //System.out.println(frontCameraError + "," + frontCameraArea  + "," +  + ",");
 
     }
 
