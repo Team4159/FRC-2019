@@ -23,8 +23,6 @@ public class CameraThread implements Runnable {
     }
 
     private Notifier notifier;
-
-    private Superstructure superstructure;
     private CvSink cvSink;
     private CvSource cvSource;
     private UsbCamera video1, video2;
@@ -33,7 +31,6 @@ public class CameraThread implements Runnable {
 
     private CameraThread() {
 
-        superstructure = Superstructure.getInstance();
         video1 = CameraServer.getInstance().startAutomaticCapture(0);
         video2 = CameraServer.getInstance().startAutomaticCapture(1);
 
@@ -48,7 +45,6 @@ public class CameraThread implements Runnable {
 
         video1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
         video2.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
-
 
         image = new Mat();
         white = new Scalar(255, 255, 255); // hatch panel color
@@ -87,7 +83,7 @@ public class CameraThread implements Runnable {
 
         if (notifier == null) {
             notifier = new Notifier(this);
-            notifier.startPeriodic(0.2);
+            notifier.startPeriodic(0.1);
         }
 
     }

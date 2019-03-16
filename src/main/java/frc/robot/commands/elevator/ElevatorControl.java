@@ -25,27 +25,29 @@ public class ElevatorControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.elevatorBotHatchButtonPressed()) {
-            elevator.setHatchBotPosition();
+//        if(oi.elevatorBotHatchButtonPressed()) {
+//            elevator.setHatchBotPosition();
+//
+//        } else if(oi.elevatorMidHatchButtonPressed()) {
+//            elevator.setHatchMidPosition();
+//
+//        } else if(oi.elevatorTopHatchButtonPressed()) {
+//            elevator.setHatchTopPosition();
+//
+//        } else if(oi.elevatorBotCargoButtonPressed()) {
+//            elevator.setCargoBotPosition();
+//
+//        } else if(oi.elevatorMidCargoButtonPressed()) {
+//            elevator.setCargoMidPosition();
+//
+//        } else if(oi.elevatorTopCargoButtonPressed()) {
+//            elevator.setCargoTopPosition();
+//
+//        }
+//
+//        elevator.updatePosition();
 
-        } else if(oi.elevatorMidHatchButtonPressed()) {
-            elevator.setHatchMidPosition();
-
-        } else if(oi.elevatorTopHatchButtonPressed()) {
-            elevator.setHatchTopPosition();
-
-        } else if(oi.elevatorBotCargoButtonPressed()) {
-            elevator.setCargoBotPosition();
-
-        } else if(oi.elevatorMidCargoButtonPressed()) {
-            elevator.setCargoMidPosition();
-
-        } else if(oi.elevatorTopCargoButtonPressed()) {
-            elevator.setCargoTopPosition();
-
-        }
-
-        elevator.updatePosition();
+        elevator.setPercentOutput(oi.getSecondaryY());
 
     }
 

@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     private CameraThread cameraThread;
     private VisionThread visionThread;
     private OI oi;
-    private REVDigitBoard digitBoard;
+//    private REVDigitBoard digitBoard;
     private Command autoCommand;
 
     /**
@@ -44,11 +44,11 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-       // elevator = Elevator.getInstance();
-      //  extender = Extender.getInstance();
-     //   feeder = Feeder.getInstance();
-      //  grabber = Grabber.getInstance();
-      //  beak = Beak.getInstance();
+        elevator = Elevator.getInstance();
+        extender = Extender.getInstance();
+        feeder = Feeder.getInstance();
+        grabber = Grabber.getInstance();
+        beak = Beak.getInstance();
         superstructure = Superstructure.getInstance();
        // pecker = Pecker.getInstance();
         oi = OI.getInstance();
@@ -58,11 +58,11 @@ public class Robot extends TimedRobot {
 
 //        robotLogger = RobotLogger.getInstance();
         visionThread = VisionThread.getInstance();
-//        cameraThread = CameraThread.getInstance();
+        cameraThread = CameraThread.getInstance();
 //
 //        robotLogger.start();
         visionThread.start();
-//        cameraThread.start();
+        cameraThread.start();
 
         odometry = Odometry.getInstance();
 //        new Notifier(() -> {
@@ -102,9 +102,9 @@ public class Robot extends TimedRobot {
 
         superstructure.disableCompressor();
 
-        if (autoCommand != null) {
-            autoCommand.start();
-        }
+//        if (autoCommand != null) {
+//            autoCommand.start();
+//        }
 
     }
 
