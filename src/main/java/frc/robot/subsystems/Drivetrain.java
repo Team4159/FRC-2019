@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -11,6 +15,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.drive.DriveControl;
 import frc.robot.util.Constants;
 import frc.robot.util.RobotMath;
+import frc.robot.util.VisionThread;
+import frc.robot.util.enums.Orientation;
 
 public class Drivetrain extends Subsystem {
 
@@ -23,7 +29,7 @@ public class Drivetrain extends Subsystem {
 
     private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
     private PigeonIMU pigeon;
-    private Infrastructure infrastructure;
+    private Superstructure superstructure;
 
     private Drivetrain() {
 
@@ -31,8 +37,8 @@ public class Drivetrain extends Subsystem {
         leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
         rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
         rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
-        pigeon = new PigeonIMU(rightSlaveTalon);
-        infrastructure = Infrastructure.getInstance();
+        //pigeon = new PigeonIMU(rightSlaveTalon);
+        superstructure = Superstructure.getInstance();
 
         /* Factory default hardware to prevent unexpected behavior */
         leftMasterTalon.configFactoryDefault();
@@ -41,8 +47,10 @@ public class Drivetrain extends Subsystem {
         rightSlaveTalon.configFactoryDefault();
 
         /* Configure output direction */
-        rightMasterTalon.setInverted(true);
-        rightSlaveTalon.setInverted(true);
+        rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
+        rightSlaveTalon.setInverted(InvertType.FollowMaster);
+        leftMasterTalon.setInverted(InvertType.None);
+        leftSlaveTalon.setInverted(InvertType.FollowMaster);
 
         /* Set to brake mode */
         leftMasterTalon.setNeutralMode(NeutralMode.Brake);
@@ -66,46 +74,86 @@ public class Drivetrain extends Subsystem {
          * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
          * over the CAN bus. Fix: Swap encoder connections at SFR.
          */
-        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
-        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
+//        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
+//        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
+
+        leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        leftMasterTalon.setSensorPhase(false); // TODO: check
+
+        rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        rightMasterTalon.setSensorPhase(false); // TODO: check
+
+    }
+
+    public void setOrientation(Orientation orientation) {
+
+        if(orientation == Orientation.FRONT_HATCH) {
+            rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
+            rightSlaveTalon.setInverted(InvertType.FollowMaster);
+            leftMasterTalon.setInverted(InvertType.None);
+            leftSlaveTalon.setInverted(InvertType.FollowMaster);
+            rightMasterTalon.setSensorPhase(true); // TODO: check
+
+
+        } else {
+            rightMasterTalon.setInverted(InvertType.None);
+            rightSlaveTalon.setInverted(InvertType.FollowMaster);
+            leftMasterTalon.setInverted(InvertType.InvertMotorOutput);
+            leftSlaveTalon.setInverted(InvertType.FollowMaster);
+            rightMasterTalon.setSensorPhase(true); // TODO: check
+
+        }
+
 
     }
 
     public void rawDrive(double left, double right) {
 
-        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
+        if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
             leftMasterTalon.set(ControlMode.PercentOutput, left);
             rightMasterTalon.set(ControlMode.PercentOutput, right);
 
         } else {
-            leftMasterTalon.set(ControlMode.PercentOutput, -right);
-            rightMasterTalon.set(ControlMode.PercentOutput, -left);
+            /* Switch outputs to opposite side */
+            leftMasterTalon.set(ControlMode.PercentOutput, right);
+            rightMasterTalon.set(ControlMode.PercentOutput, left);
+
         }
 
+    }
+
+    public void autoAlign(double speed) {
+
+        double turn;
+
+        if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
+            turn = (VisionThread.getInstance().getFrontCameraError()+.38) * Constants.getDouble("kP_ALIGN");
+
+        } else {
+            turn = VisionThread.getInstance().getBackCameraError() * Constants.getDouble("kP_ALIGN");
+        }
+
+        System.out.println("turn: " + turn);
+
+        arcadeDrive(speed, turn);
     }
 
 
     public void arcadeDrive(double speed, double turn) {
 
-        double left = speed + turn;
-        double right = speed - turn;
+        double left = speed - turn;
+        double right = speed + turn;
 
-        if (infrastructure.getOrientation() == Infrastructure.Orientation.Front) {
-            leftMasterTalon.set(ControlMode.PercentOutput, left + skim(right));
-            rightMasterTalon.set(ControlMode.PercentOutput, right + skim(left));
-        } else {
-            leftMasterTalon.set(ControlMode.PercentOutput, -left + skim(-right));
-            rightMasterTalon.set(ControlMode.PercentOutput, -right + skim(-left));
-        }
+        rawDrive(left + skim(right), right + skim(left));
 
     }
 
     private double skim(double v) {
 
         if (v > 1.0) {
-            return -((v - 1.0) * Constants.getDouble("TURNING_GAIN"));
+            return -((v - 1.0) * Constants.getDouble("kG_ARCADE"));
         } else if (v < -1.0) {
-            return -((v + 1.0) * Constants.getDouble("TURNING_GAIN"));
+            return -((v + 1.0) * Constants.getDouble("kG_ARCADE"));
         }
 
         return 0;
@@ -136,13 +184,13 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public double getleftEncoderCount() {
+    public int getleftEncoderCount() {
 
         return leftMasterTalon.getSelectedSensorPosition();
 
     }
 
-    public double getRightEncoderCount() {
+    public int getRightEncoderCount() {
 
         return rightMasterTalon.getSelectedSensorPosition();
 
@@ -190,9 +238,9 @@ public class Drivetrain extends Subsystem {
 
     public void logDashboard() {
 
-        leftEntry.setDouble(RobotMath.ticksToFeet(getLeftVelocity()));
-        rightEntry.setDouble(RobotMath.ticksToFeet(getRightVelocity()));
-        gyroEntry.setDouble(getYaw());
+        //leftEntry.setDouble(RobotMath.ticksToFeet(getLeftVelocity()));
+        //rightEntry.setDouble(RobotMath.ticksToFeet(getRightVelocity()));
+        //gyroEntry.setDouble(getYaw());
 
     }
 

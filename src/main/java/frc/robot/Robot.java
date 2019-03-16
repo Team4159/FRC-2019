@@ -1,16 +1,15 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.auto.Auto;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
+import frc.robot.util.REVDigitBoard;
 import frc.robot.util.RobotLogger;
-import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
 import frc.robot.util.motion.Odometry;
-import jaci.pathfinder.Pathfinder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,13 +26,14 @@ public class Robot extends TimedRobot {
     private Extender extender;
     private Feeder feeder;
     private Grabber grabber;
-    private Infrastructure infrastructure;
+    private Superstructure superstructure;
     private Pecker pecker;
     private Odometry odometry;
     private RobotLogger robotLogger;
     private CameraThread cameraThread;
     private VisionThread visionThread;
     private OI oi;
+//    private REVDigitBoard digitBoard;
     private Command autoCommand;
 
     /**
@@ -49,32 +49,34 @@ public class Robot extends TimedRobot {
         feeder = Feeder.getInstance();
         grabber = Grabber.getInstance();
         beak = Beak.getInstance();
-        infrastructure = Infrastructure.getInstance();
-        pecker = Pecker.getInstance();
+        superstructure = Superstructure.getInstance();
+       // pecker = Pecker.getInstance();
         oi = OI.getInstance();
+        //digitBoard = REVDigitBoard.getInstance();
 
-        robotLogger = RobotLogger.getInstance();
+        autoCommand = new Auto();
+
+//        robotLogger = RobotLogger.getInstance();
         visionThread = VisionThread.getInstance();
         cameraThread = CameraThread.getInstance();
-
-        robotLogger.start();
+//
+//        robotLogger.start();
         visionThread.start();
         cameraThread.start();
 
-
         odometry = Odometry.getInstance();
-        new Notifier(() -> {
-
-            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
-            odometry.setDeltaPosition(RobotMath.ticksToFeet(odometry.getCurrentEncoderPosition() - odometry.getLastPosition()));
-            odometry.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(drivetrain.getYaw())));
-
-            odometry.addX(Math.cos(odometry.getTheta()) * odometry.getDeltaPosition());
-            odometry.addY(Math.sin(odometry.getTheta()) * odometry.getDeltaPosition());
-
-            odometry.setLastPosition(odometry.getCurrentEncoderPosition());
-
-        }).startPeriodic(0.01);
+//        new Notifier(() -> {
+//
+//            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
+//            odometry.setDeltaPosition(RobotMath.ticksToFeet(odometry.getCurrentEncoderPosition() - odometry.getLastPosition()));
+//            odometry.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(drivetrain.getYaw())));
+//
+//            odometry.addX(Math.cos(odometry.getTheta()) * odometry.getDeltaPosition());
+//            odometry.addY(Math.sin(odometry.getTheta()) * odometry.getDeltaPosition());
+//
+//            odometry.setLastPosition(odometry.getCurrentEncoderPosition());
+//
+//        }).startPeriodic(0.01);
 
     }
 
@@ -89,6 +91,8 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
 
+        //digitBoard.update();
+
         Scheduler.getInstance().run();
 
     }
@@ -96,11 +100,11 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        infrastructure.disableCompressor();
+        superstructure.disableCompressor();
 
-        if (autoCommand != null) {
-            autoCommand.start();
-        }
+//        if (autoCommand != null) {
+//            autoCommand.start();
+//        }
 
     }
 
@@ -118,7 +122,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
 
-        infrastructure.enableCompressor();
+        superstructure.enableCompressor();
 
     }
 

@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Notifier;
+import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -18,6 +19,9 @@ public class VisionThread implements Runnable {
 
     private double frontCameraError = 0;
     private double backCameraError = 0;
+    private double frontCameraArea = 0;
+    private double backCameraArea = 0;
+    private double distance = 0;
 
     public double getFrontCameraError() {
 
@@ -31,25 +35,53 @@ public class VisionThread implements Runnable {
 
     }
 
-    @Override
-    public void run() {
+    public double getFrontCameraArea() {
+
+        return frontCameraArea;
+
+    }
+
+    public double getBackCameraArea() {
+
+        return backCameraArea;
+
+    }
+
+    public double getDistance() {
+
+        return frontCameraArea;
+
+    }
+
+    private ZMQ.Socket alignmentSocket;
+
+    private VisionThread() {
 
         ZMQ.Context context = ZMQ.context(1);
-        System.out.println("Connecting to ZMQ server…");
+        System.out.println("Connecting to zmq server");
 
         // Socket to talk to server
-        ZMQ.Socket alignmentSocket = context.socket(ZMQ.SUB);
-        alignmentSocket.connect("tcp://127.0.0.1:5802");
+        alignmentSocket = context.socket(SocketType.SUB);
+        alignmentSocket.connect("tcp://10.41.59.10:5801");
         alignmentSocket.subscribe(new byte[0]);
         alignmentSocket.setConflate(true);
 
-        byte[] data = alignmentSocket.recv();
-        ByteBuffer buffer = ByteBuffer
-                .wrap(data)
-                .order(ByteOrder.LITTLE_ENDIAN);
+    }
 
-        frontCameraError = buffer.getDouble();
-        backCameraError = buffer.getDouble();
+    @Override
+    public void run() {
+
+       byte[] data = alignmentSocket.recv();
+       ByteBuffer buffer = ByteBuffer
+               .wrap(data)
+               .order(ByteOrder.LITTLE_ENDIAN);
+
+       frontCameraError = buffer.getDouble();
+       frontCameraArea  = buffer.getDouble();
+       backCameraError  = buffer.getDouble();
+       backCameraArea   = buffer.getDouble();
+
+       //System.out.println(frontCameraError + "," + frontCameraArea  + "," +  + ",");
 
     }
 

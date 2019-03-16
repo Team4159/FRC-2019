@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
 import java.util.stream.Collectors;
 import java.util.logging.FileHandler;
 import edu.wpi.first.wpilibj.Notifier;
-import frc.robot.subsystems.Infrastructure;
+import frc.robot.subsystems.Superstructure;
 
 public class RobotLogger implements Runnable {
 
@@ -41,20 +41,20 @@ public class RobotLogger implements Runnable {
     private Notifier notifier;
 
     private Logger logger;
-    private Infrastructure infrastructure;
+    private Superstructure superstructure;
     private HashMap<String, Supplier<Object>> fields;
 
     private RobotLogger() {
 
         notifier = new Notifier(this);
-        infrastructure = Infrastructure.getInstance();
+        superstructure = Superstructure.getInstance();
 
         fields = new HashMap<String, Supplier<Object>>() {
             {
-                put("MODE", infrastructure::getMode);
-                put("ALLIANCE", infrastructure::getAlliance);
-                put("MATCH NUMBER", infrastructure::getMatchNumber);
-                put("VOLTAGE", infrastructure::getRobotVoltage);
+                put("MODE", superstructure::getMode);
+                put("ALLIANCE", superstructure::getAlliance);
+                put("MATCH NUMBER", superstructure::getMatchNumber);
+                put("VOLTAGE", superstructure::getRobotVoltage);
             }
         };
 

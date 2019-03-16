@@ -1,19 +1,20 @@
-package frc.robot.commands.infrastructure;
+package frc.robot.commands.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.Infrastructure;
+import frc.robot.subsystems.Superstructure;
 
-public class InfrastructureControl extends Command {
 
-    private Infrastructure infrastructure;
+public class SuperstructureControl extends Command {
+
+    private Superstructure superstructure;
     private OI oi;
 
-    public InfrastructureControl() {
+    public SuperstructureControl() {
 
-        infrastructure = Infrastructure.getInstance();
+        superstructure = Superstructure.getInstance();
         oi = OI.getInstance();
-        requires(infrastructure);
+        requires(superstructure);
 
     }
 
@@ -24,20 +25,21 @@ public class InfrastructureControl extends Command {
     @Override
     protected void execute() {
 
-        if (oi.getFlipButtonPressed()) {
-            infrastructure.toggleOrientation();
+        if (oi.reverseButtonPressed()) {
+            superstructure.reverseOrientation();
         }
 
     }
 
     @Override
     protected boolean isFinished() {
+
         return false;
+
     }
 
     @Override
     protected void end() {
-
     }
 
     @Override

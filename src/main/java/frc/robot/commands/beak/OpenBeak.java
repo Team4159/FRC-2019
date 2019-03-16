@@ -11,11 +11,4 @@ public class OpenBeak extends InstantCommand {
 
     }
 
-    @Override
-    protected boolean isFinished() {
-
-        return true;
-
-    }
-
 }

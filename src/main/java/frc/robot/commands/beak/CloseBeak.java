@@ -11,11 +11,4 @@ public class CloseBeak extends InstantCommand {
 
     }
 
-    @Override
-    protected boolean isFinished() {
-
-        return true;
-
-    }
-
 }

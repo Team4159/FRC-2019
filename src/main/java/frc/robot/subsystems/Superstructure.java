@@ -5,58 +5,61 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.infrastructure.InfrastructureControl;
+import frc.robot.commands.superstructure.SuperstructureControl;
+import frc.robot.util.CameraThread;
 import frc.robot.util.Constants;
+import frc.robot.util.enums.Orientation;
 
-public class Infrastructure extends Subsystem {
 
-    private static Infrastructure instance;
-    public static Infrastructure getInstance() {
+public class Superstructure extends Subsystem {
+
+    private static Superstructure instance;
+    public static Superstructure getInstance() {
         if(instance == null)
-            instance = new Infrastructure();
+            instance = new Superstructure();
         return instance;
     }
 
-    public enum Orientation {
-        Front,
-        Back;
-
-        public Orientation toggle() {
-            return this.equals(Front) ? Back : Front;
-        }
-    }
-
-    private static Orientation orientation = Orientation.Front;
-
+    private Orientation orientation;
     private PowerDistributionPanel pdp;
     private Compressor compressor;
     private DriverStation driverStation;
 
-    private Infrastructure() {
+    private Superstructure() {
 
-        compressor = new Compressor(Constants.getInt("PCM"));
+        orientation = Orientation.FRONT_HATCH;
+        //compressor = new Compressor(Constants.getInt("PCM"));
         pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
         driverStation = DriverStation.getInstance();
 
     }
 
-    public void toggleOrientation() {
-        orientation = orientation.toggle();
+    /*
+     * Toggles orientation to cargo side if currently hatch side, and vice versa
+     */
+    public void reverseOrientation() {
+
+        orientation = (orientation == Orientation.FRONT_HATCH) ? Orientation.BACK_CARGO : Orientation.FRONT_HATCH;
+        Drivetrain.getInstance().setOrientation(orientation);
+        CameraThread.getInstance().setOrientation(orientation);
+
     }
 
     public Orientation getOrientation() {
+
         return orientation;
+
     }
 
     public void disableCompressor() {
 
-        compressor.setClosedLoopControl(false);
+        //compressor.setClosedLoopControl(false);
 
     }
 
     public void enableCompressor() {
 
-        compressor.setClosedLoopControl(true);
+        //compressor.setClosedLoopControl(true);
 
     }
 
@@ -90,7 +93,7 @@ public class Infrastructure extends Subsystem {
     @Override
     public void initDefaultCommand() {
       
-        setDefaultCommand(new InfrastructureControl());
+        setDefaultCommand(new SuperstructureControl());
       
     }
 

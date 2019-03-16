@@ -25,14 +25,29 @@ public class ElevatorControl extends Command {
     @Override
     protected void execute() {
 
-        elevator.setPercentOutput(oi.getSecondaryY() / 2);
+//        if(oi.elevatorBotHatchButtonPressed()) {
+//            elevator.setHatchBotPosition();
+//
+//        } else if(oi.elevatorMidHatchButtonPressed()) {
+//            elevator.setHatchMidPosition();
+//
+//        } else if(oi.elevatorTopHatchButtonPressed()) {
+//            elevator.setHatchTopPosition();
+//
+//        } else if(oi.elevatorBotCargoButtonPressed()) {
+//            elevator.setCargoBotPosition();
+//
+//        } else if(oi.elevatorMidCargoButtonPressed()) {
+//            elevator.setCargoMidPosition();
+//
+//        } else if(oi.elevatorTopCargoButtonPressed()) {
+//            elevator.setCargoTopPosition();
+//
+//        }
+//
+//        elevator.updatePosition();
 
-        /*
-         * For testing:
-         * Use joystick to determine gains
-         * Define a button to go about halfway
-         *
-         */
+        elevator.setPercentOutput(oi.getSecondaryY());
 
     }
 
