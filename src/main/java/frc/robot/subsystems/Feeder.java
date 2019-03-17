@@ -39,7 +39,7 @@ public class Feeder extends Subsystem {
 
     public void outtake() {
 
-        feederVictor.set(ControlMode.PercentOutput, 1.0);
+        feederVictor.set(ControlMode.PercentOutput, -1.0);
 
     }
 
@@ -56,4 +56,3 @@ public class Feeder extends Subsystem {
 
     }
 }
-

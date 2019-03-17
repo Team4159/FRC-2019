@@ -19,8 +19,6 @@ public class OI {
         return instance;
     }
 
-    public static NetworkTable liveDashboardTable = NetworkTableInstance.getDefault().getTable("Live Dashboard");
-
     /*
      * We use Thrustmaster T.16000M joysticks.
      * See: http://ts.thrustmaster.com/download/accessories/manuals/T16000M/T16000M-User_manual.pdf

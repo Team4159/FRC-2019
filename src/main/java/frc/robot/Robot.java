@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
         grabber = Grabber.getInstance();
         beak = Beak.getInstance();
         superstructure = Superstructure.getInstance();
-       // pecker = Pecker.getInstance();
+        pecker = Pecker.getInstance();
         oi = OI.getInstance();
         //digitBoard = REVDigitBoard.getInstance();
 
@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        superstructure.disableCompressor();
+//        superstructure.disableCompressor();
 
 //        if (autoCommand != null) {
 //            autoCommand.start();

@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -62,11 +59,11 @@ public class Elevator extends Subsystem {
 
         /*
           Configure Talon SRX Output and Sensor direction accordingly
-          Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
+          Invert Motor to have green LEDs when driving Talon Forward / Requesting Positive Output
           Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        elevatorMasterTalon.setInverted(true);
-        elevatorSlaveTalon.setInverted(true);
+        elevatorMasterTalon.setInverted(InvertType.None);
+        elevatorSlaveTalon.setInverted(InvertType.FollowMaster);
         //elevatorMasterTalon.setSensorPhase(true);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */

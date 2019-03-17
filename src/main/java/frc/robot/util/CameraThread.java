@@ -34,14 +34,14 @@ public class CameraThread implements Runnable {
         video1 = CameraServer.getInstance().startAutomaticCapture(0);
         video2 = CameraServer.getInstance().startAutomaticCapture(1);
 
-        video1.setFPS(30);
-        video2.setFPS(30);
-        video1.setResolution(640, 480);
-        video2.setResolution(640, 480);
+        video1.setFPS(20);
+        video2.setFPS(20);
+        video1.setResolution(320, 240);
+        video2.setResolution(320, 240);
 
         cvSink = CameraServer.getInstance().getVideo();
         cvSink.setSource(video1);
-        cvSource = CameraServer.getInstance().putVideo("Driver Camera", 640, 480);
+        cvSource = CameraServer.getInstance().putVideo("Driver Camera", 320, 240);
 
         video1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
         video2.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
@@ -83,7 +83,7 @@ public class CameraThread implements Runnable {
 
         if (notifier == null) {
             notifier = new Notifier(this);
-            notifier.startPeriodic(0.1);
+            notifier.startPeriodic(0.2);
         }
 
     }

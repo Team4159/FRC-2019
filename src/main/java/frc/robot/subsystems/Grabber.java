@@ -43,8 +43,8 @@ public class Grabber extends Subsystem {
 
     public void outtake() {
 
-        grabberTalon1.set(ControlMode.PercentOutput, -1.0);
-        grabberTalon2.set(ControlMode.PercentOutput, 1.0);
+        grabberTalon1.set(ControlMode.PercentOutput, -0.25);
+        grabberTalon2.set(ControlMode.PercentOutput, 0.25);
 
     }
 
