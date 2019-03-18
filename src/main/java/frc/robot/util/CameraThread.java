@@ -34,8 +34,8 @@ public class CameraThread implements Runnable {
         video1 = CameraServer.getInstance().startAutomaticCapture(0);
         video2 = CameraServer.getInstance().startAutomaticCapture(1);
 
-        video1.setFPS(20);
-        video2.setFPS(20);
+        video1.setFPS(15);
+        video2.setFPS(15);
         video1.setResolution(320, 240);
         video2.setResolution(320, 240);
 

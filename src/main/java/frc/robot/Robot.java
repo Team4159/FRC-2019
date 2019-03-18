@@ -44,24 +44,24 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-        elevator = Elevator.getInstance();
-        extender = Extender.getInstance();
-        feeder = Feeder.getInstance();
-        grabber = Grabber.getInstance();
-        beak = Beak.getInstance();
+//        elevator = Elevator.getInstance();
+//        extender = Extender.getInstance();
+//        feeder = Feeder.getInstance();
+//        grabber = Grabber.getInstance();
+//        beak = Beak.getInstance();
         superstructure = Superstructure.getInstance();
-        pecker = Pecker.getInstance();
+//        pecker = Pecker.getInstance();
         oi = OI.getInstance();
         //digitBoard = REVDigitBoard.getInstance();
 
         autoCommand = new Auto();
 
 //        robotLogger = RobotLogger.getInstance();
-        visionThread = VisionThread.getInstance();
+//        visionThread = VisionThread.getInstance();
         cameraThread = CameraThread.getInstance();
 //
 //        robotLogger.start();
-        visionThread.start();
+//        visionThread.start();
         cameraThread.start();
 
         odometry = Odometry.getInstance();

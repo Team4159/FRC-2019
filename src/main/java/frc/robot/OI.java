@@ -88,9 +88,15 @@ public class OI {
 
     }
 
-    public boolean beakButtonPressed() {
+    public boolean beakInButtonPressed() {
 
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_IN_BUTTON"));
+
+    }
+
+    public boolean beakOutButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_OUT_BUTTON"));
 
     }
 

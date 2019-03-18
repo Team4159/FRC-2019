@@ -2,6 +2,7 @@ package frc.robot.commands.beak;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Beak;
 
@@ -19,21 +20,24 @@ public class BeakControl extends Command {
     }
 
     @Override
+    protected void initialize() {
+        beak.outtake();
+
+    }
+
+    @Override
     protected void execute() {
 
-        if(oi.beakButtonPressed()) {
+//        if(oi.beakInButtonPressed()) {
+//            beak.intake();
+//
+//        } else if (oi.beakOutButtonPressed()) {
+//            beak.outtake();
+//
+//        }
+//
+//        DoubleSolenoid.Value value = beak.getValue();
 
-            if(beak.getValue() == DoubleSolenoid.Value.kReverse) {
-                beak.intake();
-
-            } else if (beak.getValue() == DoubleSolenoid.Value.kForward) {
-                beak.outtake();
-
-            } else {
-                beak.outtake();
-
-            }
-        }
 
     }
 
