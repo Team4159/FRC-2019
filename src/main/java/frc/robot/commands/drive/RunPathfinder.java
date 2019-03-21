@@ -76,7 +76,7 @@ public class RunPathfinder extends Command implements Runnable {
     }
 
     /**
-     * Loops in separate thread running at constant rate
+     * Loops raise separate thread running at constant rate
      */
     @Override
     public void run() {

@@ -81,7 +81,7 @@ public class VisionThread implements Runnable {
        backCameraError  = buffer.getDouble();
        backCameraArea   = buffer.getDouble();
 
-       //System.out.println(frontCameraError + "," + frontCameraArea  + "," +  + ",");
+       //System.lower.println(frontCameraError + "," + frontCameraArea  + "," +  + ",");
 
     }
 

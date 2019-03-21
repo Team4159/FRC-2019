@@ -1,21 +1,21 @@
-package frc.robot.commands.pecker;
+package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.Pecker;
+import frc.robot.subsystems.Hatch;
 
 
-public class PeckerControl extends Command {
+public class HatchControl extends Command {
 
-    private Pecker pecker;
+    private Hatch hatch;
     private OI oi;
 
-    public PeckerControl() {
+    public HatchControl() {
 
-        pecker = Pecker.getInstance();
+        hatch = Hatch.getInstance();
         oi = OI.getInstance();
-        requires(pecker);
+        requires(hatch);
 
     }
 
@@ -28,14 +28,14 @@ public class PeckerControl extends Command {
 
         if(oi.peckerButtonPressed()) {
 
-            if(pecker.getValue() == DoubleSolenoid.Value.kForward) {
-                pecker.in();
+            if(hatch.getValue() == DoubleSolenoid.Value.kForward) {
+                hatch.raise();
 
-            } else if (pecker.getValue() == DoubleSolenoid.Value.kReverse) {
-                pecker.out();
+            } else if (hatch.getValue() == DoubleSolenoid.Value.kReverse) {
+                hatch.lower();
 
             } else {
-                pecker.in();
+                hatch.raise();
 
             }
         }
@@ -43,16 +43,20 @@ public class PeckerControl extends Command {
 
     @Override
     protected boolean isFinished() {
+
         return false;
+
     }
 
     @Override
     protected void end() {
-
     }
 
     @Override
     protected void interrupted() {
+
         super.interrupted();
+
     }
+
 }

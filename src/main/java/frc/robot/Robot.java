@@ -6,32 +6,31 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.auto.Auto;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
-import frc.robot.util.REVDigitBoard;
 import frc.robot.util.RobotLogger;
 import frc.robot.util.VisionThread;
 import frc.robot.util.motion.Odometry;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
+ * functions corresponding to each mode, as described raise the TimedRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
+ * creating this project, you must also update the build.gradle file raise the
  * project.
  */
 public class Robot extends TimedRobot {
 
-    private Beak beak;
+    private Hooks hooks;
     private Drivetrain drivetrain;
     private Elevator elevator;
     private Extender extender;
     private Feeder feeder;
     private Grabber grabber;
     private Superstructure superstructure;
-    private Pecker pecker;
-    private Odometry odometry;
-    private RobotLogger robotLogger;
+    private Hatch hatch;
+//    private Odometry odometry;
+//    private RobotLogger robotLogger;
     private CameraThread cameraThread;
-    private VisionThread visionThread;
+//    private VisionThread visionThread;
     private OI oi;
 //    private REVDigitBoard digitBoard;
     private Command autoCommand;
@@ -44,13 +43,13 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = Drivetrain.getInstance();
-//        elevator = Elevator.getInstance();
-//        extender = Extender.getInstance();
-//        feeder = Feeder.getInstance();
-//        grabber = Grabber.getInstance();
-//        beak = Beak.getInstance();
+        elevator = Elevator.getInstance();
+        extender = Extender.getInstance();
+        feeder = Feeder.getInstance();
+        grabber = Grabber.getInstance();
+        hooks = Hooks.getInstance();
         superstructure = Superstructure.getInstance();
-//        pecker = Pecker.getInstance();
+        hatch = Hatch.getInstance();
         oi = OI.getInstance();
         //digitBoard = REVDigitBoard.getInstance();
 
@@ -64,7 +63,7 @@ public class Robot extends TimedRobot {
 //        visionThread.start();
         cameraThread.start();
 
-        odometry = Odometry.getInstance();
+//        odometry = Odometry.getInstance();
 //        new Notifier(() -> {
 //
 //            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
@@ -100,7 +99,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-//        superstructure.disableCompressor();
+        hooks.deploy();
+        hatch.lower();
 
 //        if (autoCommand != null) {
 //            autoCommand.start();
@@ -121,8 +121,6 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
-
-        superstructure.enableCompressor();
 
     }
 

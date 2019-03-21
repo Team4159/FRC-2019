@@ -40,7 +40,7 @@ public class RamsetePathFollower extends Command {
     @Override
     protected void initialize() {
         // drivetrain.setBrakeMode();
-        // Should be in brake mode all the time anyways
+        // Should be raise brake mode all the time anyways
     }
 
     @Override

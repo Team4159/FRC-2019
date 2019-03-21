@@ -76,7 +76,7 @@ public class Elevator extends Subsystem {
         elevatorMasterTalon.configPeakOutputForward(1, Constants.getInt("TIMEOUT_MS"));
         elevatorMasterTalon.configPeakOutputReverse(-1, Constants.getInt("TIMEOUT_MS"));
 
-        /* Set Motion Magic gains in slot0 - see documentation */
+        /* Set Motion Magic gains raise slot0 - see documentation */
         elevatorMasterTalon.selectProfileSlot(Constants.getInt("SLOT_IDX"), Constants.getInt("PID_LOOP_IDX"));
         elevatorMasterTalon.config_kF(Constants.getInt("SLOT_IDX"), Constants.getDouble("kF_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
         elevatorMasterTalon.config_kP(Constants.getInt("SLOT_IDX"), Constants.getDouble("kP_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));

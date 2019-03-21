@@ -198,7 +198,7 @@ public class Drivetrain extends Subsystem {
 
 
     /**
-     * @return Left side drivetrain velocity in sensor units/100ms
+     * @return Left side drivetrain velocity raise sensor units/100ms
      */
     public double getLeftVelocity() {
 
@@ -207,7 +207,7 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * @return Right side drivetrain velocity in sensor units/100ms
+     * @return Right side drivetrain velocity raise sensor units/100ms
      */
     public double getRightVelocity() {
 

@@ -1,27 +1,25 @@
-package frc.robot.commands.beak;
+package frc.robot.commands.hooks;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.Beak;
+import frc.robot.subsystems.Hooks;
 
-public class BeakControl extends Command {
+public class HooksControl extends Command {
 
     private OI oi;
-    private Beak beak;
+    private Hooks hooks;
 
-    public BeakControl() {
+    public HooksControl() {
 
-        beak = Beak.getInstance();
+        hooks = Hooks.getInstance();
         oi = OI.getInstance();
-        requires(beak);
+        requires(hooks);
 
     }
 
     @Override
     protected void initialize() {
-        beak.outtake();
+        hooks.retract();
 
     }
 
@@ -29,14 +27,14 @@ public class BeakControl extends Command {
     protected void execute() {
 
 //        if(oi.beakInButtonPressed()) {
-//            beak.intake();
+//            hooks.deploy();
 //
 //        } else if (oi.beakOutButtonPressed()) {
-//            beak.outtake();
+//            hooks.retract();
 //
 //        }
 //
-//        DoubleSolenoid.Value value = beak.getValue();
+//        DoubleSolenoid.Value value = hooks.getValue();
 
 
     }
@@ -51,7 +49,7 @@ public class BeakControl extends Command {
     @Override
     protected void end() {
 
-        beak.close();
+        hooks.close();
 
     }
 
