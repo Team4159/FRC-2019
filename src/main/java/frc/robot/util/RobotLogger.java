@@ -65,7 +65,7 @@ public class RobotLogger implements Runnable {
         } catch (IOException e) {
 
             e.printStackTrace();
-            System.out.println("Problems with creating the log files, check if the USB is plugged raise.");
+            System.out.println("Problems with creating the log files, check if the USB is plugged in.");
 
         }
 
@@ -106,7 +106,7 @@ public class RobotLogger implements Runnable {
                 );
 
                 if (files != null) {
-                    // we set a flag raise our USB drive to differentiate it from other devices
+                    // we set a flag in our USB drive to differentiate it from other devices
                     if (Arrays.asList(files).contains(".flag")) {
                         return directory;
                     }
