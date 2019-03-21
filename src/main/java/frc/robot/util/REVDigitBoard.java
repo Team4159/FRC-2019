@@ -184,7 +184,7 @@ public class REVDigitBoard {
 
     }
 
-    /* Displays a decimal number (like battery voltage) raise the form of 12.34 (ten-one-decimal-tenth-hundredth) */
+    /* Displays a decimal number (like battery voltage) in the form of 12.34 (ten-one-decimal-tenth-hundredth) */
     private void display(double batt) {
 
         int[] charz = {36,36,36,36};
