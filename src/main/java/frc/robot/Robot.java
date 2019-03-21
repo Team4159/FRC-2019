@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.auto.Auto;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
-import frc.robot.util.REVDigitBoard;
 import frc.robot.util.RobotLogger;
 import frc.robot.util.VisionThread;
 import frc.robot.util.motion.Odometry;
@@ -20,18 +19,18 @@ import frc.robot.util.motion.Odometry;
  */
 public class Robot extends TimedRobot {
 
-    private Beak beak;
+    private Hooks hooks;
     private Drivetrain drivetrain;
     private Elevator elevator;
     private Extender extender;
     private Feeder feeder;
     private Grabber grabber;
     private Superstructure superstructure;
-    private Pecker pecker;
-    private Odometry odometry;
-    private RobotLogger robotLogger;
+    private Hatch hatch;
+//    private Odometry odometry;
+//    private RobotLogger robotLogger;
     private CameraThread cameraThread;
-    private VisionThread visionThread;
+//    private VisionThread visionThread;
     private OI oi;
 //    private REVDigitBoard digitBoard;
     private Command autoCommand;
@@ -48,23 +47,23 @@ public class Robot extends TimedRobot {
         extender = Extender.getInstance();
         feeder = Feeder.getInstance();
         grabber = Grabber.getInstance();
-        beak = Beak.getInstance();
+        hooks = Hooks.getInstance();
         superstructure = Superstructure.getInstance();
-       // pecker = Pecker.getInstance();
+        hatch = Hatch.getInstance();
         oi = OI.getInstance();
         //digitBoard = REVDigitBoard.getInstance();
 
         autoCommand = new Auto();
 
 //        robotLogger = RobotLogger.getInstance();
-        visionThread = VisionThread.getInstance();
+//        visionThread = VisionThread.getInstance();
         cameraThread = CameraThread.getInstance();
 //
 //        robotLogger.start();
-        visionThread.start();
+//        visionThread.start();
         cameraThread.start();
 
-        odometry = Odometry.getInstance();
+//        odometry = Odometry.getInstance();
 //        new Notifier(() -> {
 //
 //            odometry.setCurrentEncoderPosition((drivetrain.getleftEncoderCount() + drivetrain.getRightEncoderCount()) / 2.0);
@@ -100,7 +99,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        superstructure.disableCompressor();
+        hooks.deploy();
+        hatch.lower();
 
 //        if (autoCommand != null) {
 //            autoCommand.start();
@@ -121,8 +121,6 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
-
-        superstructure.enableCompressor();
 
     }
 

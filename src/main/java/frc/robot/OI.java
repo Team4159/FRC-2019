@@ -19,8 +19,6 @@ public class OI {
         return instance;
     }
 
-    public static NetworkTable liveDashboardTable = NetworkTableInstance.getDefault().getTable("Live Dashboard");
-
     /*
      * We use Thrustmaster T.16000M joysticks.
      * See: http://ts.thrustmaster.com/download/accessories/manuals/T16000M/T16000M-User_manual.pdf
@@ -90,9 +88,15 @@ public class OI {
 
     }
 
-    public boolean beakButtonPressed() {
+    public boolean beakInButtonPressed() {
 
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_IN_BUTTON"));
+
+    }
+
+    public boolean beakOutButtonPressed() {
+
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_OUT_BUTTON"));
 
     }
 
