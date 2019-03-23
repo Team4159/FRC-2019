@@ -5,10 +5,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.hooks.HooksControl;
 import frc.robot.util.Constants;
 
+
 public class Hooks extends Subsystem {
 
     private static Hooks instance;
-    public static Hooks getInstance(){
+    public static Hooks getInstance() {
         if(instance == null)
             instance = new Hooks();
         return instance;
@@ -35,9 +36,9 @@ public class Hooks extends Subsystem {
 
     }
 
-    public DoubleSolenoid.Value getValue() {
+    public boolean isDeployed() {
 
-        return hooksSolenoid.get();
+        return hooksSolenoid.get() == DoubleSolenoid.Value.kForward;
 
     }
 

@@ -6,9 +6,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.auto.Auto;
 import frc.robot.subsystems.*;
 import frc.robot.util.CameraThread;
-import frc.robot.util.RobotLogger;
-import frc.robot.util.VisionThread;
-import frc.robot.util.motion.Odometry;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,7 +19,7 @@ public class Robot extends TimedRobot {
     private Hooks hooks;
     private Drivetrain drivetrain;
     private Elevator elevator;
-    private Extender extender;
+    private Arm arm;
     private Feeder feeder;
     private Grabber grabber;
     private Superstructure superstructure;
@@ -44,7 +41,7 @@ public class Robot extends TimedRobot {
 
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
-        extender = Extender.getInstance();
+        arm = Arm.getInstance();
         feeder = Feeder.getInstance();
         grabber = Grabber.getInstance();
         hooks = Hooks.getInstance();
@@ -99,8 +96,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        hooks.deploy();
-        hatch.lower();
+        hooks.deploy(); // TODO: test
+        hatch.lower(); // TODO: test
 
 //        if (autoCommand != null) {
 //            autoCommand.start();

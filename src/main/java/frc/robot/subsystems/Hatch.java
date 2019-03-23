@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.hatch.HatchControl;
 import frc.robot.util.Constants;
+
 
 public class Hatch extends Subsystem {
 
@@ -35,9 +35,9 @@ public class Hatch extends Subsystem {
 
     }
 
-    public DoubleSolenoid.Value getValue() {
+    public boolean isRaised() {
 
-        return hatchSolenoid.get();
+        return hatchSolenoid.get() == DoubleSolenoid.Value.kReverse;
 
     }
 

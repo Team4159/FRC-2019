@@ -1,6 +1,5 @@
 package frc.robot.commands.hatch;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Hatch;
@@ -26,12 +25,9 @@ public class HatchControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.peckerButtonPressed()) {
+        if(oi.hatchButtonPressed()) {
 
-            if(hatch.getValue() == DoubleSolenoid.Value.kForward) {
-                hatch.raise();
-
-            } else if (hatch.getValue() == DoubleSolenoid.Value.kReverse) {
+            if(hatch.isRaised()) {
                 hatch.lower();
 
             } else {
@@ -39,6 +35,7 @@ public class HatchControl extends Command {
 
             }
         }
+
     }
 
     @Override

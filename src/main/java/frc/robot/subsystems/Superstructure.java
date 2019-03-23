@@ -45,7 +45,7 @@ public class Superstructure extends Subsystem {
 
     }
 
-    public Orientation getOrientation() {
+    Orientation getOrientation() {
 
         return orientation;
 
