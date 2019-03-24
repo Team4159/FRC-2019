@@ -26,17 +26,16 @@ public class HooksControl extends Command {
     @Override
     protected void execute() {
 
-//        if(oi.beakInButtonPressed()) {
-//            hooks.deploy();
-//
-//        } else if (oi.beakOutButtonPressed()) {
-//            hooks.retract();
-//
-//        }
-//
-//        DoubleSolenoid.Value value = hooks.getValue();
+        if(oi.hooksButtonPressed()) {
 
+            if(hooks.isDeployed()) {
+                hooks.retract();
 
+            } else {
+                hooks.deploy();
+
+            }
+        }
     }
 
     @Override

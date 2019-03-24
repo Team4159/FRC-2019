@@ -25,7 +25,7 @@ public class Elevator extends Subsystem {
 
         elevatorMasterTalon = new TalonSRX(Constants.getInt("ELEVATOR_MASTER_TALON"));
         elevatorSlaveTalon = new TalonSRX(Constants.getInt("ELEVATOR_SLAVE_TALON"));
-        limitSwitch = new DigitalInput(Constants.getInt("LIMIT_SWITCH"));
+        limitSwitch = new DigitalInput(Constants.getInt("ELEVATOR_LIMIT_SWITCH"));
 
         /* Factory default hardware to prevent unexpected behavior */
         elevatorMasterTalon.configFactoryDefault();

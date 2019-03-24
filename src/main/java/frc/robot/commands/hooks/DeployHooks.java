@@ -8,7 +8,7 @@ public class DeployHooks extends InstantCommand {
 
     public DeployHooks() {
 
-        Hooks.getInstance().retract();
+        Hooks.getInstance().deploy();
 
     }
 

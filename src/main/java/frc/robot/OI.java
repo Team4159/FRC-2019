@@ -76,27 +76,21 @@ public class OI {
       
     }
 
-    public boolean extenderButtonPressed() {
+    public boolean armButtonPressed() {
 
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("EXTENDER_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("ARM_BUTTON"));
     }
 
 
-    public boolean peckerButtonPressed() {
+    public boolean hatchButtonPressed() {
 
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("PECKER_BUTTON"));
-
-    }
-
-    public boolean beakInButtonPressed() {
-
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_IN_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("HATCH_BUTTON"));
 
     }
 
-    public boolean beakOutButtonPressed() {
+    public boolean hooksButtonPressed() {
 
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("BEAK_OUT_BUTTON"));
+        return secondaryJoy.getRawButtonPressed(Constants.getInt("HOOKS_BUTTON"));
 
     }
 
