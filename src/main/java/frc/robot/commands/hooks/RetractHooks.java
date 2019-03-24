@@ -7,7 +7,7 @@ public class RetractHooks extends InstantCommand {
 
     public RetractHooks() {
 
-        Hooks.getInstance().deploy();
+        Hooks.getInstance().retract();
 
     }
 
