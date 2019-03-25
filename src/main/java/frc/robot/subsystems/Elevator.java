@@ -98,67 +98,58 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void updatePosition() {
+    public double getMotionMagicError() {
 
-        if(limitSwitchPressed()) {
-            elevatorMasterTalon.setSelectedSensorPosition(0);
-        }
+        return elevatorMasterTalon.getClosedLoopError(Constants.getInt("PID_LOOP_IDX"));
 
+    }
+
+    public void setTargetPosition(int targetPosition) {
+
+        this.targetPosition = targetPosition;
         elevatorMasterTalon.set(ControlMode.MotionMagic, targetPosition);
 
     }
 
-    public double getMotionMagicError() {
+    /**
+     * @return True if the absolute value of the difference between the current position and target position is less than
+     * a certain threshold. False otherwise.
+     */
+    public boolean isMotionMagicFinished() {
 
-        return elevatorMasterTalon.getClosedLoopError(Constants.getInt("PID_IDX"));
-
-    }
-
-    public void setHatchBotPosition() {
-
-        targetPosition = Constants.getInt("HATCH_LOW_HEIGHT");
+        return Math.abs(getEncoderPosition() - targetPosition) < 100; // TODO: adjust as needed
 
     }
 
-    public void setHatchMidPosition() {
+    public void checkLimitSwitch() {
 
-        targetPosition = Constants.getInt("HATCH_MED_HEIGHT");
-
-    }
-
-    public void setHatchTopPosition() {
-
-        targetPosition = Constants.getInt("HATCH_HIGH_HEIGHT");
+        if(limitSwitchPressed()) {
+            elevatorMasterTalon.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        }
 
     }
 
-    public void setCargoBotPosition() {
-
-        targetPosition = Constants.getInt("CARGO_LOW_HEIGHT");
-
-    }
-
-    public void setCargoMidPosition() {
-
-        targetPosition = Constants.getInt("CARGO_MED_HEIGHT");
-
-    }
-
-    public void setCargoTopPosition() {
-
-        targetPosition = Constants.getInt("CARGO_HIGH_HEIGHT");
-
-    }
-
-    public boolean limitSwitchPressed() {
+    private boolean limitSwitchPressed() {
 
         return limitSwitch.get();
 
     }
 
-    public int getEncoderPosition() {
+    private int getEncoderPosition() {
 
         return elevatorMasterTalon.getSelectedSensorPosition();
+
+    }
+
+    public boolean isBelowCollisionThreshold() {
+
+        return getEncoderPosition() < 5000; // TODO: measure
+
+    }
+
+    public boolean isAboveCollisionThreshold() {
+
+        return getEncoderPosition() > 5000; // TODO: measure
 
     }
 
