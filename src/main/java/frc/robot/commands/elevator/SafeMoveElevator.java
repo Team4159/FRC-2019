@@ -27,7 +27,7 @@ class SafeMoveElevator extends CommandGroup {
         addParallel(new ConditionalCommand(new ExtendArm()) {
             @Override
             protected boolean condition() {
-                isRetracted = !arm.isExtended();
+                isRetracted = !arm.isRetracted();
                 return ((elevator.isBelowCollisionThreshold() && targetHeight > 5000) || (elevator.isAboveCollisionThreshold() && targetHeight < 5000)) && isRetracted;
             }
         });

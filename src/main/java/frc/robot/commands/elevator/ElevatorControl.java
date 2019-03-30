@@ -15,7 +15,7 @@ public class ElevatorControl extends Command {
 
         elevator = Elevator.getInstance();
         oi = OI.getInstance();
-        // requires(elevator);
+        requires(elevator);
 
     }
 

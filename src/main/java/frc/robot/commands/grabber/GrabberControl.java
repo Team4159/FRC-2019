@@ -45,7 +45,6 @@ public class GrabberControl extends Command {
 
     }
 
-
     @Override
     protected void end() {
 

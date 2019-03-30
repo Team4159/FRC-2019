@@ -5,9 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.arm.ArmControl;
 import frc.robot.util.Constants;
 
 
@@ -22,12 +20,10 @@ public class Arm extends Subsystem {
     }
 
     private TalonSRX armTalon;
-    private DigitalInput limitSwitch;
 
     private Arm() {
 
-        limitSwitch = new DigitalInput(Constants.getInt("ARM_LIMIT_SWITCH"));
-        armTalon = new TalonSRX(Constants.getInt("EXTENDER_TALON"));
+        armTalon = new TalonSRX(Constants.getInt("ARM_TALON"));
 
         /* Factory default hardware to prevent unexpected behavior */
         armTalon.configFactoryDefault();
@@ -89,23 +85,17 @@ public class Arm extends Subsystem {
 
     }
 
-    public void extend() {
+    public void stop() {
+
+        setPercentOutput(0.0);
+    }
+
+    public void retract() {
 
         armTalon.set(ControlMode.Position, Constants.getInt("ARM_TOP_HEIGHT"));
 
     }
 
-    public void retract() {
-
-        armTalon.set(ControlMode.Position, Constants.getInt("ARM_BOT_HEIGHT"));
-
-    }
-
-    public boolean limitSwitchPressed() {
-
-        return limitSwitch.get();
-
-    }
 
     public void resetEncoder() {
 
@@ -113,17 +103,20 @@ public class Arm extends Subsystem {
 
     }
 
-    public boolean isExtended() {
+    public boolean isRetracted() {
 
         return armTalon.getSelectedSensorPosition(Constants.getInt("PID_LOOP_IDX")) > 4000; // TODO: experimentally determine threshold
 
     }
 
+    public boolean isStalling() {
+
+        return armTalon.getOutputCurrent() > 10; // TODO
+
+    }
+
     @Override
     protected void initDefaultCommand() {
-
-        setDefaultCommand(new ArmControl());
-
     }
 
 }

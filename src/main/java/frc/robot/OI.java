@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.arm.ArmControl;
 import frc.robot.util.Constants;
 
 /**
@@ -26,12 +27,16 @@ public class OI {
      *      for joystick mappings
      */
     private Joystick leftJoy, rightJoy, secondaryJoy;
+    private JoystickButton armButton;
 
     private OI() {
 
         leftJoy = new Joystick(Constants.getInt("LEFT_JOY"));
         rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
         secondaryJoy = new Joystick(Constants.getInt("SECONDARY_JOY"));
+
+        armButton = new JoystickButton(secondaryJoy, Constants.getInt("ARM_BUTTON"));
+        armButton.whenPressed(new ArmControl());
 
     }
 
@@ -75,11 +80,6 @@ public class OI {
 
       return secondaryJoy.getRawButton(Constants.getInt("CARGO_OUTTAKE_BUTTON"));
       
-    }
-
-    public boolean armButtonPressed() {
-
-        return secondaryJoy.getRawButtonPressed(Constants.getInt("ARM_BUTTON"));
     }
 
 
