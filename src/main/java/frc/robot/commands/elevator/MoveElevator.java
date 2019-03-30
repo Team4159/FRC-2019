@@ -7,11 +7,11 @@ import frc.robot.subsystems.Elevator;
 public class MoveElevator extends Command {
 
     private Elevator elevator;
-    private int height;
+    private int targetHeight;
 
-    MoveElevator(int height) {
+    MoveElevator(int targetHeight) {
 
-        this.height = height;
+        this.targetHeight = targetHeight;
         elevator = Elevator.getInstance();
         requires(elevator);
 
@@ -25,7 +25,7 @@ public class MoveElevator extends Command {
     protected void execute() {
 
         elevator.checkLimitSwitch();
-        elevator.setTargetPosition(height);
+        elevator.setTargetPosition(targetHeight);
 
     }
 

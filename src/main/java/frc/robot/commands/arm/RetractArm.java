@@ -7,7 +7,7 @@ public class RetractArm extends InstantCommand {
 
     public RetractArm() {
 
-        Arm.getInstance().in();
+        Arm.getInstance().retract();
 
     }
 
