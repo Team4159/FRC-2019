@@ -37,15 +37,15 @@ public class Grabber extends Subsystem {
 
     public void intake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, 1.0);
-        grabberVictor2.set(ControlMode.PercentOutput, -1.0);
+        grabberVictor1.set(ControlMode.PercentOutput, -1.0);
+        grabberVictor2.set(ControlMode.PercentOutput, +1.0);
 
     }
 
     public void outtake() {
 
-        grabberVictor1.set(ControlMode.PercentOutput, -0.25);
-        grabberVictor2.set(ControlMode.PercentOutput, 0.25);
+        grabberVictor1.set(ControlMode.PercentOutput, +1.0);
+        grabberVictor2.set(ControlMode.PercentOutput, -1.0);
 
     }
 

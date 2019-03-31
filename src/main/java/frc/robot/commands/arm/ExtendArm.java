@@ -1,36 +1,34 @@
 package frc.robot.commands.arm;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.Arm;
 
-public class ExtendArm extends Command {
+public class ExtendArm extends TimedCommand {
 
     private Arm arm;
 
     public ExtendArm() {
 
+        super(1.5);
         arm = Arm.getInstance();
+        requires(arm);
 
     }
 
     @Override
     protected void initialize() {
+
+        if(arm.getState() == Arm.ArmState.EXTENDED) {
+            cancel();
+        }
+
+        arm.setState(Arm.ArmState.EXTENDED);
     }
 
     @Override
     protected void execute() {
 
-        arm.setPercentOutput(-0.5);
-        if(arm.isStalling()) {
-            arm.resetEncoder();
-        }
-
-    }
-
-    @Override
-    protected boolean isFinished() {
-
-        return arm.isStalling();
+        arm.setPercentOutput(-1.0);
 
     }
 

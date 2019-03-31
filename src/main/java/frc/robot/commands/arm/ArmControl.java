@@ -13,7 +13,12 @@ public class ArmControl extends CommandGroup {
 
         arm = Arm.getInstance();
 
-        addSequential(new ConditionalCommand(new RetractArm(), new ExtendArm()) {
+    }
+
+    @Override
+    protected void initialize() {
+
+        addSequential(new ConditionalCommand(new ExtendArm(), new RetractArm()) {
             @Override
             protected boolean condition() {
                 return arm.isRetracted();

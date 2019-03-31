@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.arm.ArmControl;
+import frc.robot.commands.arm.ExtendArm;
+import frc.robot.commands.arm.RetractArm;
 import frc.robot.util.Constants;
 
 /**
@@ -27,7 +29,7 @@ public class OI {
      *      for joystick mappings
      */
     private Joystick leftJoy, rightJoy, secondaryJoy;
-    private JoystickButton armButton;
+    private JoystickButton retractArmButton, extendArmButton;
 
     private OI() {
 
@@ -35,8 +37,10 @@ public class OI {
         rightJoy = new Joystick(Constants.getInt("RIGHT_JOY"));
         secondaryJoy = new Joystick(Constants.getInt("SECONDARY_JOY"));
 
-        armButton = new JoystickButton(secondaryJoy, Constants.getInt("ARM_BUTTON"));
-        armButton.whenPressed(new ArmControl());
+        retractArmButton = new JoystickButton(secondaryJoy, Constants.getInt("RETRACT_ARM_BUTTON"));
+        extendArmButton = new JoystickButton(secondaryJoy, Constants.getInt("EXTEND_ARM_BUTTON"));
+        retractArmButton.whenPressed(new RetractArm());
+        extendArmButton.whenPressed(new ExtendArm());
 
     }
 
