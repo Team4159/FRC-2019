@@ -1,13 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.arm.ArmControl;
 import frc.robot.util.Constants;
 
 
@@ -22,12 +19,12 @@ public class Arm extends Subsystem {
     }
 
     private TalonSRX armTalon;
-    private DigitalInput limitSwitch;
+    private ArmState state;
 
     private Arm() {
 
-        limitSwitch = new DigitalInput(Constants.getInt("ARM_LIMIT_SWITCH"));
-        armTalon = new TalonSRX(Constants.getInt("EXTENDER_TALON"));
+        armTalon = new TalonSRX(Constants.getInt("ARM_TALON"));
+        state = ArmState.RETRACTED;
 
         /* Factory default hardware to prevent unexpected behavior */
         armTalon.configFactoryDefault();
@@ -46,39 +43,13 @@ public class Arm extends Subsystem {
         armTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
         armTalon.enableVoltageCompensation(true);
 
-        /* Configure Sensor Source for Primary PID */
-        armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
-
         armTalon.setInverted(InvertType.None); // TODO: maybe true
-
-        armTalon.setSensorPhase(false);  // TODO: also maybe true
 
         /* Config peak and nominal outputs */
         armTalon.configNominalOutputForward(0, 30);
         armTalon.configNominalOutputReverse(0, 30);
         armTalon.configPeakOutputForward(1, 30);
         armTalon.configPeakOutputReverse(-1, 30);
-
-        armTalon.configAllowableClosedloopError(Constants.getInt("SLOT_IDX"), Constants.getInt("PID_LOOP_IDX"), 30);
-
-        armTalon.config_kF(Constants.getInt("PID_LOOP_IDX"), Constants.getInt("kF_ARM"), Constants.getInt("TIMEOUT_MS"));
-        armTalon.config_kP(Constants.getInt("PID_LOOP_IDX"), Constants.getInt("kP_ARM"), Constants.getInt("TIMEOUT_MS"));
-        armTalon.config_kI(Constants.getInt("PID_LOOP_IDX"), Constants.getInt("kI_ARM"), Constants.getInt("TIMEOUT_MS"));
-        armTalon.config_kD(Constants.getInt("PID_LOOP_IDX"), Constants.getInt("kD_ARM"), Constants.getInt("TIMEOUT_MS"));
-
-//        /*
-//          Grab the 360 degree position of the MagEncoder's absolute
-//          position, and intitally set the relative sensor to match.
-//         */
-//        int absolutePosition = _talon.getSensorCollection().getPulseWidthPosition();
-//
-//        /* Mask out overflows, keep bottom 12 bits */
-//        absolutePosition &= 0xFFF;
-//        if (Constants.kSensorPhase) { absolutePosition *= -1; }
-//        if (Constants.kMotorInvert) { absolutePosition *= -1; }
-//
-//        /* Set the quadrature (relative) sensor to match absolute */
-//        _talon.setSelectedSensorPosition(absolutePosition, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
 
     }
@@ -89,40 +60,49 @@ public class Arm extends Subsystem {
 
     }
 
-    public void extend() {
+    public void stop() {
 
-        armTalon.set(ControlMode.Position, Constants.getInt("ARM_TOP_HEIGHT"));
+        setPercentOutput(0.0);
+    }
+
+    public void setState(ArmState state) {
+
+        this.state = state;
 
     }
 
-    public void retract() {
+    public ArmState getState() {
 
-        armTalon.set(ControlMode.Position, Constants.getInt("ARM_BOT_HEIGHT"));
-
-    }
-
-    public boolean limitSwitchPressed() {
-
-        return limitSwitch.get();
+        return state;
 
     }
 
-    public void resetEncoder() {
+    public boolean isRetracted() {
 
-        armTalon.setSelectedSensorPosition(Constants.getInt("ARM_BOT_HEIGHT"), Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
+        return state == ArmState.RETRACTED;
 
     }
 
-    public boolean isExtended() {
+    public double getCurrent() {
 
-        return armTalon.getSelectedSensorPosition(Constants.getInt("PID_LOOP_IDX")) > 4000; // TODO: experimentally determine threshold
+        return armTalon.getOutputCurrent();
+
+    }
+
+    public boolean isStalling() {
+
+        return armTalon.getOutputCurrent() > 10; // TODO
 
     }
 
     @Override
     protected void initDefaultCommand() {
+    }
 
-        setDefaultCommand(new ArmControl());
+    public enum ArmState {
+
+        EXTENDED,
+        RETRACTED
 
     }
 

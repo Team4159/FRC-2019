@@ -28,7 +28,7 @@ public class Superstructure extends Subsystem {
     private Superstructure() {
 
         orientation = Orientation.FRONT_HATCH;
-        //compressor = new Compressor(Constants.getInt("PCM"));
+        compressor = new Compressor(Constants.getInt("PCM"));
         pdp = new PowerDistributionPanel(Constants.getInt("PDP"));
         driverStation = DriverStation.getInstance();
 
@@ -53,13 +53,13 @@ public class Superstructure extends Subsystem {
 
     public void disableCompressor() {
 
-        //compressor.setClosedLoopControl(false);
+        compressor.setClosedLoopControl(false);
 
     }
 
     public void enableCompressor() {
 
-        //compressor.setClosedLoopControl(true);
+        compressor.setClosedLoopControl(true);
 
     }
 

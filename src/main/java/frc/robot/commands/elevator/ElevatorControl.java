@@ -15,7 +15,7 @@ public class ElevatorControl extends Command {
 
         elevator = Elevator.getInstance();
         oi = OI.getInstance();
-        // requires(elevator);
+        requires(elevator);
 
     }
 
@@ -26,27 +26,27 @@ public class ElevatorControl extends Command {
     @Override
     protected void execute() {
 
-        if(oi.elevatorBotHatchButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("HATCH_LOW_HEIGHT")).start();
+//        if(oi.elevatorBotHatchButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("HATCH_LOW_HEIGHT")).start();
+//
+//        } else if(oi.elevatorMidHatchButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("HATCH_MID_HEIGHT")).start();
+//
+//        } else if(oi.elevatorTopHatchButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("HATCH_TOP_HEIGHT")).start();
+//
+//        } else if(oi.elevatorBotCargoButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("CARGO_LOW_HEIGHT")).start();
+//
+//        } else if(oi.elevatorMidCargoButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("CARGO_MID_HEIGHT")).start();
+//
+//        } else if(oi.elevatorTopCargoButtonPressed()) {
+//            new SafeMoveElevator(Constants.getInt("CARGO_TOP_HEIGHT")).start();
+//
+//        }
 
-        } else if(oi.elevatorMidHatchButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("HATCH_MID_HEIGHT")).start();
-
-        } else if(oi.elevatorTopHatchButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("HATCH_TOP_HEIGHT")).start();
-
-        } else if(oi.elevatorBotCargoButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("CARGO_LOW_HEIGHT")).start();
-
-        } else if(oi.elevatorMidCargoButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("CARGO_MID_HEIGHT")).start();
-
-        } else if(oi.elevatorTopCargoButtonPressed()) {
-            new SafeMoveElevator(Constants.getInt("CARGO_TOP_HEIGHT")).start();
-
-        }
-
-        //elevator.setPercentOutput(oi.getSecondaryY());
+        elevator.setPercentOutput(oi.getSecondaryY());
 
     }
 

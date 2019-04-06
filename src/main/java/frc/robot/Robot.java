@@ -119,10 +119,15 @@ public class Robot extends TimedRobot {
             autoCommand.cancel(); // we might not want to cancel autoCommand if our routine takes longer
         }
 
+
+
     }
 
     @Override
     public void teleopPeriodic() {
+
+//        arm.setPercentOutput(oi.getSecondaryY());
+//        System.out.println(arm.getCurrent());
 
         Scheduler.getInstance().run();
 

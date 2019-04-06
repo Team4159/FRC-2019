@@ -2,10 +2,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.grabber.GrabberControl;
 import frc.robot.util.Constants;
+
 
 public class Grabber extends Subsystem {
 
@@ -17,47 +18,49 @@ public class Grabber extends Subsystem {
         return instance;
     }
 
-    private TalonSRX grabberTalon1, grabberTalon2;
+    private VictorSPX grabberVictor1, grabberVictor2;
 
     private Grabber() {
 
-        grabberTalon1 = new TalonSRX(Constants.getInt("GRABBER_TALON_1"));
-        grabberTalon2 = new TalonSRX(Constants.getInt("GRABBER_TALON_2"));
+        grabberVictor1 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_1"));
+        grabberVictor2 = new VictorSPX(Constants.getInt("GRABBER_VICTOR_2"));
 
         /* Factory default hardware to prevent unexpected behavior */
-        grabberTalon1.configFactoryDefault();
-        grabberTalon2.configFactoryDefault();
+        grabberVictor1.configFactoryDefault();
+        grabberVictor2.configFactoryDefault();
 
         /* Set brake mode */
-        grabberTalon1.setNeutralMode(NeutralMode.Brake);
-        grabberTalon2.setNeutralMode(NeutralMode.Brake);
+        grabberVictor1.setNeutralMode(NeutralMode.Brake);
+        grabberVictor2.setNeutralMode(NeutralMode.Brake);
 
     }
 
     public void intake() {
 
-        grabberTalon1.set(ControlMode.PercentOutput, 1.0);
-        grabberTalon2.set(ControlMode.PercentOutput, -1.0);
+        grabberVictor1.set(ControlMode.PercentOutput, -1.0);
+        grabberVictor2.set(ControlMode.PercentOutput, +1.0);
 
     }
 
     public void outtake() {
 
-        grabberTalon1.set(ControlMode.PercentOutput, -0.25);
-        grabberTalon2.set(ControlMode.PercentOutput, 0.25);
+        grabberVictor1.set(ControlMode.PercentOutput, +1.0);
+        grabberVictor2.set(ControlMode.PercentOutput, -1.0);
 
     }
 
     public void stop() {
 
-        grabberTalon1.set(ControlMode.PercentOutput, 0);
-        grabberTalon2.set(ControlMode.PercentOutput, 0);
+        grabberVictor1.set(ControlMode.PercentOutput, 0);
+        grabberVictor2.set(ControlMode.PercentOutput, 0);
 
     }
 
     @Override
     protected void initDefaultCommand() {
+
         setDefaultCommand(new GrabberControl());
+
     }
 
 }
