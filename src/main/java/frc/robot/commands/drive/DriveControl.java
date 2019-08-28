@@ -31,7 +31,7 @@ public class DriveControl extends Command {
         if (oi.alignButtonHeld()) {
 
             double speed = (oi.getLeftY() + oi.getRightY()) / 2;
-            drivetrain.autoAlign(speed);
+            //drivetrain.autoAlign(speed);
 
         } else {
 

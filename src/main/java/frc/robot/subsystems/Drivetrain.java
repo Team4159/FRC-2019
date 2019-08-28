@@ -1,14 +1,8 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -17,7 +11,7 @@ import frc.robot.util.Constants;
 import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
 import frc.robot.util.enums.Orientation;
-import com.revrobotics.*;
+import com.revrobotics.CANSparkMax;
 
 public class Drivetrain extends Subsystem {
 
@@ -29,38 +23,32 @@ public class Drivetrain extends Subsystem {
     }
 
     // private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
-    private CANSparkMax​ leftMasterNeo, leftSlaveNeo, rightMasterNeo, leftMasterNeo;
+    private CANSparkMax leftMasterNeo, leftSlaveNeo, rightMasterNeo, rightSlaveNeo;
     private PigeonIMU pigeon;
     private Superstructure superstructure;
 
     private Drivetrain() {
 
-        leftMasterNeo = new CANSparkMax(Constants.getInt("LEFT_MASTER_NEO"), kBrushless);
-        leftSlaveNeo = new CANSparkMax(Constants.getInt("LEFT_SLAVE_NEO"), kBrushless);
-        rightMasterNeo = new CANSparkMax(Constants.getInt("RIGHT_MASTER_NEO"), kBrushless);
-        rightSlaveNeo = new CANSparkMax(Constants.getInt("RIGHT_SLAVE_NEO"), kBrushless);
+        leftMasterNeo = new CANSparkMax(Constants.getInt("LEFT_MASTER_NEO"), CANSparkMax.MotorType.kBrushless);
+        leftSlaveNeo = new CANSparkMax(Constants.getInt("LEFT_SLAVE_NEO"), CANSparkMax.MotorType.kBrushless);
+        rightMasterNeo = new CANSparkMax(Constants.getInt("RIGHT_MASTER_NEO"), CANSparkMax.MotorType.kBrushless);
+        rightSlaveNeo = new CANSparkMax(Constants.getInt("RIGHT_SLAVE_NEO"), CANSparkMax.MotorType.kBrushless);
         //pigeon = new PigeonIMU(rightSlaveTalon);;
 
         superstructure = Superstructure.getInstance();
 
         /* Factory default hardware to prevent unexpected behavior */
-        leftMasterNeo.restoreFactoryDefaults​();
-        leftSlaveNeo.restoreFactoryDefaults​();
-        rightMasterNeo.restoreFactoryDefaults​();
-        rightSlaveNeo.restoreFactoryDefaults​();
-
-
-        /* Configure output direction */
-        leftMasterNeo.setInverted​(false);
-        rightMasterNeo.setInverted​(false);
+        leftMasterNeo.restoreFactoryDefaults();
+        leftSlaveNeo.restoreFactoryDefaults();
+        rightMasterNeo.restoreFactoryDefaults();
+        rightSlaveNeo.restoreFactoryDefaults();
 
 
         /* Set to brake mode */
-
-        rightMasterNeo.setIdleMode​(kBrake);
-        rightSlaveNeo.setIdleMode​(kBrake);
-        leftMasterNeo.setIdleMode​(kBrake);
-        leftSlaveNeo.setIdleMode​(kBrake);
+        rightMasterNeo.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        rightSlaveNeo.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        leftMasterNeo.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        leftSlaveNeo.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
 
         /* Voltage compensation */
@@ -72,8 +60,8 @@ public class Drivetrain extends Subsystem {
         rightMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
         rightMasterTalon.enableVoltageCompensation(true);
         */
-        leftMasterNeo.enableVoltageCompensation​(Constants.getInt("MAX_VOLTAGE"));
-        rightMasterNeo.enableVoltageCompensation​(Constants.getInt("MAX_VOLTAGE"));
+        leftMasterNeo.enableVoltageCompensation(Constants.getInt("MAX_VOLTAGE"));
+        rightMasterNeo.enableVoltageCompensation(Constants.getInt("MAX_VOLTAGE"));
 
         /* Set slave talons to follow master talons */
         leftSlaveNeo.follow(leftSlaveNeo);
