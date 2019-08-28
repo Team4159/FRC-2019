@@ -17,6 +17,7 @@ import frc.robot.util.Constants;
 import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
 import frc.robot.util.enums.Orientation;
+import com.revrobotics
 
 public class Drivetrain extends Subsystem {
 
@@ -27,48 +28,56 @@ public class Drivetrain extends Subsystem {
         return instance;
     }
 
-    private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
+    // private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
+    private CANSparkMax​ leftMasterNeo, leftSlaveNeo, rightMasterNeo, leftMasterNeo;
     private PigeonIMU pigeon;
     private Superstructure superstructure;
 
     private Drivetrain() {
 
-        leftMasterTalon = new TalonSRX(Constants.getInt("LEFT_MASTER_TALON"));
-        leftSlaveTalon = new TalonSRX(Constants.getInt("LEFT_SLAVE_TALON"));
-        rightMasterTalon = new TalonSRX(Constants.getInt("RIGHT_MASTER_TALON"));
-        rightSlaveTalon = new TalonSRX(Constants.getInt("RIGHT_SLAVE_TALON"));
-        //pigeon = new PigeonIMU(rightSlaveTalon);
+        leftMasterNeo = new CANSparkMax(Constants.getInt("LEFT_MASTER_NEO"), kBrushless);
+        leftSlaveNeo = new CANSparkMax(Constants.getInt("LEFT_SLAVE_NEO"), kBrushless);
+        rightMasterNeo = new CANSparkMax(Constants.getInt("RIGHT_MASTER_NEO"), kBrushless);
+        rightSlaveNeo = new CANSparkMax(Constants.getInt("RIGHT_SLAVE_NEO"), kBrushless);
+        //pigeon = new PigeonIMU(rightSlaveTalon);;
+
         superstructure = Superstructure.getInstance();
 
         /* Factory default hardware to prevent unexpected behavior */
-        leftMasterTalon.configFactoryDefault();
-        leftSlaveTalon.configFactoryDefault();
-        rightMasterTalon.configFactoryDefault();
-        rightSlaveTalon.configFactoryDefault();
+        leftMasterNeo.restoreFactoryDefaults​();
+        leftSlaveNeo.restoreFactoryDefaults​();
+        rightMasterNeo.restoreFactoryDefaults​();
+        rightSlaveNeo.restoreFactoryDefaults​();
+
 
         /* Configure output direction */
-        rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
-        rightSlaveTalon.setInverted(InvertType.FollowMaster);
-        leftMasterTalon.setInverted(InvertType.None);
-        leftSlaveTalon.setInverted(InvertType.FollowMaster);
+        leftMasterNeo.setInverted​(false);
+        rightMasterNeo.setInverted​(false);
+
 
         /* Set to brake mode */
-        leftMasterTalon.setNeutralMode(NeutralMode.Brake);
-        leftSlaveTalon.setNeutralMode(NeutralMode.Brake);
-        rightMasterTalon.setNeutralMode(NeutralMode.Brake);
-        rightSlaveTalon.setNeutralMode(NeutralMode.Brake);
+
+        rightMasterNeo.setIdleMode​(kBrake);
+        rightSlaveNeo.setIdleMode​(kBrake);
+        leftMasterNeo.setIdleMode​(kBrake);
+        leftSlaveNeo.setIdleMode​(kBrake);
+
 
         /* Voltage compensation */
+        /*
         leftMasterTalon.configVoltageCompSaturation(Constants.getInt("MAX_VOLTAGE"), Constants.getInt("TIMEOUT_MS"));
         leftMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
         leftMasterTalon.enableVoltageCompensation(true);
         rightMasterTalon.configVoltageCompSaturation(Constants.getInt("MAX_VOLTAGE"), Constants.getInt("TIMEOUT_MS"));
         rightMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
         rightMasterTalon.enableVoltageCompensation(true);
+        */
+        leftMasterNeo.enableVoltageCompensation​(Constants.getInt("MAX_VOLTAGE"));
+        rightMasterNeo.enableVoltageCompensation​(Constants.getInt("MAX_VOLTAGE"));
 
         /* Set slave talons to follow master talons */
-        leftSlaveTalon.follow(leftMasterTalon);
-        rightSlaveTalon.follow(rightMasterTalon);
+        leftSlaveNeo.follow(leftSlaveNeo);
+        rightMasterNeo.follow(rightMasterNeo);
 
         /*
          * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
@@ -76,13 +85,13 @@ public class Drivetrain extends Subsystem {
          */
 //        rightMasterTalon.configRemoteFeedbackFilter(15, RemoteSensorSource.TalonSRX_SelectedSensor, 0, 10);
 //        rightMasterTalon.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 1,0);
-
+        /*
         leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
         leftMasterTalon.setSensorPhase(false); // TODO: check
 
         rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
         rightMasterTalon.setSensorPhase(false); // TODO: check
-
+*/
     }
 
     public void setOrientation(Orientation orientation) {
