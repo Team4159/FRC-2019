@@ -17,7 +17,7 @@ import frc.robot.util.Constants;
 import frc.robot.util.RobotMath;
 import frc.robot.util.VisionThread;
 import frc.robot.util.enums.Orientation;
-import com.revrobotics
+import com.revrobotics.*;
 
 public class Drivetrain extends Subsystem {
 
@@ -97,20 +97,30 @@ public class Drivetrain extends Subsystem {
     public void setOrientation(Orientation orientation) {
 
         if(orientation == Orientation.FRONT_HATCH) {
+            rightMasterNeo.setInverted(false);
+            rightSlaveNeo.follow(rightMasterNeo);
+            leftMasterNeo.setInverted(false);
+            leftSlaveNeo.follow(rightMasterNeo);
+            /*
             rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
             rightSlaveTalon.setInverted(InvertType.FollowMaster);
             leftMasterTalon.setInverted(InvertType.None);
             leftSlaveTalon.setInverted(InvertType.FollowMaster);
             rightMasterTalon.setSensorPhase(true); // TODO: check
-
+            */
 
         } else {
+            rightMasterNeo.setInverted(false);
+            rightSlaveNeo.follow(rightMasterNeo);
+            leftMasterNeo.setInverted(false);
+            leftSlaveNeo.follow(rightMasterNeo);
+            /*
             rightMasterTalon.setInverted(InvertType.None);
             rightSlaveTalon.setInverted(InvertType.FollowMaster);
             leftMasterTalon.setInverted(InvertType.InvertMotorOutput);
             leftSlaveTalon.setInverted(InvertType.FollowMaster);
             rightMasterTalon.setSensorPhase(true); // TODO: check
-
+            */
         }
 
 
@@ -119,19 +129,19 @@ public class Drivetrain extends Subsystem {
     public void rawDrive(double left, double right) {
 
         if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
-            leftMasterTalon.set(ControlMode.PercentOutput, left);
-            rightMasterTalon.set(ControlMode.PercentOutput, right);
+            leftMasterNeo.set(left);
+            rightMasterNeo.set(right);
 
         } else {
             /* Switch outputs to opposite side */
-            leftMasterTalon.set(ControlMode.PercentOutput, right);
-            rightMasterTalon.set(ControlMode.PercentOutput, left);
+            leftMasterNeo.set(right);
+            rightMasterNeo.set(left);
 
         }
 
     }
 
-    public void autoAlign(double speed) {
+   /* public void autoAlign(double speed) {
 
         double turn;
 
@@ -145,7 +155,7 @@ public class Drivetrain extends Subsystem {
         System.out.println("turn: " + turn);
 
         arcadeDrive(speed, turn);
-    }
+    } */
 
 
     public void arcadeDrive(double speed, double turn) {
@@ -170,8 +180,8 @@ public class Drivetrain extends Subsystem {
 
     public void stop() {
 
-        leftMasterTalon.set(ControlMode.PercentOutput, 0);
-        rightMasterTalon.set(ControlMode.PercentOutput, 0);
+        leftMasterNeo.set(0);
+        rightMasterNeo.set(0);
 
     }
 
@@ -185,14 +195,15 @@ public class Drivetrain extends Subsystem {
         // ramping
 
     }
-
+/*
     public void setVelocity(double left, double right, double acceleration) {
 
         leftMasterTalon.set(ControlMode.Velocity, RobotMath.feetToTicks(left)/10, DemandType.ArbitraryFeedForward, 0.1 + acceleration * Constants.getDouble("kA_DT"));
         rightMasterTalon.set(ControlMode.Velocity, RobotMath.feetToTicks(right)/10, DemandType.ArbitraryFeedForward, 0.1 + acceleration * Constants.getDouble("kA_DT"));
 
     }
-
+    */
+/*
     public int getleftEncoderCount() {
 
         return leftMasterTalon.getSelectedSensorPosition();
@@ -204,26 +215,28 @@ public class Drivetrain extends Subsystem {
         return rightMasterTalon.getSelectedSensorPosition();
 
     }
-
+*/
 
     /**
      * @return Left side drivetrain velocity in sensor units/100ms
      */
+    /*
     public double getLeftVelocity() {
 
         return leftMasterTalon.getSelectedSensorVelocity();
 
     }
-
+*/
     /**
      * @return Right side drivetrain velocity in sensor units/100ms
      */
+    /*
     public double getRightVelocity() {
 
         return rightMasterTalon.getSelectedSensorVelocity();
 
     }
-
+*/
     /**
      * @return Yaw axis of the robot within -368,640 to +368,640 degrees
      */
