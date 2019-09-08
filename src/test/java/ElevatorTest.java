@@ -1,4 +1,8 @@
+import frc.team4159.robot.loops.ElevatorLoop;
 import org.junit.*;
+
+import java.io.File;
+import java.io.FileWriter;
 
 
 public class ElevatorTest {
@@ -45,9 +49,28 @@ public class ElevatorTest {
 
     @Test
     public void Zeroes() {
-        for (int i = 0; i < 300; i++) {
-            simulateTime(12.0, dt);
+        try {
+            FileWriter csvWriter = new FileWriter(new File("./src/test/java/test.csv"));
+            ElevatorLoop elevator = new ElevatorLoop();
+
+            position = 2.0;
+
+            for (int i = 0; i < 400; i++) {
+                simulateTime(elevator.update(position, position < 0.01, true), dt);
+
+                //col 0 is time, col 1 is position, col 2 is goal, col 3 is error, col 4 is voltage
+                csvWriter.append(Integer.toString(i)+ "," + Double.toString(position) + "," + Double.toString(elevator.getGoal()) + "," + Double.toString(elevator.getError()) + "," + Double.toString(elevator.getVoltage()));
+                csvWriter.append("\n");
+            }
+
+            csvWriter.flush();
+            csvWriter.close();
+            Assert.assertTrue("Position is " + position + ", which is " + (position - 0.0) + "away from " + 0.0, Math.abs(position-0.0) < 0.1);
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        Assert.fail();
+
+
     }
 }
