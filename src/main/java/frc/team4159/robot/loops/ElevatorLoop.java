@@ -3,9 +3,9 @@ package frc.team4159.robot.loops;
 import frc.team4159.robot.Main;
 
 public class ElevatorLoop {
-    private static double kZeroingVelocity = 0.25;
-    private static double kMaxZeroingVoltage = 6.0;
-    public static double kMaxVoltage = 12.0;
+    private static final double kZeroingVelocity = 0.25;
+    private static final double kMaxZeroingVoltage = 6.0;
+    public static final double kMaxVoltage = 12.0;
 
     private enum State {
         IDLE(0),
@@ -27,10 +27,13 @@ public class ElevatorLoop {
     private double offset = 0.0;
 
     private State state = State.IDLE;
+    private double error = 0.0;
+    private double error_velocity = 0.0;
     private double last_error = 0.0;
 
     public void setGoal(double goal) {
         this.goal = goal;
+        last_error = 0.0;
     }
 
     public double update(double encoder, boolean limitTriggered, boolean enabled) {
@@ -39,6 +42,7 @@ public class ElevatorLoop {
         switch (state) {
             case IDLE:
                 if (enabled) state = State.ZEROING;
+                filtered_goal = 0.0;
                 break;
             case ZEROING:
                 filtered_goal -= kZeroingVelocity * Main.dt;
@@ -47,22 +51,25 @@ public class ElevatorLoop {
                     state = State.RUNNING;
                     max_voltage = kMaxVoltage;
                     offset = encoder;
+                    position = 0.0;
+                    filtered_goal = goal;
+                    last_error = 0.0;
                 }
                 if (!enabled) state = State.IDLE;
                 break;
             case RUNNING:
-                filtered_goal = goal;
                 if (!enabled) state = State.IDLE;
+                filtered_goal = goal;
                 break;
             case ESTOP:
                 break;
         }
 
-        double kP = 50.0;
+        double kP = 100.0;
         double kD = 25.0;
 
-        double error = filtered_goal - position;
-        double error_velocity = (error - last_error) / Main.dt;
+        error = filtered_goal - position;
+        error_velocity = (error - last_error) / Main.dt;
         last_error = error;
 
         return Math.max(-max_voltage, Math.min(kP * error + kD * error_velocity, max_voltage));
@@ -78,7 +85,11 @@ public class ElevatorLoop {
     }
 
     public double getError() {
-        return last_error;
+        return error;
+    }
+
+    public double getErrorVelocity() {
+        return error_velocity;
     }
 
     public int getState() {

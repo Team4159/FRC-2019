@@ -39,8 +39,9 @@ public class ElevatorTest {
         Assert.assertTrue(voltage >= -ElevatorLoop.kMaxVoltage);
         // simulation timeslice in seconds
         double kSimTime = 0.0001;
+        double kMotors = 2.0;
         while (time > 0) {
-            double acceleration = getAcceleration(voltage);
+            double acceleration = getAcceleration(voltage) * kMotors;
             velocity += acceleration * kSimTime;
             position += velocity * kSimTime;
             time -= kSimTime;
@@ -83,7 +84,8 @@ public class ElevatorTest {
                                  elevator_loop.getFilteredGoal() + "," +
                                  elevator_loop.getError() + "," +
                                  voltage + "," +
-                                 elevator_loop.getState());
+                                 elevator_loop.getState() + "," +
+                                 elevator_loop.getErrorVelocity());
                 csvWriter.append("\n");
             }
 
