@@ -1,68 +1,87 @@
 package frc.team4159.robot.loops;
 
+import frc.team4159.robot.Main;
+
 public class ElevatorLoop {
+    private static double kZeroingVelocity = 0.25;
+    private static double kMaxZeroingVoltage = 6.0;
+    public static double kMaxVoltage = 12.0;
+
     private enum State {
-        IDLE,
-        ZEROING,
-        RUNNING,
-        ESTOP
+        IDLE(0),
+        ZEROING(1),
+        RUNNING(2),
+        ESTOP(3);
+
+        int value;
+        State(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return value;
+        }
     }
 
-    private double m_goal = 0.0;
+    private double goal = 0.0;
     private double filtered_goal = 0.0;
+    private double offset = 0.0;
 
-    private State m_state = State.IDLE;
-    private double lastError = 0.0;
-
-    double voltage = 0.0;
+    private State state = State.IDLE;
+    private double last_error = 0.0;
 
     public void setGoal(double goal) {
-        m_goal = goal;
+        this.goal = goal;
     }
 
     public double update(double encoder, boolean limitTriggered, boolean enabled) {
-        switch (m_state) {
+        double position = encoder - offset;
+        double max_voltage = kMaxVoltage;
+        switch (state) {
             case IDLE:
-                if (enabled) m_state = State.ZEROING;
+                if (enabled) state = State.ZEROING;
                 break;
             case ZEROING:
-                filtered_goal -= 0.05;
+                filtered_goal -= kZeroingVelocity * Main.dt;
+                max_voltage = kMaxZeroingVoltage;
                 if (limitTriggered) {
-                    m_state = State.RUNNING;
-
-                    //TODO: offset
-                    filtered_goal = m_goal;
+                    state = State.RUNNING;
+                    max_voltage = kMaxVoltage;
+                    offset = encoder;
                 }
-                if (!enabled) m_state = State.IDLE;
+                if (!enabled) state = State.IDLE;
                 break;
             case RUNNING:
+                filtered_goal = goal;
+                if (!enabled) state = State.IDLE;
                 break;
             case ESTOP:
                 break;
         }
 
-        double kP = 10.0;
-        double kD = 0.0;
+        double kP = 50.0;
+        double kD = 10.0;
 
-        double error = filtered_goal - encoder;
+        double error = filtered_goal - position;
+        double error_velocity = (error - last_error) / Main.dt;
+        last_error = error;
 
-        voltage = Math.max(-6, Math.min((kP * error + kD * (error-lastError)), 6));
-
-        lastError = error;
-
-        return voltage;
+        return Math.max(-max_voltage, Math.min(kP * error + kD * error_velocity, max_voltage));
     }
 
-    //TODO: remove these methods and convert variables to local variables
+    // TODO: remove these methods and convert variables to local variables
     public double getGoal() {
-        return m_goal;
+        return goal;
+    }
+
+    public double getFilteredGoal() {
+        return filtered_goal;
     }
 
     public double getError() {
-        return lastError;
+        return last_error;
     }
 
-    public double getVoltage() {
-        return voltage;
+    public int getState() {
+        return state.getValue();
     }
 }
