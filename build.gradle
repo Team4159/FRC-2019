@@ -1,16 +1,16 @@
 plugins {
-    id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+    id 'java'
+    id 'edu.wpi.first.GradleRIO' version '2019.4.1'
     id 'idea'
 }
 
-def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def ROBOT_MAIN_CLASS = 'frc.team4159.robot.Main'
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        roboRIO("roborio") {
+        roboRIO('roborio') {
             // Team number is loaded either from the .wpilib/wpilib_preferences.json
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
@@ -20,7 +20,7 @@ deploy {
     }
     artifacts {
         frcJavaArtifact('frcJava') {
-            targets << "roborio"
+            targets << 'roborio'
             // Debug can be overridden by command line, for use with VSCode
             debug = frc.getDebugOrDefault(false)
         }
@@ -29,7 +29,7 @@ deploy {
             // The directory below is the local directory to deploy
             files = fileTree(dir: 'src/main/deploy')
             // Deploy to roboRIO target, into /home/lvuser/deploy
-            targets << "roborio"
+            targets << 'roborio'
             directory = '/home/lvuser/deploy'
         }
     }
@@ -43,13 +43,25 @@ repositories {
     mavenCentral()
 }
 
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
-    // https://mvnrepository.com/artifact/org.zeromq/jeromq
-    compile group: 'org.zeromq', name: 'jeromq', version: '0.5.0'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
