@@ -58,7 +58,7 @@ public class ElevatorLoop {
                 if (!enabled) state = State.IDLE;
                 break;
             case RUNNING:
-                if (!enabled) state = State.IDLE;
+               // if (!enabled) state = State.IDLE;
                 filtered_goal = goal;
                 break;
             case ESTOP:

@@ -8,6 +8,8 @@ import frc.team4159.robot.Main;
 import frc.team4159.robot.loops.ElevatorLoop;
 
 public class ElevatorTest {
+    // number of motors
+    private double kMotors = 2.0;
     // resistance of the motor in ohms
     private double kResistance = 12.0 / 134.0;
     // motor velocity constant in RPM per volt
@@ -20,13 +22,20 @@ public class ElevatorTest {
     private double kr = Utils.FeettoMeters(1.751 / 12.0);
     // mass of load in kgs
     private double kMass = Utils.PoundstoKgs(30.0);
-
+    // test starting position in meters
+    private double kTestPosition = 0.2;
     // position in m
     private double position = 0.0;
     // starting position in m
     private double starting_position = 0.0;
     // velocity in m/s
     private double velocity = 0.0;
+    // goal in meters
+    private double goal = 0.4;
+    // max height in meters
+    private double kMaxheight = Utils.FeettoMeters(62.0 / 12);
+    // min height in meters
+    private double kMinHeight = 0.0;
     // elevator's control loop
     private ElevatorLoop elevator_loop = new ElevatorLoop();
 
@@ -39,7 +48,6 @@ public class ElevatorTest {
         Assert.assertTrue(voltage >= -ElevatorLoop.kMaxVoltage);
         // simulation timeslice in seconds
         double kSimTime = 0.0001;
-        double kMotors = 2.0;
         while (time > 0) {
             double acceleration = getAcceleration(voltage) * kMotors;
             velocity += acceleration * kSimTime;
@@ -70,9 +78,9 @@ public class ElevatorTest {
     @Test
     public void Zeroes() {
         try {
-            FileWriter csvWriter = new FileWriter(new File("/tmp/dump.csv"));
+            FileWriter csvWriter = new FileWriter(new File("./build/tmp/dump.csv"));
 
-            setStartingPosition(0.2);
+            setStartingPosition(kTestPosition);
 
             for (int i = 0; i < 400; i++) {
                 double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
@@ -96,5 +104,18 @@ public class ElevatorTest {
         } catch (IOException e) {
             System.out.println(e.toString());
         }
+    }
+    @Test
+    public void outOfBounds(){
+        Assert.assertTrue(goal < kMaxheight && goal > kMinHeight);
+    }
+    @Test
+    public void MoveToPosition() {
+            elevator_loop.setGoal(goal);
+            for (int i = 0; i < 400; i++) {
+                double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
+                simulateTime(voltage, Main.dt);
+            }
+            Assert.assertEquals("Was:" + position + ", Expected: " + goal, goal, position, 0.1);
     }
 }
