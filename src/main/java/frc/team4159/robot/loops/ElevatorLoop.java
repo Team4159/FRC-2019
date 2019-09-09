@@ -27,10 +27,12 @@ public class ElevatorLoop {
     private double offset = 0.0;
 
     private State state = State.IDLE;
+    private double error = 0.0;
     private double last_error = 0.0;
 
     public void setGoal(double goal) {
         this.goal = goal;
+        last_error = 0.0;
     }
 
     public double update(double encoder, boolean limitTriggered, boolean enabled) {
@@ -39,6 +41,7 @@ public class ElevatorLoop {
         switch (state) {
             case IDLE:
                 if (enabled) state = State.ZEROING;
+                filtered_goal = 0.0;
                 break;
             case ZEROING:
                 filtered_goal -= kZeroingVelocity * Main.dt;
@@ -47,21 +50,24 @@ public class ElevatorLoop {
                     state = State.RUNNING;
                     max_voltage = kMaxVoltage;
                     offset = encoder;
+                    position = 0.0;
+                    filtered_goal = 0.0;
+                    last_error = 0.0;
                 }
                 if (!enabled) state = State.IDLE;
                 break;
             case RUNNING:
-                filtered_goal = goal;
                 if (!enabled) state = State.IDLE;
+                filtered_goal = goal;
                 break;
             case ESTOP:
                 break;
         }
 
-        double kP = 50.0;
+        double kP = 100.0;
         double kD = 25.0;
 
-        double error = filtered_goal - position;
+        error = filtered_goal - position;
         double error_velocity = (error - last_error) / Main.dt;
         last_error = error;
 
@@ -78,7 +84,7 @@ public class ElevatorLoop {
     }
 
     public double getError() {
-        return last_error;
+        return error;
     }
 
     public int getState() {
