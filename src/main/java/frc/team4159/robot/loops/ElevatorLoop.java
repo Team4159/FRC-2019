@@ -3,9 +3,9 @@ package frc.team4159.robot.loops;
 import frc.team4159.robot.Main;
 
 public class ElevatorLoop {
-    private static double kZeroingVelocity = 0.25;
-    private static double kMaxZeroingVoltage = 6.0;
-    public static double kMaxVoltage = 12.0;
+    private static final double kZeroingVelocity = 0.25;
+    private static final double kMaxZeroingVoltage = 6.0;
+    public static final double kMaxVoltage = 12.0;
 
     private enum State {
         IDLE(0),
