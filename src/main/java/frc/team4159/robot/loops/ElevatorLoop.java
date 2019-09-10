@@ -1,11 +1,23 @@
 package frc.team4159.robot.loops;
 
 import frc.team4159.robot.Main;
+import frc.team4159.robot.Utils;
 
 public class ElevatorLoop {
+    // target velocity when zeroing in m/s
     private static final double kZeroingVelocity = 0.25;
+    // max elevator voltage when zeroing in volts
     private static final double kMaxZeroingVoltage = 6.0;
+    // max elevator voltage in volts
     public static final double kMaxVoltage = 12.0;
+    // max elevator height in meters
+    public static final double kMaxHeight = Utils.FeettoMeters(62.0 / 12);
+    // min elevator height in meters
+    public static final double kMinHeight = 0.0;
+    // max elevator height in meters
+    private static final double kSoftMaxHeight = kMaxHeight - 0.01;
+    // min elevator height in meters
+    private static final double kSoftMinHeight = kMinHeight + 0.01;
 
     private enum State {
         IDLE(0),
@@ -59,7 +71,7 @@ public class ElevatorLoop {
                 break;
             case RUNNING:
                // if (!enabled) state = State.IDLE;
-                filtered_goal = goal;
+                filtered_goal = Math.max(kSoftMinHeight, Math.min(goal, kSoftMaxHeight));
                 break;
             case ESTOP:
                 break;

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import frc.team4159.robot.Main;
+import frc.team4159.robot.Utils;
 import frc.team4159.robot.loops.ElevatorLoop;
 
 public class ElevatorTest {
@@ -22,20 +23,14 @@ public class ElevatorTest {
     private double kr = Utils.FeettoMeters(1.751 / 12.0);
     // mass of load in kgs
     private double kMass = Utils.PoundstoKgs(30.0);
-    // test starting position in meters
-    private double kTestPosition = 0.2;
+
     // position in m
     private double position = 0.0;
     // starting position in m
     private double starting_position = 0.0;
     // velocity in m/s
     private double velocity = 0.0;
-    // goal in meters
-    private double goal = 0.4;
-    // max height in meters
-    private double kMaxheight = Utils.FeettoMeters(62.0 / 12);
-    // min height in meters
-    private double kMinHeight = 0.0;
+
     // elevator's control loop
     private ElevatorLoop elevator_loop = new ElevatorLoop();
 
@@ -53,6 +48,44 @@ public class ElevatorTest {
             velocity += acceleration * kSimTime;
             position += velocity * kSimTime;
             time -= kSimTime;
+        }
+    }
+
+    private void simulateLoop(double time) {
+        simulateLoop(time, false);
+    }
+
+    private void simulateLoop(double time, boolean write) {
+        try {
+            FileWriter csvWriter = null;
+            if (write) {
+                csvWriter = new FileWriter(new File("/tmp/dump.csv"));
+            }
+
+            while (time > 0) {
+                double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
+
+                simulateTime(voltage, Main.dt);
+                time -= Main.dt;
+
+                if (write) {
+                    csvWriter.append(position + "," +
+                            elevator_loop.getGoal() + "," +
+                            elevator_loop.getFilteredGoal() + "," +
+                            elevator_loop.getError() + "," +
+                            voltage + "," +
+                            elevator_loop.getState() + "," +
+                            elevator_loop.getErrorVelocity());
+                    csvWriter.append("\n");
+                }
+            }
+
+            if (write) {
+                csvWriter.flush();
+                csvWriter.close();
+            }
+        } catch (IOException e) {
+            System.out.println(e.toString());
         }
     }
 
@@ -76,46 +109,37 @@ public class ElevatorTest {
     }
 
     @Test
-    public void Zeroes() {
-        try {
-            FileWriter csvWriter = new FileWriter(new File("./build/tmp/dump.csv"));
+    public void Zeros() {
+        setStartingPosition(0.2);
+        simulateLoop(4.0);
 
-            setStartingPosition(kTestPosition);
-
-            for (int i = 0; i < 400; i++) {
-                double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
-
-                simulateTime(voltage, Main.dt);
-
-                csvWriter.append(position + "," +
-                                 elevator_loop.getGoal() + "," +
-                                 elevator_loop.getFilteredGoal() + "," +
-                                 elevator_loop.getError() + "," +
-                                 voltage + "," +
-                                 elevator_loop.getState() + "," +
-                                 elevator_loop.getErrorVelocity());
-                csvWriter.append("\n");
-            }
-
-            csvWriter.flush();
-            csvWriter.close();
-
-            Assert.assertEquals("Was :" + position + ", Expected: " + 0.0, 0.0, position, 0.01);
-        } catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        Assert.assertEquals("Was :" + position + ", Expected: " + 0.0, 0.0, position, 0.01);
     }
+
     @Test
-    public void outOfBounds(){
-        Assert.assertTrue(goal < kMaxheight && goal > kMinHeight);
+    public void TooHigh() {
+        double goal = ElevatorLoop.kMaxHeight + 0.1;
+        // sets an impossibly high goal
+        elevator_loop.setGoal(goal);
+        simulateLoop(4.0);
+        Assert.assertTrue(position < ElevatorLoop.kMaxHeight);
     }
+
     @Test
-    public void MoveToPosition() {
-            elevator_loop.setGoal(goal);
-            for (int i = 0; i < 400; i++) {
-                double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
-                simulateTime(voltage, Main.dt);
-            }
-            Assert.assertEquals("Was:" + position + ", Expected: " + goal, goal, position, 0.1);
+    public void TooLow() {
+        double goal = ElevatorLoop.kMinHeight - 0.1;
+        // sets an impossibly low goal
+        elevator_loop.setGoal(goal);
+        simulateLoop(4.0);
+        Assert.assertTrue(position > ElevatorLoop.kMinHeight);
+    }
+
+    @Test
+    public void MovesToPosition() {
+        double goal = 0.4;
+        setStartingPosition(0.2);
+        elevator_loop.setGoal(goal);
+        simulateLoop(4.0);
+        Assert.assertEquals("Was:" + position + ", Expected: " + goal, goal, position, 0.1);
     }
 }
