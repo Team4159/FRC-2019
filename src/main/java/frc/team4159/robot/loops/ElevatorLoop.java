@@ -14,9 +14,9 @@ public class ElevatorLoop {
     public static final double kMaxHeight = Utils.FeettoMeters(62.0 / 12);
     // min elevator height in meters
     public static final double kMinHeight = 0.0;
-    // max elevator height in meters
+    // soft max elevator height in meters
     private static final double kSoftMaxHeight = kMaxHeight - 0.01;
-    // min elevator height in meters
+    // soft min elevator height in meters
     private static final double kSoftMinHeight = kMinHeight + 0.01;
 
     private enum State {
