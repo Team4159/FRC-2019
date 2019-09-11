@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team4159.robot.loops.ElevatorLoop;
 
-public class Elevator {
+public class Elevator implements Subsystem {
     private static Elevator instance;
     public static Elevator getInstance() {
         if (instance == null) instance = new Elevator();
@@ -36,6 +36,7 @@ public class Elevator {
         limitSwitch = new DigitalInput(0);
     }
 
+    @Override
     public void iterate() {
         /*
         if (ds.isOperatorControl()) {
