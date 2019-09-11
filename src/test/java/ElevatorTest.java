@@ -10,19 +10,19 @@ import frc.team4159.robot.loops.ElevatorLoop;
 
 public class ElevatorTest {
     // number of motors
-    private double kMotors = 2.0;
+    private final double kMotors = 2.0;
     // resistance of the motor in ohms
-    private double kResistance = 12.0 / 89.0;
+    private final double kResistance = 12.0 / 89.0;
     // motor velocity constant in RPM per volt
-    private double Kv = Utils.RPMtoRadiansPerSec(5840.0) / (12.0 - 3.0 * kResistance);
+    private final double Kv = Utils.RPMtoRadiansPerSec(5840.0) / (12.0 - 3.0 * kResistance);
     // motor torque constant in torque per amp
-    private double Kt = 1.41 / 89.0;
+    private final double Kt = 1.41 / 89.0;
     // gear ratio
-    private double kG = 12.8;
+    private final double kG = 12.8;
     // gear radius in meters
-    private double kr = Utils.FeettoMeters(1.751 / 12.0);
+    private final double kr = Utils.FeettoMeters(1.751 / 12.0);
     // mass of load in kgs
-    private double kMass = Utils.PoundstoKgs(30.0);
+    private final double kMass = Utils.PoundstoKgs(30.0);
 
     // position in m
     private double position = 0.0;
@@ -69,13 +69,13 @@ public class ElevatorTest {
                 time -= Main.dt;
 
                 if (write) {
-                    csvWriter.append(position + "," +
-                            elevator_loop.getGoal() + "," +
-                            elevator_loop.getFilteredGoal() + "," +
-                            elevator_loop.getError() + "," +
-                            voltage + "," +
-                            elevator_loop.getState() + "," +
-                            elevator_loop.getErrorVelocity());
+                    csvWriter.append(position + "," + // 1
+                            elevator_loop.getGoal() + "," + // 2
+                            elevator_loop.getFilteredGoal() + "," + // 3
+                            elevator_loop.getError() + "," + // 4
+                            voltage + "," +  // 5
+                            elevator_loop.getState() + "," + // 6
+                            elevator_loop.getErrorVelocity()); // 7
                     csvWriter.append("\n");
                 }
             }
