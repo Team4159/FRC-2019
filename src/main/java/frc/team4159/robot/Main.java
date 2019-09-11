@@ -1,6 +1,7 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Notifier;
+import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Elevator;
 import frc.team4159.robot.subsystems.Subsystem;
 
@@ -10,6 +11,7 @@ public class Main {
 
     public static void main(String... args) {
         startSubsystem(Elevator.getInstance());
+        startSubsystem(Drivetrain.getInstance());
     }
 
     private static void startSubsystem(Subsystem subsystem) {
