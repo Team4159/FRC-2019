@@ -12,11 +12,11 @@ public class ElevatorTest {
     // number of motors
     private final double kMotors = 2.0;
     // resistance of the motor in ohms
-    private final double kResistance = 12.0 / 89.0;
+    private final double kResistance = 12.0 / 134.0;
     // motor velocity constant in RPM per volt
-    private final double Kv = Utils.RPMtoRadiansPerSec(5840.0) / (12.0 - 3.0 * kResistance);
+    private final double Kv = Utils.RPMtoRadiansPerSec(18730.0) / (12.0 - 0.7 * kResistance);
     // motor torque constant in torque per amp
-    private final double Kt = 1.41 / 89.0;
+    private final double Kt = 0.71 / 134.0;
     // gear ratio
     private final double kG = 12.8;
     // gear radius in meters

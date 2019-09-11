@@ -78,7 +78,7 @@ public class ElevatorLoop {
         }
 
         double kP = 100.0;
-        double kD = 10.0;
+        double kD = 25.0;
 
         error = filtered_goal - position;
         error_velocity = (error - last_error) / Main.dt;
