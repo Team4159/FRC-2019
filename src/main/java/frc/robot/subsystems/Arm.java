@@ -39,7 +39,7 @@ public class Arm extends Subsystem {
         armTalon.enableCurrentLimit(true);
 
         /* Voltage compensation */
-        armTalon.configVoltageCompSaturation(10, Constants.getInt("TIMEOUT_MS"));
+        armTalon.configVoltageCompSaturation(8, Constants.getInt("TIMEOUT_MS"));
         armTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
         armTalon.enableVoltageCompensation(true);
 

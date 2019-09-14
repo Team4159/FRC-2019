@@ -35,24 +35,6 @@ public class Elevator extends Subsystem {
         elevatorMasterTalon.setNeutralMode(NeutralMode.Brake);
         elevatorSlaveTalon.setNeutralMode(NeutralMode.Brake);
 
-        /* Current limiting */
-        elevatorMasterTalon.configPeakCurrentLimit(Constants.getInt("PEAK_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configPeakCurrentDuration(Constants.getInt("PEAK_TIME_MS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configContinuousCurrentLimit(Constants.getInt("CONTIN_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.enableCurrentLimit(true);
-        elevatorSlaveTalon.configPeakCurrentLimit(Constants.getInt("PEAK_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorSlaveTalon.configPeakCurrentDuration(Constants.getInt("PEAK_TIME_MS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorSlaveTalon.configContinuousCurrentLimit(Constants.getInt("CONTIN_CURRENT_AMPS"), Constants.getInt("TIMEOUT_MS"));
-        elevatorSlaveTalon.enableCurrentLimit(true);
-
-        /* Voltage compensation */
-        elevatorMasterTalon.configVoltageCompSaturation(10, Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configVoltageMeasurementFilter(Constants.getInt("VOLTAGE_FILTER"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.enableVoltageCompensation(true);
-
-        /* Configure Sensor Source for Primary PID */
-        elevatorMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
-
         /* Set Slave Talon to follow Master Talon output */
         elevatorSlaveTalon.follow(elevatorMasterTalon);
 

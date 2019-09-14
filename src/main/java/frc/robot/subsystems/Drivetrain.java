@@ -64,8 +64,8 @@ public class Drivetrain extends Subsystem {
         rightMasterNeo.enableVoltageCompensation(Constants.getInt("MAX_VOLTAGE"));
 
         /* Set slave talons to follow master talons */
-        leftSlaveNeo.follow(leftSlaveNeo);
-        rightMasterNeo.follow(rightMasterNeo);
+        leftSlaveNeo.follow(leftMasterNeo);
+        rightSlaveNeo.follow(rightMasterNeo);
 
         /*
          * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
@@ -115,13 +115,15 @@ public class Drivetrain extends Subsystem {
     }
 
     public void rawDrive(double left, double right) {
-
         if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
             leftMasterNeo.set(left);
+            System.out.println(leftMasterNeo.get());
             rightMasterNeo.set(right);
-
+            System.out.println(rightMasterNeo.get());
         } else {
             /* Switch outputs to opposite side */
+            System.out.println(leftMasterNeo.get());
+            System.out.println(rightMasterNeo.get());
             leftMasterNeo.set(right);
             rightMasterNeo.set(left);
 
