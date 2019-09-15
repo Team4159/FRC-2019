@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANEncoder;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -24,6 +25,7 @@ public class Drivetrain extends Subsystem {
 
     // private TalonSRX leftMasterTalon, leftSlaveTalon, rightMasterTalon, rightSlaveTalon;
     private CANSparkMax leftMasterNeo, leftSlaveNeo, rightMasterNeo, rightSlaveNeo;
+    private CANEncoder leftMasterEncoder, leftSlaveEncoder, rightMasterEncoder, rightSlaveEncoder;
     private PigeonIMU pigeon;
     private Superstructure superstructure;
 
@@ -42,6 +44,12 @@ public class Drivetrain extends Subsystem {
         leftSlaveNeo.restoreFactoryDefaults();
         rightMasterNeo.restoreFactoryDefaults();
         rightSlaveNeo.restoreFactoryDefaults();
+
+        /* Possible fix, see https://trello.com/c/hgMtrWMB/130-cansparkmax-construction-sets-the-sensor-type-to-nosensor-v140 */
+        leftMasterEncoder = leftMasterNeo.getEncoder();
+        leftSlaveEncoder = leftSlaveNeo.getEncoder();
+        rightMasterEncoder = rightMasterNeo.getEncoder();
+        rightSlaveEncoder = rightSlaveNeo.getEncoder();
 
 
         /* Set to brake mode */
