@@ -109,7 +109,7 @@ public class Drivetrain extends Subsystem {
             rightMasterNeo.setInverted(false);
             rightSlaveNeo.follow(rightMasterNeo);
             leftMasterNeo.setInverted(false);
-            leftSlaveNeo.follow(rightMasterNeo);
+            leftSlaveNeo.follow(leftMasterNeo);
             /*
             rightMasterTalon.setInverted(InvertType.None);
             rightSlaveTalon.setInverted(InvertType.FollowMaster);
