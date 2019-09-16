@@ -19,11 +19,11 @@ public class DrivetrainLoop {
 
     State state;
 
-    private DrivetrainLoop() {
+    public DrivetrainLoop() {
         state = State.IDLE;
     }
 
-    public double update(double encoder, boolean limitTriggered, boolean enabled) {
+    public double update(double encoder, boolean enabled) {
         switch (state) {
             case IDLE:
                 if (enabled) state = State.RUNNING;

@@ -1,6 +1,11 @@
+import frc.team4159.robot.Main;
 import frc.team4159.robot.Utils;
 import frc.team4159.robot.loops.DrivetrainLoop;
 import org.junit.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * The Drivetrain uses RevRobotic's NEO Brushless Motors.
@@ -34,7 +39,7 @@ public class DrivetrainTest {
     // velocity in m/s
     private double angular_velocity = 0.0;
 
-    private DrivetrainLoop drivetrain_loop;
+    private DrivetrainLoop drivetrain_loop = new DrivetrainLoop();
 
     private double getAngularAcceleration(double voltage) {
         return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass * kr * kr * kWheelRadius);
@@ -48,5 +53,42 @@ public class DrivetrainTest {
             position += (angular_acceleration * kSimTime * kWheelRadius * kWheelRadius) / 2.0;
             time -= kSimTime;
         }
+    }
+
+    private void simulateLoop(double time) {
+        try {
+            FileWriter csvWriter = null;
+            csvWriter = new FileWriter(new File("dump.csv"));
+
+            while (time > 0) {
+                double voltage = drivetrain_loop.update(position, true);
+
+                simulateTime(voltage, Main.dt);
+                time -= Main.dt;
+
+
+                csvWriter.append(position + "," + voltage);
+                csvWriter.append("\n");
+            }
+
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    @Before
+    public void reset() {
+        position = 0.0;
+        angular_velocity = 0.0;
+        drivetrain_loop = new DrivetrainLoop();
+    }
+
+    @Test
+    public void Zeros() {
+        simulateLoop(4.0);
+
+        Assert.fail();
     }
 }
