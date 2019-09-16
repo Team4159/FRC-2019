@@ -37,7 +37,7 @@ public class DrivetrainTest {
     private DrivetrainLoop drivetrain_loop;
 
     private double getAngularAcceleration(double voltage) {
-        return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass);
+        return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass * kr * kr * kWheelRadius);
     }
 
     private void simulateTime(double voltage, double time) {
@@ -45,7 +45,7 @@ public class DrivetrainTest {
         while (time > 0) {
             double angular_acceleration = getAngularAcceleration(voltage) * kMotors;
             angular_velocity += angular_acceleration * kSimTime;
-            position += ((angular_velocity * kSimTime) / (2 * Math.PI)) * (2 * Math.PI * kWheelRadius);
+            position += (angular_acceleration * kSimTime * kWheelRadius * kWheelRadius) / 2.0;
             time -= kSimTime;
         }
     }
