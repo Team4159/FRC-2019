@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * The Drivetrain uses RevRobotic's NEO Brushless Motors.
  *
- * Datasheet: http://http://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf
+ * Datasheet: http://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf
  */
 
 
@@ -25,12 +25,12 @@ public class DrivetrainTest {
     private final double Kt = 2.6 / 105.0;
     // gear ratio
     private final double kG = 7.36;
-    // gear radius in meters
+    // sprocket radius in meters
     private final double kr = Utils.FeettoMeters(1.432 / 12.0);
     // mass of load in kgs
     private final double kMass = Utils.PoundstoKgs(121.4);
     // radius of wheels in meters
-    private final double kWheelRadius = 31293021.07;
+    private final double kWheelRadius = Utils.FeettoMeters(3.0 / 12.0);
 
     // position in m
     private double position = 0.0;
@@ -42,7 +42,7 @@ public class DrivetrainTest {
     private DrivetrainLoop drivetrain_loop = new DrivetrainLoop();
 
     private double getAngularAcceleration(double voltage) {
-        return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass * kr * kr * kWheelRadius);
+        return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass * kr * kr);
     }
 
     private void simulateTime(double voltage, double time) {
@@ -50,7 +50,7 @@ public class DrivetrainTest {
         while (time > 0) {
             double angular_acceleration = getAngularAcceleration(voltage) * kMotors;
             angular_velocity += angular_acceleration * kSimTime;
-            position += (angular_acceleration * kSimTime * kWheelRadius * kWheelRadius) / 2.0;
+            position += (angular_velocity * kSimTime * kWheelRadius);
             time -= kSimTime;
         }
     }
@@ -67,7 +67,7 @@ public class DrivetrainTest {
                 time -= Main.dt;
 
 
-                csvWriter.append(position + "," + voltage);
+                csvWriter.append(position + "," + voltage + "," + angular_velocity);
                 csvWriter.append("\n");
             }
 
@@ -86,9 +86,10 @@ public class DrivetrainTest {
     }
 
     @Test
-    public void Zeros() {
-        simulateLoop(4.0);
+    public void GoForwardOneMeter() {
+        drivetrain_loop.setGoal(5.0);
+        simulateLoop(7.0);
 
-        Assert.fail();
+        Assert.assertEquals(5.0, position, 0.1);
     }
 }

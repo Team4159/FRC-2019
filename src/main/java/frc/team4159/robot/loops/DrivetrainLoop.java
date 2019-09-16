@@ -17,10 +17,22 @@ public class DrivetrainLoop {
         }
     }
 
-    State state;
+    private double goal = 0.0;
+    private double filtered_goal = 0.0;
+    private double offset = 0.0;
+
+    private State state = State.IDLE;
+    private double error = 0.0;
+    private double error_velocity = 0.0;
+    private double last_error = 0.0;
 
     public DrivetrainLoop() {
         state = State.IDLE;
+    }
+
+    public void setGoal(double goal) {
+        this.goal = goal;
+        last_error = 0.0;
     }
 
     public double update(double encoder, boolean enabled) {
@@ -34,7 +46,7 @@ public class DrivetrainLoop {
                 break;
         }
 
-        return 0.0;
+        return 12.0;
     }
 
 }
