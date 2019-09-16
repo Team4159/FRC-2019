@@ -1,8 +1,13 @@
 package frc.team4159.robot.loops;
 
+import frc.team4159.robot.Main;
 import frc.team4159.robot.subsystems.Drivetrain;
 
 public class DrivetrainLoop {
+
+    // max drivetrain voltage in volts
+    public static final double kMaxVoltage = 12.0;
+
     private enum State {
         IDLE(0),
         RUNNING(1),
@@ -18,7 +23,6 @@ public class DrivetrainLoop {
     }
 
     private double goal = 0.0;
-    private double filtered_goal = 0.0;
     private double offset = 0.0;
 
     private State state = State.IDLE;
@@ -46,7 +50,18 @@ public class DrivetrainLoop {
                 break;
         }
 
-        return 12.0;
+        double kP = 100.0;
+        double kD = 5.0;
+
+        error = goal - encoder;
+        error_velocity = (error - last_error) / Main.dt;
+        last_error = error;
+
+        return Math.max(-kMaxVoltage, Math.min(kP * error + kD * error_velocity, kMaxVoltage));
+    }
+
+    public double getError() {
+        return error;
     }
 
 }

@@ -67,7 +67,7 @@ public class DrivetrainTest {
                 time -= Main.dt;
 
 
-                csvWriter.append(position + "," + voltage + "," + angular_velocity);
+                csvWriter.append(position + "," + voltage + "," + angular_velocity + "," + drivetrain_loop.getError());
                 csvWriter.append("\n");
             }
 
@@ -86,7 +86,7 @@ public class DrivetrainTest {
     }
 
     @Test
-    public void GoForwardOneMeter() {
+    public void GoForwardFiveMeters() {
         drivetrain_loop.setGoal(5.0);
         simulateLoop(7.0);
 
