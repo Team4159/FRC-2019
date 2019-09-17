@@ -61,7 +61,7 @@ public class ElevatorTest {
 
     private void simulateLoop(double time) {
         try {
-            File file = new File(System.getProperty("java.io.tmpdir"), name.getMethodName().concat(".csv"));
+            File file = File.createTempFile(name.getMethodName(), ".csv");
             System.out.println("Dump: " + file.getPath());
             FileWriter csvWriter = new FileWriter(file);
 
