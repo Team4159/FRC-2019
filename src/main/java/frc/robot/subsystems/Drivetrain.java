@@ -75,6 +75,8 @@ public class Drivetrain extends Subsystem {
         leftSlaveNeo.follow(leftMasterNeo);
         rightSlaveNeo.follow(rightMasterNeo);
 
+        rightMasterNeo.setInverted(true);
+
         /*
          * Configure a remote encoder sensor. Problematic to do because control loops are now slower since it has to go
          * over the CAN bus. Fix: Swap encoder connections at SFR.
@@ -93,9 +95,7 @@ public class Drivetrain extends Subsystem {
     public void setOrientation(Orientation orientation) {
 
         if(orientation == Orientation.FRONT_HATCH) {
-            rightMasterNeo.setInverted(false);
             rightSlaveNeo.follow(rightMasterNeo);
-            leftMasterNeo.setInverted(false);
             leftSlaveNeo.follow(rightMasterNeo);
             /*
             rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
@@ -106,9 +106,7 @@ public class Drivetrain extends Subsystem {
             */
 
         } else {
-            rightMasterNeo.setInverted(false);
             rightSlaveNeo.follow(rightMasterNeo);
-            leftMasterNeo.setInverted(false);
             leftSlaveNeo.follow(leftMasterNeo);
             /*
             rightMasterTalon.setInverted(InvertType.None);
@@ -125,16 +123,14 @@ public class Drivetrain extends Subsystem {
     public void rawDrive(double left, double right) {
         if(superstructure.getOrientation() == Orientation.FRONT_HATCH) {
             leftMasterNeo.set(left);
-            System.out.println(leftMasterNeo.get());
             rightMasterNeo.set(right);
-            System.out.println(rightMasterNeo.get());
+            System.out.println("Output: " + rightMasterNeo.getAppliedOutput());
+            System.out.println("Get: " + rightMasterNeo.get());
+            System.out.println("Left Output: " + leftMasterNeo.getBusVoltage());
         } else {
             /* Switch outputs to opposite side */
-            System.out.println(leftMasterNeo.get());
-            System.out.println(rightMasterNeo.get());
             leftMasterNeo.set(right);
             rightMasterNeo.set(left);
-
         }
 
     }

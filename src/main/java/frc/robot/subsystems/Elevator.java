@@ -48,30 +48,8 @@ public class Elevator extends Subsystem {
         elevatorSlaveTalon.setInverted(InvertType.FollowMaster);
         //elevatorMasterTalon.setSensorPhase(true);
 
-        /* Set relevant frame periods to be at least as fast as periodic rate */
-        elevatorMasterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.getInt("TIMEOUT_MS"));
-
-        /* Set the peak and nominal outputs */
-        elevatorMasterTalon.configNominalOutputForward(0, Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configNominalOutputReverse(0, Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configPeakOutputForward(1, Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configPeakOutputReverse(-1, Constants.getInt("TIMEOUT_MS"));
-
-        /* Set Motion Magic gains in slot0 - see documentation */
-        elevatorMasterTalon.selectProfileSlot(Constants.getInt("SLOT_IDX"), Constants.getInt("PID_LOOP_IDX"));
-        elevatorMasterTalon.config_kF(Constants.getInt("SLOT_IDX"), Constants.getDouble("kF_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.config_kP(Constants.getInt("SLOT_IDX"), Constants.getDouble("kP_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.config_kI(Constants.getInt("SLOT_IDX"), Constants.getDouble("kI_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.config_kD(Constants.getInt("SLOT_IDX"), Constants.getDouble("kD_ELEVATOR"), Constants.getInt("TIMEOUT_MS"));
-
-        /* Set acceleration and cruise velocity - see documentation */
-        elevatorMasterTalon.configMotionCruiseVelocity(Constants.getInt("ELEVATOR_CRUISE_VELOCITY"), Constants.getInt("TIMEOUT_MS"));
-        elevatorMasterTalon.configMotionAcceleration(Constants.getInt("ELEVATOR_ACCELERATION"), Constants.getInt("TIMEOUT_MS"));
-
-        /* Zero the sensor */
-        elevatorMasterTalon.setSelectedSensorPosition(0, Constants.getInt("PID_LOOP_IDX"), Constants.getInt("TIMEOUT_MS"));
-      
+        elevatorMasterTalon.configVoltageCompSaturation(11.5);
+        elevatorSlaveTalon.configVoltageCompSaturation(11.5);
     }
 
     public void setPercentOutput(double output) {
