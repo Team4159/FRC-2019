@@ -1,10 +1,8 @@
 package frc.team4159.robot.loops;
 
 import frc.team4159.robot.Main;
-import frc.team4159.robot.subsystems.Drivetrain;
 
 public class DrivetrainLoop {
-
     // max drivetrain voltage in volts
     public static final double kMaxVoltage = 12.0;
 
@@ -63,5 +61,4 @@ public class DrivetrainLoop {
     public double getError() {
         return error;
     }
-
 }

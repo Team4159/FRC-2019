@@ -1,4 +1,5 @@
 import org.junit.*;
+import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,7 +9,14 @@ import frc.team4159.robot.Main;
 import frc.team4159.robot.Utils;
 import frc.team4159.robot.loops.ElevatorLoop;
 
+/**
+ * The Drivetrain uses RevRobotics' 775PRO Motors.
+ *
+ * Datasheet: https://motors.vex.com/vexpro-motors/775pro
+ */
+
 public class ElevatorTest {
+    @Rule public TestName name = new TestName();
     // number of motors
     private final double kMotors = 2.0;
     // resistance of the motor in ohms
@@ -52,15 +60,10 @@ public class ElevatorTest {
     }
 
     private void simulateLoop(double time) {
-        simulateLoop(time, false);
-    }
-
-    private void simulateLoop(double time, boolean write) {
         try {
-            FileWriter csvWriter = null;
-            if (write) {
-                csvWriter = new FileWriter(new File("/tmp/dump.csv"));
-            }
+            File file = new File(System.getProperty("java.io.tmpdir"), name.getMethodName().concat(".csv"));
+            System.out.println("Dump: " + file.getPath());
+            FileWriter csvWriter = new FileWriter(file);
 
             while (time > 0) {
                 double voltage = elevator_loop.update(encoder(), limitSwitch(), true);
@@ -68,22 +71,18 @@ public class ElevatorTest {
                 simulateTime(voltage, Main.dt);
                 time -= Main.dt;
 
-                if (write) {
-                    csvWriter.append(position + "," + // 1
-                            elevator_loop.getGoal() + "," + // 2
-                            elevator_loop.getFilteredGoal() + "," + // 3
-                            elevator_loop.getError() + "," + // 4
-                            voltage + "," +  // 5
-                            elevator_loop.getState() + "," + // 6
-                            elevator_loop.getErrorVelocity()); // 7
-                    csvWriter.append("\n");
-                }
+                csvWriter.append(position + "," + // 1
+                        elevator_loop.getGoal() + "," + // 2
+                        elevator_loop.getFilteredGoal() + "," + // 3
+                        elevator_loop.getError() + "," + // 4
+                        voltage + "," +  // 5
+                        elevator_loop.getState() + "," + // 6
+                        elevator_loop.getErrorVelocity()); // 7
+                csvWriter.append("\n");
             }
 
-            if (write) {
-                csvWriter.flush();
-                csvWriter.close();
-            }
+            csvWriter.flush();
+            csvWriter.close();
         } catch (IOException e) {
             System.out.println(e.toString());
         }

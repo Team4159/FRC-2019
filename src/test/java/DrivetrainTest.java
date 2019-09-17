@@ -1,20 +1,23 @@
-import frc.team4159.robot.Main;
-import frc.team4159.robot.Utils;
-import frc.team4159.robot.loops.DrivetrainLoop;
 import org.junit.*;
+import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import frc.team4159.robot.Main;
+import frc.team4159.robot.Utils;
+import frc.team4159.robot.loops.DrivetrainLoop;
+
 /**
- * The Drivetrain uses RevRobotic's NEO Brushless Motors.
+ * The Drivetrain uses RevRobotics' NEO Brushless Motors.
  *
- * Datasheet: http://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf
+ * Datasheet: https://motors.vex.com/vexpro-motors/775pro
  */
 
 
 public class DrivetrainTest {
+    @Rule public TestName name = new TestName();
     // number of motors
     private final int kMotors = 4;
     // resistance of the motor in ohms
@@ -57,8 +60,9 @@ public class DrivetrainTest {
 
     private void simulateLoop(double time) {
         try {
-            FileWriter csvWriter = null;
-            csvWriter = new FileWriter(new File("dump.csv"));
+            File file = new File(System.getProperty("java.io.tmpdir"), name.getMethodName().concat(".csv"));
+            System.out.println("Dump: " + file.getPath());
+            FileWriter csvWriter = new FileWriter(file);
 
             while (time > 0) {
                 double voltage = drivetrain_loop.update(position, true);
@@ -67,7 +71,10 @@ public class DrivetrainTest {
                 time -= Main.dt;
 
 
-                csvWriter.append(position + "," + voltage + "," + angular_velocity + "," + drivetrain_loop.getError());
+                csvWriter.append(position + "," +
+                        voltage + "," +
+                        angular_velocity +
+                        "," + drivetrain_loop.getError());
                 csvWriter.append("\n");
             }
 
