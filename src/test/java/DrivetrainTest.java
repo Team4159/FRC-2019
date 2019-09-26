@@ -28,32 +28,30 @@ public class DrivetrainTest {
     private final double Kt = 2.6 / 105.0;
     // gear ratio
     private final double kG = 7.36;
-    // sprocket radius in meters
-    private final double kr = Utils.FeettoMeters(1.432 / 12.0);
+    // wheel radius in meters
+    private final double kr = Utils.FeettoMeters(3.0 / 12.0);
     // mass of load in kgs
     private final double kMass = Utils.PoundstoKgs(121.4);
-    // radius of wheels in meters
-    private final double kWheelRadius = Utils.FeettoMeters(3.0 / 12.0);
 
     // position in m
     private double position = 0.0;
     // starting position in m
     private double starting_position = 0.0;
     // velocity in m/s
-    private double angular_velocity = 0.0;
+    private double velocity = 0.0;
 
     private DrivetrainLoop drivetrain_loop = new DrivetrainLoop();
 
-    private double getAngularAcceleration(double voltage) {
-        return (voltage - (kG * angular_velocity) / Kv) * (kG * Kt) / (kResistance * kMass * kr * kr);
+    private double getAcceleration(double voltage) {
+        return (voltage - (kG * velocity) / (kr * Kv)) * (kG * Kt) / (kResistance * kMass * kr);
     }
 
     private void simulateTime(double voltage, double time) {
         double kSimTime = 0.0001;
         while (time > 0) {
-            double angular_acceleration = getAngularAcceleration(voltage) * kMotors;
-            angular_velocity += angular_acceleration * kSimTime;
-            position += (angular_velocity * kSimTime * kWheelRadius);
+            double acceleration = getAcceleration(voltage) * kMotors;
+            velocity += acceleration * kSimTime;
+            position += velocity * kSimTime;
             time -= kSimTime;
         }
     }
@@ -73,8 +71,8 @@ public class DrivetrainTest {
 
                 csvWriter.append(position + "," +
                         voltage + "," +
-                        angular_velocity +
-                        "," + drivetrain_loop.getError());
+                        velocity + "," +
+                        drivetrain_loop.getError());
                 csvWriter.append("\n");
             }
 
@@ -88,7 +86,7 @@ public class DrivetrainTest {
     @Before
     public void reset() {
         position = 0.0;
-        angular_velocity = 0.0;
+        velocity = 0.0;
         drivetrain_loop = new DrivetrainLoop();
     }
 
