@@ -10,7 +10,7 @@ import frc.team4159.robot.Utils;
 import frc.team4159.robot.loops.ElevatorLoop;
 
 /**
- * The Drivetrain uses RevRobotics' 775PRO Motors.
+ * The Elevator uses RevRobotics' 775PRO Motors.
  *
  * Datasheet: https://motors.vex.com/vexpro-motors/775pro
  */
