@@ -96,7 +96,7 @@ public class Drivetrain extends Subsystem {
 
         if(orientation == Orientation.FRONT_HATCH) {
             rightSlaveNeo.follow(rightMasterNeo);
-            leftSlaveNeo.follow(rightMasterNeo);
+            leftSlaveNeo.follow(leftMasterNeo);
             /*
             rightMasterTalon.setInverted(InvertType.InvertMotorOutput);
             rightSlaveTalon.setInverted(InvertType.FollowMaster);
