@@ -153,4 +153,14 @@ public class DrivetrainTest {
         Assert.assertEquals(3.0, x_position, 0.2);
         Assert.assertEquals(4.0, y_position, 0.2);
     }
+
+    @Test
+    public void GoDiagonallyThirteenMeters() {
+        drivetrain_loop.setGoal(5.0, 12.0);
+        simulateLoop(7.0);
+
+        Assert.assertEquals(13.0, displacement, 0.2);
+        Assert.assertEquals(5.0, x_position, 0.2);
+        Assert.assertEquals(12.0, y_position, 0.2);
+    }
 }
