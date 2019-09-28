@@ -20,19 +20,35 @@ public class DrivetrainLoop {
         }
     }
 
-    private double goal = 0.0;
 
     private State state = State.IDLE;
+
+    private double goal = 0.0;
     private double error = 0.0;
     private double error_velocity = 0.0;
     private double last_error = 0.0;
 
-    public void setGoal(double goal) {
+    private double theta_goal = 0.0;
+    private double theta_error = 0.0;
+    private double theta_error_velocity = 0.0;
+    private double theta_last_error = 0.0;
+
+    public void setForwardGoal(double goal) {
         this.goal = goal;
         last_error = 0.0;
     }
 
-    public double update(double encoder, boolean enabled) {
+    public void setThetaGoal(double radians) {
+        theta_goal = radians;
+        theta_last_error = 0.0;
+    }
+
+    public void setGoal(double x, double y) {
+        theta_goal = Math.tan(y / x);
+        goal = y / Math.sin(theta_goal);
+    }
+
+    public double[] update(double encoder, double gyro, boolean enabled) {
         switch (state) {
             case IDLE:
                 if (enabled) state = State.RUNNING;
@@ -43,14 +59,30 @@ public class DrivetrainLoop {
                 break;
         }
 
-        double kP = 100.0;
-        double kD = 20.0;
+        theta_error = theta_goal - gyro;
 
         error = goal - encoder;
-        error_velocity = (error - last_error) / Main.dt;
-        last_error = error;
 
-        return Math.max(-kMaxVoltage, Math.min(kP * error + kD * error_velocity, kMaxVoltage));
+
+        if (Math.abs(theta_error) > 0.1) {
+            double kP = 100.0;
+            double kD = 50.0;
+
+            theta_error_velocity = (theta_error - theta_last_error) / Main.dt;
+            theta_last_error = theta_error;
+
+            double voltage = Math.max(-kMaxVoltage, Math.min(kP * theta_error + kD * theta_error_velocity, kMaxVoltage));
+            return new double[] {-voltage, voltage};
+        } else {
+            double kP = 100.0;
+            double kD = 20.0;
+
+            error_velocity = (error - last_error) / Main.dt;
+            last_error = error;
+
+            double voltage = Math.max(-kMaxVoltage, Math.min(kP * error + kD * error_velocity, kMaxVoltage));
+            return new double[] {voltage, voltage};
+        }
     }
 
     public double getError() {
