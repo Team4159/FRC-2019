@@ -21,16 +21,11 @@ public class DrivetrainLoop {
     }
 
     private double goal = 0.0;
-    private double offset = 0.0;
 
     private State state = State.IDLE;
     private double error = 0.0;
     private double error_velocity = 0.0;
     private double last_error = 0.0;
-
-    public DrivetrainLoop() {
-        state = State.IDLE;
-    }
 
     public void setGoal(double goal) {
         this.goal = goal;
@@ -49,7 +44,7 @@ public class DrivetrainLoop {
         }
 
         double kP = 100.0;
-        double kD = 5.0;
+        double kD = 20.0;
 
         error = goal - encoder;
         error_velocity = (error - last_error) / Main.dt;
