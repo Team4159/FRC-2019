@@ -44,7 +44,7 @@ public class DrivetrainLoop {
     }
 
     public void setGoal(double x, double y) {
-        theta_goal = Math.tan(y / x);
+        theta_goal = Math.atan(y / x);
         goal = y / Math.sin(theta_goal);
     }
 
@@ -59,28 +59,27 @@ public class DrivetrainLoop {
                 break;
         }
 
+        double kP, kD, voltage;
+
         theta_error = theta_goal - gyro;
+        theta_error_velocity = (theta_error - theta_last_error) / Main.dt;
+        theta_last_error = theta_error;
 
         error = goal - encoder;
-
+        error_velocity = (error - last_error) / Main.dt;
+        last_error = error;
 
         if (Math.abs(theta_error) > 0.1) {
-            double kP = 100.0;
-            double kD = 50.0;
+            kP = 100.0;
+            kD = 50.0;
 
-            theta_error_velocity = (theta_error - theta_last_error) / Main.dt;
-            theta_last_error = theta_error;
-
-            double voltage = Math.max(-kMaxVoltage, Math.min(kP * theta_error + kD * theta_error_velocity, kMaxVoltage));
+            voltage = Math.max(-kMaxVoltage, Math.min(kP * theta_error + kD * theta_error_velocity, kMaxVoltage));
             return new double[] {-voltage, voltage};
         } else {
-            double kP = 100.0;
-            double kD = 20.0;
+            kP = 100.0;
+            kD = 20.0;
 
-            error_velocity = (error - last_error) / Main.dt;
-            last_error = error;
-
-            double voltage = Math.max(-kMaxVoltage, Math.min(kP * error + kD * error_velocity, kMaxVoltage));
+            voltage = Math.max(-kMaxVoltage, Math.min(kP * error + kD * error_velocity, kMaxVoltage));
             return new double[] {voltage, voltage};
         }
     }

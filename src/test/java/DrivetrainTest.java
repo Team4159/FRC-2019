@@ -36,6 +36,7 @@ public class DrivetrainTest {
     private final double width = Utils.FeettoMeters(27.0 / 12.0);
 
     // position in m
+    private double displacement = 0.0;
     private double x_position = 0.0;
     private double y_position = 0.0;
     // starting position in m
@@ -76,8 +77,10 @@ public class DrivetrainTest {
             left_velocity += left_acceleration * kSimTime;
             right_velocity += right_acceleration * kSimTime;
 
-            x_position = (left_velocity + right_velocity) / 2.0 * Math.cos(angle);
-            y_position = (left_velocity + right_velocity) / 2.0 * Math.sin(angle);
+            x_position += ((left_velocity + right_velocity) / 2.0) * (Math.cos(angle) * kSimTime);
+            y_position += ((left_velocity + right_velocity) / 2.0) * (Math.sin(angle) * kSimTime);
+
+            displacement = Math.sqrt(x_position*x_position + y_position*y_position);
 
             time -= kSimTime;
         }
@@ -90,16 +93,14 @@ public class DrivetrainTest {
             FileWriter csvWriter = new FileWriter(file);
 
             while (time > 0) {
-                double[] voltage = drivetrain_loop.update(Math.sqrt(x_position*x_position + y_position*y_position), angle, true);
+                double[] voltage = drivetrain_loop.update(displacement, angle, true);
 
                 simulateTime(voltage[0], voltage[1], Main.dt);
                 time -= Main.dt;
 
-
-                csvWriter.append(angle + "," +
+                csvWriter.append(x_position + "," +
                         voltage[0] + "," +
                         voltage[1] + "," +
-                        angular_velocity + "," +
                         drivetrain_loop.getError());
                 csvWriter.append("\n");
             }
@@ -115,10 +116,13 @@ public class DrivetrainTest {
     public void reset() {
         x_position = 0.0;
         y_position = 0.0;
+
         left_velocity = 0.0;
         right_velocity = 0.0;
+
         angle = 0.0;
         angular_velocity = 0.0;
+
         drivetrain_loop = new DrivetrainLoop();
     }
 
@@ -127,7 +131,7 @@ public class DrivetrainTest {
         drivetrain_loop.setForwardGoal(5.0);
         simulateLoop(7.0);
 
-        Assert.assertEquals(5.0, x_position, 0.1);
+        Assert.assertEquals(5.0, x_position, 0.01);
     }
 
     @Test
@@ -136,5 +140,17 @@ public class DrivetrainTest {
         simulateLoop(7.0);
 
         Assert.assertEquals(Math.PI / 2.0, angle, 0.1);
+        Assert.assertEquals(0.0, displacement, 0.0);
+    }
+
+    @Test
+    public void GoDiagonallyFiveMeters() {
+        drivetrain_loop.setThetaGoal(Math.atan(4.0/3.0));
+        drivetrain_loop.setForwardGoal(5.0);
+        simulateLoop(7.0);
+
+        Assert.assertEquals(5.0, displacement, 0.2);
+        Assert.assertEquals(3.0, x_position, 0.2);
+        Assert.assertEquals(4.0, y_position, 0.2);
     }
 }
