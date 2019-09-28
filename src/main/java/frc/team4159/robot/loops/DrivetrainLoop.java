@@ -44,8 +44,8 @@ public class DrivetrainLoop {
     }
 
     public void setGoal(double x, double y) {
-        theta_goal = Math.atan(y / x);
-        goal = y / Math.sin(theta_goal);
+        setThetaGoal(Math.atan(y / x));
+        setForwardGoal(Math.sqrt(x * x + y * y));
     }
 
     public double[] update(double encoder, double gyro, boolean enabled) {
