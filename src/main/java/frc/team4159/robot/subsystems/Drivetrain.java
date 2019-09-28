@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import frc.team4159.robot.OI;
+
 public class Drivetrain implements Subsystem {
     private static Drivetrain instance;
     public static Drivetrain getInstance() {
@@ -13,46 +15,47 @@ public class Drivetrain implements Subsystem {
         return instance;
     }
 
-    private CANSparkMax leftMasterSpark, leftSlaveSpark, rightMasterSpark, rightSlaveSpark;
-    private CANEncoder leftMasterEncoder, leftSlaveEncoder, rightMasterEncoder, rightSlaveEncoder;
+    private OI oi;
+    private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
+    private CANEncoder left_master_encoder, left_slave_encoder, right_master_encoder, right_slave_encoder;
     private PigeonIMU pigeon;
 
     private Drivetrain() {
-        leftMasterSpark = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
-        leftSlaveSpark = new CANSparkMax(3, CANSparkMax.MotorType.kBrushless);
-        rightMasterSpark = new CANSparkMax(4, CANSparkMax.MotorType.kBrushless);
-        rightSlaveSpark = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
+        left_master_spark = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
+        left_slave_spark = new CANSparkMax(3, CANSparkMax.MotorType.kBrushless);
+        right_master_spark = new CANSparkMax(4, CANSparkMax.MotorType.kBrushless);
+        right_slave_spark = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
 
         /* Factory default hardware to prevent unexpected behavior */
-        leftMasterSpark.restoreFactoryDefaults();
-        leftSlaveSpark.restoreFactoryDefaults();
-        rightMasterSpark.restoreFactoryDefaults();
-        rightSlaveSpark.restoreFactoryDefaults();
+        left_master_spark.restoreFactoryDefaults();
+        left_slave_spark.restoreFactoryDefaults();
+        right_master_spark.restoreFactoryDefaults();
+        right_slave_spark.restoreFactoryDefaults();
 
         /* Possible fix, see https://trello.com/c/hgMtrWMB/130-cansparkmax-construction-sets-the-sensor-type-to-nosensor-v140 */
-        leftMasterEncoder = leftMasterSpark.getEncoder();
-        leftSlaveEncoder = leftSlaveSpark.getEncoder();
-        rightMasterEncoder = rightMasterSpark.getEncoder();
-        rightSlaveEncoder = rightSlaveSpark.getEncoder();
+        left_master_encoder = left_master_spark.getEncoder();
+        left_slave_encoder = left_slave_spark.getEncoder();
+        right_master_encoder = right_master_spark.getEncoder();
+        right_slave_encoder = right_slave_spark.getEncoder();
 
         /* Set to brake mode */
-        rightMasterSpark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightSlaveSpark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftMasterSpark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftSlaveSpark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        right_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        right_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        left_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        left_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
         /* Set slave talons to follow master talons */
-        leftSlaveSpark.follow(leftMasterSpark);
-        rightSlaveSpark.follow(rightMasterSpark);
+        left_slave_spark.follow(left_master_spark);
+        right_slave_spark.follow(right_master_spark);
     }
 
     @Override
     public void iterate() {
-
+        rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
     }
 
-    public void rawDrive(double left, double right) {
-        leftMasterSpark.set(left);
-        rightMasterSpark.set(right);
+    private void rawDrive(double left, double right) {
+        left_master_spark.set(left);
+        right_master_spark.set(right);
     }
 }
