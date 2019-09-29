@@ -48,7 +48,7 @@ public class ElevatorLoop {
         last_error = 0.0;
     }
 
-    public double update(double encoder, boolean limitTriggered, boolean enabled) {
+    public double update(double encoder, boolean limit_triggered, boolean enabled) {
         double position = encoder - offset;
         double max_voltage = kMaxVoltage;
         switch (state) {
@@ -59,7 +59,7 @@ public class ElevatorLoop {
             case ZEROING:
                 filtered_goal -= kZeroingVelocity * Main.dt;
                 max_voltage = kMaxZeroingVoltage;
-                if (limitTriggered) {
+                if (limit_triggered) {
                     state = State.RUNNING;
                     max_voltage = kMaxVoltage;
                     offset = encoder;
@@ -72,6 +72,7 @@ public class ElevatorLoop {
             case RUNNING:
                // if (!enabled) state = State.IDLE;
                 filtered_goal = Math.max(kSoftMinHeight, Math.min(goal, kSoftMaxHeight));
+                if (!enabled) state = State.IDLE;
                 break;
             case ESTOP:
                 break;

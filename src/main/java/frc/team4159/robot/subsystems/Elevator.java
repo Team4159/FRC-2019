@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -30,10 +31,16 @@ public class Elevator implements Subsystem {
 
         master_talon = new TalonSRX(11);
         slave_talon = new TalonSRX(12);
-        slave_talon.follow(master_talon);
-        master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         limitSwitch = new DigitalInput(0);
+
+        master_talon.setNeutralMode(NeutralMode.Coast);
+        slave_talon.setNeutralMode(NeutralMode.Coast);
+
+        master_talon.configVoltageCompSaturation(ElevatorLoop.kMaxVoltage);
+        master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        slave_talon.follow(master_talon);
     }
 
     @Override
@@ -51,6 +58,6 @@ public class Elevator implements Subsystem {
                                 master_talon.getSensorCollection().getQuadraturePosition(),
                                 limitSwitch.get(),
                                 ds.isEnabled()
-                        ) / 12.0);
+                        ) / ElevatorLoop.kMaxVoltage);
     }
 }
