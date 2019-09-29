@@ -35,7 +35,7 @@ public class Feeder implements Subsystem {
         intake_talon.setNeutralMode(NeutralMode.Brake);
 
         lifter_talon.setNeutralMode(NeutralMode.Brake);
-        lifter_talon.configVoltageCompSaturation(10);
+        lifter_talon.configVoltageCompSaturation(LifterLoopBad.kMaxVoltage);
     }
 
     @Override
