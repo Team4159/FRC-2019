@@ -36,6 +36,9 @@ public class Elevator implements Subsystem {
 
         limitSwitch = new DigitalInput(0);
 
+        master_talon.configFactoryDefault();
+        slave_talon.configFactoryDefault();
+
         master_talon.setNeutralMode(NeutralMode.Coast);
         slave_talon.setNeutralMode(NeutralMode.Coast);
 

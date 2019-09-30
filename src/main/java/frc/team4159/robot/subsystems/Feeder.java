@@ -32,6 +32,9 @@ public class Feeder implements Subsystem {
         intake_talon = new TalonSRX(9);
         lifter_talon = new TalonSRX(10);
 
+        intake_talon.configFactoryDefault();
+        lifter_talon.configFactoryDefault();
+
         intake_talon.setNeutralMode(NeutralMode.Brake);
 
         lifter_talon.setNeutralMode(NeutralMode.Brake);
