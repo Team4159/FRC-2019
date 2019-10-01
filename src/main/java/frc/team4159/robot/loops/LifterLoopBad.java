@@ -5,9 +5,9 @@ import frc.team4159.robot.Main;
 // temporary until we put limits on the lifter
 public class LifterLoopBad {
     // max lifter voltage in volts
-    public static final double kMaxVoltage = 10.0;
+    public static final double kMaxVoltage = 7.0;
     // lifter time in seconds
-    private static final double kLifterTime = 1.0;
+    private static final double kLifterTime = 0.8;
 
     public enum Position {
         UP,
@@ -48,9 +48,17 @@ public class LifterLoopBad {
         if (filtered_goal != null) {
             timesteps_since_start_move++;
 
-            if (timesteps_since_start_move * Main.dt >= kLifterTime) {
+            if (timesteps_since_start_move >= kLifterTime / Main.dt) {
                 goal = null;
                 timesteps_since_start_move = 0.0;
+                switch (position) {
+                    case UP:
+                        position = Position.DOWN;
+                        break;
+                    case DOWN:
+                        position = Position.UP;
+                        break;
+                }
             }
 
             if (filtered_goal == Position.UP) {

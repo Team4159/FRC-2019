@@ -39,6 +39,9 @@ public class Drivetrain implements Subsystem {
         right_master_encoder = right_master_spark.getEncoder();
         right_slave_encoder = right_slave_spark.getEncoder();
 
+        right_master_spark.setInverted(true);
+        right_slave_spark.setInverted(true);
+
         right_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
         right_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
         left_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);

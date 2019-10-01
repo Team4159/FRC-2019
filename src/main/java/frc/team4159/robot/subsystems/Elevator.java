@@ -34,7 +34,7 @@ public class Elevator implements Subsystem {
         master_talon = new TalonSRX(11);
         slave_talon = new TalonSRX(12);
 
-        limitSwitch = new DigitalInput(0);
+        limitSwitch = new DigitalInput(9);
 
         master_talon.configFactoryDefault();
         slave_talon.configFactoryDefault();
@@ -58,11 +58,13 @@ public class Elevator implements Subsystem {
         }
         */
 
+        /*
         master_talon.set(ControlMode.PercentOutput,
                         elevator_loop.update(
                                 master_talon.getSensorCollection().getQuadraturePosition(),
                                 limitSwitch.get(),
                                 ds.isEnabled()
                         ) / ElevatorLoop.kMaxVoltage);
+         */
     }
 }
