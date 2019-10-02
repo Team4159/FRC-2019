@@ -34,8 +34,17 @@ public class LifterTest {
     @Test
     public void Zeroes() {
         position = 500.0;
+        simulateLoop(2.0);
+
+        Assert.assertEquals(0.0, position, 0.0);
+    }
+
+    @Test
+    public void GoesToTop() {
+        position = 250.0;
+        lifter_loop.setGoal(LifterLoopGood.Position.UP);
         simulateLoop(4.0);
 
-        Assert.assertEquals(LifterLoopGood.Position.DOWN, lifter_loop.getPosition());
+        Assert.assertEquals(LifterLoopGood.kMaxVoltage / Main.dt, position, 0.0);
     }
 }

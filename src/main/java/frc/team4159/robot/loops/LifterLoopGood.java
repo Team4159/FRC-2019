@@ -12,28 +12,18 @@ public class LifterLoopGood {
     }
 
     private enum State {
-        IDLE(0),
-        ZEROING(1),
-        RUNNING(2),
-        ESTOP(3);
-
-        int value;
-        State(int value) {
-            this.value = value;
-        }
-        public int getValue() {
-            return value;
-        }
+        IDLE,
+        ZEROING,
+        RUNNING,
+        ESTOP
     }
 
-    private Position goal = null;
-    private Position position = null;
+    private Position goal = Position.DOWN;
+    private Position position = Position.DOWN;
     private State state = State.IDLE;
 
     public void setGoal(Position goal) {
-        if (goal != position) {
-            this.goal = goal;
-        }
+        this.goal = goal;
     }
 
     public double update(boolean top_limit_triggered, boolean bottom_limit_triggered, boolean enabled) {
@@ -44,24 +34,26 @@ public class LifterLoopGood {
                 if (enabled) state = State.ZEROING;
                 break;
             case ZEROING:
-                voltage = -kMaxZeroingVoltage;
-                if (bottom_limit_triggered) state = State.RUNNING;
+                if (bottom_limit_triggered) {
+                    state = State.RUNNING;
+                } else {
+                    voltage = -kMaxZeroingVoltage;
+                }
                 if (!enabled) state = State.IDLE;
                 break;
             case RUNNING:
                 if (top_limit_triggered) {
                     position = Position.UP;
-                    goal = null;
-
                 } else if (bottom_limit_triggered) {
                     position = Position.DOWN;
-                    goal = null;
                 }
 
-                if (goal == Position.DOWN) {
-                    voltage = -kMaxVoltage;
-                } else if (goal == Position.UP) {
-                    voltage = kMaxVoltage;
+                if (goal != position) {
+                    if (goal == Position.DOWN) {
+                        voltage = -kMaxVoltage;
+                    } else if (goal == Position.UP) {
+                        voltage = kMaxVoltage;
+                    }
                 }
                 if (!enabled) state = State.IDLE;
                 break;
@@ -72,11 +64,7 @@ public class LifterLoopGood {
         return voltage;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public int getState() {
-        return state.getValue();
+    public State getState() {
+        return state;
     }
 }

@@ -20,8 +20,8 @@ public class LifterLoopBad {
     }
 
     private double timesteps_since_start_move = 0.0;
-    private Position goal = null;
     private Position position = Position.DOWN;
+    private Position goal = position;
     private State state = State.IDLE;
 
     public void setGoal(Position goal) {
@@ -32,7 +32,6 @@ public class LifterLoopBad {
     }
 
     public double update(boolean enabled) {
-        Position filtered_goal = null;
         double voltage = 0.0;
 
         switch (state) {
@@ -40,16 +39,14 @@ public class LifterLoopBad {
                 if (enabled) state = State.RUNNING;
                 break;
             case RUNNING:
-                filtered_goal = goal;
                 if (!enabled) state = State.IDLE;
                 break;
         }
 
-        if (filtered_goal != null) {
+        if (goal != position) {
             timesteps_since_start_move++;
 
             if (timesteps_since_start_move >= kLifterTime / Main.dt) {
-                goal = null;
                 timesteps_since_start_move = 0.0;
                 switch (position) {
                     case UP:
@@ -59,12 +56,12 @@ public class LifterLoopBad {
                         position = Position.UP;
                         break;
                 }
-            }
-
-            if (filtered_goal == Position.UP) {
-                voltage = kMaxVoltage;
-            } else if (filtered_goal == Position.DOWN) {
-                voltage = -kMaxVoltage;
+            } else {
+                if (goal == Position.UP) {
+                    voltage = kMaxVoltage;
+                } else if (goal == Position.DOWN) {
+                    voltage = -kMaxVoltage;
+                }
             }
         }
 

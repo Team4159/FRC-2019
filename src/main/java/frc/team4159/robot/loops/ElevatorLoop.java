@@ -57,8 +57,6 @@ public class ElevatorLoop {
                 filtered_goal = 0.0;
                 break;
             case ZEROING:
-                filtered_goal -= kZeroingVelocity * Main.dt;
-                max_voltage = kMaxZeroingVoltage;
                 if (limit_triggered) {
                     state = State.RUNNING;
                     max_voltage = kMaxVoltage;
@@ -66,6 +64,9 @@ public class ElevatorLoop {
                     position = 0.0;
                     filtered_goal = goal;
                     last_error = 0.0;
+                } else {
+                    filtered_goal -= kZeroingVelocity * Main.dt;
+                    max_voltage = kMaxZeroingVoltage;
                 }
                 if (!enabled) state = State.IDLE;
                 break;
