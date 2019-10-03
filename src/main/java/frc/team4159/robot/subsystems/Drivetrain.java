@@ -28,11 +28,19 @@ public class Drivetrain implements Subsystem {
         right_master_spark = new CANSparkMax(4, CANSparkMax.MotorType.kBrushless);
         right_slave_spark = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
 
+        left_master_spark.restoreFactoryDefaults();
+        left_slave_spark.restoreFactoryDefaults();
+        right_master_spark.restoreFactoryDefaults();
+        right_slave_spark.restoreFactoryDefaults();
+
         /* Possible fix, see https://trello.com/c/hgMtrWMB/130-cansparkmax-construction-sets-the-sensor-type-to-nosensor-v140 */
         left_master_encoder = left_master_spark.getEncoder();
         left_slave_encoder = left_slave_spark.getEncoder();
         right_master_encoder = right_master_spark.getEncoder();
         right_slave_encoder = right_slave_spark.getEncoder();
+
+        right_master_spark.setInverted(true);
+        right_slave_spark.setInverted(true);
 
         right_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
         right_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);

@@ -1,6 +1,7 @@
 package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import frc.team4159.robot.OI;
 
 public class Nose implements Subsystem {
@@ -13,29 +14,13 @@ public class Nose implements Subsystem {
     }
 
     private OI oi;
-    private DoubleSolenoid raiser, hooker;
+    private DoubleSolenoid raiser, hooks;
 
     private Nose() {
         oi = OI.getInstance();
 
-        raiser = new DoubleSolenoid(0,0,4);
-        hooker = new DoubleSolenoid(0,5,1);
-    }
-
-    private void raise() {
-        raiser.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    private void lower() {
-        raiser.set(DoubleSolenoid.Value.kForward);
-    }
-
-    private void grab() {
-        hooker.set(DoubleSolenoid.Value.kForward);
-    }
-
-    private void release() {
-        hooker.set(DoubleSolenoid.Value.kReverse);
+        raiser = new DoubleSolenoid(0, 0, 4);
+        hooks = new DoubleSolenoid(0, 5, 1);
     }
 
     @Override
@@ -49,11 +34,27 @@ public class Nose implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButton(10)) {
-            if (hooker.get() == DoubleSolenoid.Value.kReverse) {
+            if (hooks.get() == DoubleSolenoid.Value.kReverse) {
                 grab();
             } else {
                 release();
             }
         }
+    }
+
+    private void raise() {
+        raiser.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    private void lower() {
+        raiser.set(DoubleSolenoid.Value.kForward);
+    }
+
+    private void grab() {
+        hooks.set(DoubleSolenoid.Value.kForward);
+    }
+
+    private void release() {
+        hooks.set(DoubleSolenoid.Value.kReverse);
     }
 }

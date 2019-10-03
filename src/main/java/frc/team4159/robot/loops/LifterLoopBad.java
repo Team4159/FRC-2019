@@ -5,9 +5,9 @@ import frc.team4159.robot.Main;
 // temporary until we put limits on the lifter
 public class LifterLoopBad {
     // max lifter voltage in volts
-    public static final double kMaxVoltage = 10.0;
+    public static final double kMaxVoltage = 7.0;
     // lifter time in seconds
-    private static final double kLifterTime = 1.0;
+    private static final double kLifterTime = 0.8;
 
     public enum Position {
         UP,
@@ -20,8 +20,8 @@ public class LifterLoopBad {
     }
 
     private double timesteps_since_start_move = 0.0;
-    private Position goal = null;
     private Position position = Position.DOWN;
+    private Position goal = position;
     private State state = State.IDLE;
 
     public void setGoal(Position goal) {
@@ -32,7 +32,6 @@ public class LifterLoopBad {
     }
 
     public double update(boolean enabled) {
-        Position filtered_goal = null;
         double voltage = 0.0;
 
         switch (state) {
@@ -40,23 +39,29 @@ public class LifterLoopBad {
                 if (enabled) state = State.RUNNING;
                 break;
             case RUNNING:
-                filtered_goal = goal;
                 if (!enabled) state = State.IDLE;
                 break;
         }
 
-        if (filtered_goal != null) {
+        if (goal != position) {
             timesteps_since_start_move++;
 
-            if (timesteps_since_start_move * Main.dt >= kLifterTime) {
-                goal = null;
+            if (timesteps_since_start_move >= kLifterTime / Main.dt) {
                 timesteps_since_start_move = 0.0;
-            }
-
-            if (filtered_goal == Position.UP) {
-                voltage = kMaxVoltage;
-            } else if (filtered_goal == Position.DOWN) {
-                voltage = -kMaxVoltage;
+                switch (position) {
+                    case UP:
+                        position = Position.DOWN;
+                        break;
+                    case DOWN:
+                        position = Position.UP;
+                        break;
+                }
+            } else {
+                if (goal == Position.UP) {
+                    voltage = kMaxVoltage;
+                } else if (goal == Position.DOWN) {
+                    voltage = -kMaxVoltage;
+                }
             }
         }
 

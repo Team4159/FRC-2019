@@ -3,6 +3,7 @@ package frc.team4159.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import frc.team4159.robot.OI;
 
 public class Grabber implements Subsystem {
@@ -32,6 +33,17 @@ public class Grabber implements Subsystem {
         slave_grabber_victor.follow(master_grabber_victor);
     }
 
+    @Override
+    public void iterate() {
+        if (oi.getSecondaryJoy().getRawButton(7)) {
+            intake();
+        } else if (oi.getSecondaryJoy().getRawButton(8)) {
+            outtake();
+        } else {
+            stop();
+        }
+    }
+
     private void intake() {
         master_grabber_victor.set(ControlMode.PercentOutput, -1);
     }
@@ -42,16 +54,5 @@ public class Grabber implements Subsystem {
 
     private void stop() {
         master_grabber_victor.set(ControlMode.PercentOutput, 0);
-    }
-
-    @Override
-    public void iterate() {
-        if (oi.getSecondaryJoy().getRawButton(7)) {
-            intake();
-        } else if (oi.getSecondaryJoy().getRawButton(8)) {
-            outtake();
-        } else {
-            stop();
-        }
     }
 }

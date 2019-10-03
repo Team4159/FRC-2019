@@ -32,16 +32,22 @@ public class Feeder implements Subsystem {
         intake_talon = new TalonSRX(9);
         lifter_talon = new TalonSRX(10);
 
-        intake_talon.setNeutralMode(NeutralMode.Brake);
+        intake_talon.configFactoryDefault();
+        lifter_talon.configFactoryDefault();
 
+        intake_talon.setNeutralMode(NeutralMode.Brake);
         lifter_talon.setNeutralMode(NeutralMode.Brake);
+
         lifter_talon.configVoltageCompSaturation(LifterLoopBad.kMaxVoltage);
+        lifter_talon.enableVoltageCompensation(true);
     }
 
     @Override
     public void iterate() {
         if (oi.getSecondaryJoy().getRawButton(7)) {
             intake();
+        } else {
+            stop();
         }
 
         if (oi.getSecondaryJoy().getRawButton(6)) {
@@ -56,5 +62,9 @@ public class Feeder implements Subsystem {
 
     private void intake() {
         intake_talon.set(ControlMode.PercentOutput, 1);
+    }
+
+    private void stop() {
+        intake_talon.set(ControlMode.PercentOutput, 0);
     }
 }
