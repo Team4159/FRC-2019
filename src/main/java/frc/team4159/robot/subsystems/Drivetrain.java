@@ -60,10 +60,21 @@ public class Drivetrain implements Subsystem {
     @Override
     public void iterate() {
         rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
+
+        if (oi.getRightJoy().getRawButtonPressed(2)) {
+            flipOrientation();
+        }
     }
 
     private void rawDrive(double left, double right) {
         left_master_spark.set(left);
         right_master_spark.set(right);
+    }
+
+    private void flipOrientation() {
+        right_master_spark.setInverted(!right_master_spark.getInverted());
+        right_slave_spark.setInverted(!right_slave_spark.getInverted());
+        left_master_spark.setInverted(!left_master_spark.getInverted());
+        left_slave_spark.setInverted(!left_slave_spark.getInverted());
     }
 }
