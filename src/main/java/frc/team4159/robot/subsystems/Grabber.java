@@ -16,18 +16,21 @@ public class Grabber implements Subsystem {
     }
 
     private OI oi;
-    private VictorSPX grabber_victor_one, grabber_victor_two;
+    private VictorSPX master_grabber_victor, slave_grabber_victor;
 
     private Grabber() {
         oi = OI.getInstance();
-        grabber_victor_one = new VictorSPX(8);
-        grabber_victor_two = new VictorSPX(5);
+        master_grabber_victor = new VictorSPX(8);
+        slave_grabber_victor = new VictorSPX(5);
 
-        grabber_victor_one.configFactoryDefault();
-        grabber_victor_two.configFactoryDefault();
+        master_grabber_victor.configFactoryDefault();
+        slave_grabber_victor.configFactoryDefault();
 
-        grabber_victor_one.setNeutralMode(NeutralMode.Brake);
-        grabber_victor_two.setNeutralMode(NeutralMode.Brake);
+        master_grabber_victor.setNeutralMode(NeutralMode.Brake);
+        slave_grabber_victor.setNeutralMode(NeutralMode.Brake);
+
+        slave_grabber_victor.setInverted(true);
+        slave_grabber_victor.follow(master_grabber_victor);
     }
 
     @Override
@@ -42,17 +45,15 @@ public class Grabber implements Subsystem {
     }
 
     private void intake() {
-        grabber_victor_one.set(ControlMode.PercentOutput, -1);
-        grabber_victor_two.set(ControlMode.PercentOutput, +1);
+        master_grabber_victor.set(ControlMode.PercentOutput, -1);
     }
 
     private void outtake() {
-        grabber_victor_one.set(ControlMode.PercentOutput, +1);
-        grabber_victor_two.set(ControlMode.PercentOutput, -1);
+        master_grabber_victor.set(ControlMode.PercentOutput, +1);
     }
 
     private void stop() {
-        grabber_victor_one.set(ControlMode.PercentOutput, -0.1);
-        grabber_victor_two.set(ControlMode.PercentOutput, 0.1);
+        /* Prevents ball from slipping out due to lexan fitting underneath the intake */
+        master_grabber_victor.set(ControlMode.PercentOutput, -0.1);
     }
 }

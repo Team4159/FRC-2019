@@ -39,6 +39,7 @@ public class Drivetrain implements Subsystem {
         right_master_encoder = right_master_spark.getEncoder();
         right_slave_encoder = right_slave_spark.getEncoder();
 
+        /* Possible fix for spontaneous inversion of motors */
         left_master_spark.setSmartCurrentLimit(40);
         left_slave_spark.setSmartCurrentLimit(40);
         right_master_spark.setSmartCurrentLimit(40);
@@ -59,10 +60,21 @@ public class Drivetrain implements Subsystem {
     @Override
     public void iterate() {
         rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
+
+        if (oi.getRightJoy().getRawButtonPressed(2)) {
+            flipOrientation();
+        }
     }
 
     private void rawDrive(double left, double right) {
         left_master_spark.set(left);
         right_master_spark.set(right);
+    }
+
+    private void flipOrientation() {
+        right_master_spark.setInverted(!right_master_spark.getInverted());
+        right_slave_spark.setInverted(!right_slave_spark.getInverted());
+        left_master_spark.setInverted(!left_master_spark.getInverted());
+        left_slave_spark.setInverted(!left_slave_spark.getInverted());
     }
 }

@@ -22,6 +22,7 @@ public class Elevator implements Subsystem {
 
     private ElevatorLoop elevator_loop;
     private DriverStation ds;
+    private OI oi;
 
     private TalonSRX master_talon;
     private TalonSRX slave_talon;
@@ -29,6 +30,7 @@ public class Elevator implements Subsystem {
     private DigitalInput limitSwitch;
 
     private Elevator() {
+        oi = OI.getInstance();
         elevator_loop = new ElevatorLoop();
         ds = DriverStation.getInstance();
 
@@ -59,7 +61,7 @@ public class Elevator implements Subsystem {
         }
         */
 
-        master_talon.set(ControlMode.PercentOutput, OI.getInstance().getSecondaryJoy().getY());
+        master_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
 
         /*
         master_talon.set(ControlMode.PercentOutput,
