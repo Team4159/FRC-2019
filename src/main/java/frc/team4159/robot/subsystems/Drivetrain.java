@@ -3,7 +3,6 @@ package frc.team4159.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
-
 import frc.team4159.robot.OI;
 
 public class Drivetrain implements Subsystem {
