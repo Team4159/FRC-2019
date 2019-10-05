@@ -25,7 +25,7 @@ public class Nose implements Subsystem {
 
     @Override
     public void iterate() {
-        if (oi.getSecondaryJoy().getRawButton(5)) {
+        if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
             if (raiser.get() == DoubleSolenoid.Value.kForward) {
                 raise();
             } else {
@@ -33,11 +33,11 @@ public class Nose implements Subsystem {
             }
         }
 
-        if (oi.getSecondaryJoy().getRawButton(10)) {
-            if (hooks.get() == DoubleSolenoid.Value.kReverse) {
-                grab();
-            } else {
+        if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
+            if (hooks.get() == DoubleSolenoid.Value.kForward) {
                 release();
+            } else {
+                grab();
             }
         }
     }

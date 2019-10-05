@@ -20,7 +20,7 @@ public class LifterLoopBad {
     }
 
     private double timesteps_since_start_move = 0.0;
-    private Position position = Position.DOWN;
+    private Position position = Position.UP;
     private Position goal = position;
     private State state = State.IDLE;
 

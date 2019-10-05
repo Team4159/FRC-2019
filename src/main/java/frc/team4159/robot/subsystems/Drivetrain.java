@@ -3,7 +3,7 @@ package frc.team4159.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
-
+//hi lol
 import frc.team4159.robot.OI;
 
 public class Drivetrain implements Subsystem {
@@ -38,6 +38,11 @@ public class Drivetrain implements Subsystem {
         left_slave_encoder = left_slave_spark.getEncoder();
         right_master_encoder = right_master_spark.getEncoder();
         right_slave_encoder = right_slave_spark.getEncoder();
+
+        left_master_spark.setSmartCurrentLimit(40);
+        left_slave_spark.setSmartCurrentLimit(40);
+        right_master_spark.setSmartCurrentLimit(40);
+        right_slave_spark.setSmartCurrentLimit(40);
 
         right_master_spark.setInverted(true);
         right_slave_spark.setInverted(true);

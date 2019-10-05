@@ -52,7 +52,7 @@ public class Grabber implements Subsystem {
     }
 
     private void stop() {
-        grabber_victor_one.set(ControlMode.PercentOutput, 0);
-        grabber_victor_two.set(ControlMode.PercentOutput, 0);
+        grabber_victor_one.set(ControlMode.PercentOutput, -0.1);
+        grabber_victor_two.set(ControlMode.PercentOutput, 0.1);
     }
 }

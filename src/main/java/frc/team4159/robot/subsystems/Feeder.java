@@ -50,9 +50,9 @@ public class Feeder implements Subsystem {
             stop();
         }
 
-        if (oi.getSecondaryJoy().getRawButton(6)) {
+        if (oi.getSecondaryJoy().getRawButton(9)) {
             lifter_loop.setGoal(LifterLoopBad.Position.DOWN);
-        } else if (oi.getSecondaryJoy().getRawButton(9)) {
+        } else if (oi.getSecondaryJoy().getRawButton(6)) {
             lifter_loop.setGoal(LifterLoopBad.Position.UP);
         }
 

@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.team4159.robot.OI;
 import frc.team4159.robot.loops.ElevatorLoop;
 
 public class Elevator implements Subsystem {
@@ -57,6 +58,8 @@ public class Elevator implements Subsystem {
 
         }
         */
+
+        master_talon.set(ControlMode.PercentOutput, OI.getInstance().getSecondaryJoy().getY());
 
         /*
         master_talon.set(ControlMode.PercentOutput,
