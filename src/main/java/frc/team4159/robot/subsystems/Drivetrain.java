@@ -39,6 +39,12 @@ public class Drivetrain implements Subsystem {
         right_master_encoder = right_master_spark.getEncoder();
         right_slave_encoder = right_slave_spark.getEncoder();
 
+        /* Possible fix for spontaneous inversion of motors */
+        left_master_spark.setSmartCurrentLimit(40);
+        left_slave_spark.setSmartCurrentLimit(40);
+        right_master_spark.setSmartCurrentLimit(40);
+        right_slave_spark.setSmartCurrentLimit(40);
+
         right_master_spark.setInverted(true);
         right_slave_spark.setInverted(true);
 
