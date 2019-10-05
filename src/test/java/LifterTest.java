@@ -34,7 +34,7 @@ public class LifterTest {
     @Test
     public void Zeroes() {
         position = 500.0;
-        simulateLoop(2.0);
+        simulateLoop(4.0);
 
         Assert.assertEquals(0.0, position, 0.0);
     }
