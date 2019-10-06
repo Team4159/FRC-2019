@@ -15,10 +15,16 @@ public class Drivetrain implements Subsystem {
         return instance;
     }
 
+    private enum Orientation {
+        HATCH,
+        CARGO
+    }
+
     private OI oi;
     private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
     private CANEncoder left_master_encoder, left_slave_encoder, right_master_encoder, right_slave_encoder;
     private PigeonIMU pigeon;
+    private Orientation orientation = Orientation.CARGO;
 
     private Drivetrain() {
         oi = OI.getInstance();
@@ -40,10 +46,10 @@ public class Drivetrain implements Subsystem {
         right_slave_encoder = right_slave_spark.getEncoder();
 
         /* Possible fix for spontaneous inversion of motors */
-        left_master_spark.setSmartCurrentLimit(40);
-        left_slave_spark.setSmartCurrentLimit(40);
-        right_master_spark.setSmartCurrentLimit(40);
-        right_slave_spark.setSmartCurrentLimit(40);
+        left_master_spark.setSmartCurrentLimit(30);
+        left_slave_spark.setSmartCurrentLimit(30);
+        right_master_spark.setSmartCurrentLimit(30);
+        right_slave_spark.setSmartCurrentLimit(30);
 
         right_master_spark.setInverted(true);
         right_slave_spark.setInverted(true);
@@ -55,20 +61,30 @@ public class Drivetrain implements Subsystem {
 
         left_slave_spark.follow(left_master_spark);
         right_slave_spark.follow(right_master_spark);
+
+        left_master_spark.burnFlash();
+        left_slave_spark.burnFlash();
+        right_master_spark.burnFlash();
+        right_slave_spark.burnFlash();
     }
 
     @Override
     public void iterate() {
-        rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
-
         if (oi.getRightJoy().getRawButtonPressed(2)) {
             flipOrientation();
         }
+
+        rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
     }
 
     private void rawDrive(double left, double right) {
-        left_master_spark.set(left);
-        right_master_spark.set(right);
+        if (orientation == Orientation.CARGO) {
+            left_master_spark.set(left);
+            right_master_spark.set(right);
+        } else if (orientation == Orientation.HATCH) {
+            left_master_spark.set(right);
+            right_master_spark.set(left);
+        }
     }
 
     private void flipOrientation() {
@@ -76,5 +92,13 @@ public class Drivetrain implements Subsystem {
         right_slave_spark.setInverted(!right_slave_spark.getInverted());
         left_master_spark.setInverted(!left_master_spark.getInverted());
         left_slave_spark.setInverted(!left_slave_spark.getInverted());
+        switch (orientation) {
+            case HATCH:
+                orientation = Orientation.CARGO;
+                break;
+            case CARGO:
+                orientation = Orientation.HATCH;
+                break;
+        }
     }
 }

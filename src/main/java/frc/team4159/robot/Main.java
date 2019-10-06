@@ -1,6 +1,5 @@
 package frc.team4159.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -16,8 +15,6 @@ public class Main {
         startSubsystem(Feeder.getInstance());
         startSubsystem(Nose.getInstance());
         startSubsystem(Grabber.getInstance());
-        CameraServer.getInstance().startAutomaticCapture("Hatch", 0);
-        CameraServer.getInstance().startAutomaticCapture("Cargo", 1);
         RobotBase.startRobot(Robot::new);
     }
 

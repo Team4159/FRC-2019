@@ -54,6 +54,6 @@ public class Grabber implements Subsystem {
 
     private void stop() {
         /* Prevents ball from slipping out due to lexan fitting underneath the intake */
-        master_grabber_victor.set(ControlMode.PercentOutput, -0.1);
+        master_grabber_victor.set(ControlMode.PercentOutput, -0.15);
     }
 }
