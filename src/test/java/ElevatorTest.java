@@ -40,13 +40,13 @@ public class ElevatorTest {
     private double velocity = 0.0;
 
     // elevator's control loop
-    private ElevatorLoop elevator_loop = new ElevatorLoop();
+    public ElevatorLoop elevator_loop = new ElevatorLoop();
 
     private double getAcceleration(double voltage) {
         return (voltage - (kG * velocity) / (kr * Kv)) * (kG * Kt) / (kResistance * kr * kMass);
     }
 
-    private void simulateTime(double voltage, double time) {
+    public void simulateTime(double voltage, double time) {
         Assert.assertTrue(voltage <= ElevatorLoop.kMaxVoltage);
         Assert.assertTrue(voltage >= -ElevatorLoop.kMaxVoltage);
         // simulation timeslice in seconds
@@ -88,15 +88,15 @@ public class ElevatorTest {
         }
     }
 
-    private boolean limitSwitch() {
+    public boolean limitSwitch() {
         return position <= 0.0;
     }
 
-    private void setStartingPosition(double starting_position) {
+    public void setStartingPosition(double starting_position) {
         this.starting_position = position =  starting_position;
     }
 
-    private double encoder() {
+    public double encoder() {
         return position - starting_position;
     }
 
