@@ -31,7 +31,8 @@ public class CollisionAvoidanceTest {
                     raiser_state,
                     (int) elevator_test.encoder()
             );
-            Assert.assertFalse(elevator_test.encoder() > CollisionAvoidance.kRaiserMinDangerousHeight && raiser_state && elevator_test.encoder() < CollisionAvoidance.kRaiserMaxDangerousHeight);
+            Assert.assertTrue((elevator_test.encoder() < CollisionAvoidance.kRaiserMinDangerousHeight || elevator_test.encoder() > CollisionAvoidance.kRaiserMaxDangerousHeight) && (raiser_goal == raiser_state));
+            Assert.assertTrue(elevator_test.encoder() > CollisionAvoidance.kRaiserMinDangerousHeight && elevator_test.encoder() < CollisionAvoidance.kRaiserMaxDangerousHeight && !raiser_state);
         }
     }
 }
