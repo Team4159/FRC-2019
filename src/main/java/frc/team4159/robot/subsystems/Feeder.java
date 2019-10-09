@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.loops.LifterLoopBad;
 
@@ -29,8 +30,8 @@ public class Feeder implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        intake_talon = new TalonSRX(9);
-        lifter_talon = new TalonSRX(10);
+        intake_talon = new TalonSRX(Constants.Ports.INTAKE_TALON);
+        lifter_talon = new TalonSRX(Constants.Ports.LIFTER_TALON);
 
         intake_talon.configFactoryDefault();
         lifter_talon.configFactoryDefault();

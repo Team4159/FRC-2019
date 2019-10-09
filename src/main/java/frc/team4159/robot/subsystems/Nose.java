@@ -2,6 +2,7 @@ package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
 public class Nose implements Subsystem {
@@ -19,8 +20,8 @@ public class Nose implements Subsystem {
     private Nose() {
         oi = OI.getInstance();
 
-        raiser = new DoubleSolenoid(0, 0, 4);
-        hooks = new DoubleSolenoid(0, 5, 1);
+        raiser = new DoubleSolenoid(0, Constants.Ports.RAISER_FORWARD, Constants.Ports.RAISER_REVERSE);
+        hooks = new DoubleSolenoid(0, Constants.Ports.HOOKS_FORWARD, Constants.Ports.HOOKS_REVERSE);
     }
 
     @Override

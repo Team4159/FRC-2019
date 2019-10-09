@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
 public class Grabber implements Subsystem {
@@ -20,8 +21,8 @@ public class Grabber implements Subsystem {
 
     private Grabber() {
         oi = OI.getInstance();
-        master_grabber_victor = new VictorSPX(8);
-        slave_grabber_victor = new VictorSPX(5);
+        master_grabber_victor = new VictorSPX(Constants.Ports.GRABBER_MASTER_VICTOR);
+        slave_grabber_victor = new VictorSPX(Constants.Ports.GRABBER_SLAVE_VICTOR);
 
         master_grabber_victor.configFactoryDefault();
         slave_grabber_victor.configFactoryDefault();

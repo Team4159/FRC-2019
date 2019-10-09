@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.loops.ElevatorLoop;
 
@@ -34,8 +35,8 @@ public class Elevator implements Subsystem {
         elevator_loop = new ElevatorLoop();
         ds = DriverStation.getInstance();
 
-        master_talon = new TalonSRX(11);
-        slave_talon = new TalonSRX(12);
+        master_talon = new TalonSRX(Constants.Ports.ELEVATOR_MASTER_TALON);
+        slave_talon = new TalonSRX(Constants.Ports.ELEVATOR_SLAVE_TALON);
 
         limitSwitch = new DigitalInput(9);
 

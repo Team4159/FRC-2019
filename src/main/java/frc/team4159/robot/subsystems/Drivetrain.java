@@ -5,6 +5,7 @@ import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
 import frc.team4159.robot.OI;
+import frc.team4159.robot.Constants;
 
 public class Drivetrain implements Subsystem {
     private static Drivetrain instance;
@@ -29,10 +30,10 @@ public class Drivetrain implements Subsystem {
     private Drivetrain() {
         oi = OI.getInstance();
 
-        left_master_spark = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
-        left_slave_spark = new CANSparkMax(3, CANSparkMax.MotorType.kBrushless);
-        right_master_spark = new CANSparkMax(4, CANSparkMax.MotorType.kBrushless);
-        right_slave_spark = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
+        left_master_spark = new CANSparkMax(Constants.Ports.LEFT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        left_slave_spark = new CANSparkMax(Constants.Ports.LEFT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
+        right_master_spark = new CANSparkMax(Constants.Ports.RIGHT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        right_slave_spark = new CANSparkMax(Constants.Ports.RIGHT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
 
         left_master_spark.restoreFactoryDefaults();
         left_slave_spark.restoreFactoryDefaults();
@@ -46,10 +47,10 @@ public class Drivetrain implements Subsystem {
         right_slave_encoder = right_slave_spark.getEncoder();
 
         /* Possible fix for spontaneous inversion of motors */
-        left_master_spark.setSmartCurrentLimit(30);
-        left_slave_spark.setSmartCurrentLimit(30);
-        right_master_spark.setSmartCurrentLimit(30);
-        right_slave_spark.setSmartCurrentLimit(30);
+        left_master_spark.setSmartCurrentLimit(40);
+        left_slave_spark.setSmartCurrentLimit(40);
+        right_master_spark.setSmartCurrentLimit(40);
+        right_slave_spark.setSmartCurrentLimit(40);
 
         right_master_spark.setInverted(true);
         right_slave_spark.setInverted(true);
