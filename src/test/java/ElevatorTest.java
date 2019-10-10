@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import frc.team4159.robot.Main;
-import frc.team4159.robot.Utils;
+import frc.team4159.robot.RobotMath;
 import frc.team4159.robot.loops.ElevatorLoop;
 
 /**
@@ -22,15 +22,15 @@ public class ElevatorTest {
     // resistance of the motor in ohms
     private final double kResistance = 12.0 / 134.0;
     // motor velocity constant in RPM per volt
-    private final double Kv = Utils.RPMtoRadiansPerSec(18730.0) / (12.0 - 0.7 * kResistance);
+    private final double Kv = RobotMath.RPMtoRadiansPerSec(18730.0) / (12.0 - 0.7 * kResistance);
     // motor torque constant in torque per amp
     private final double Kt = 0.71 / 134.0;
     // gear ratio
     private final double kG = 12.8;
     // gear radius in meters
-    private final double kr = Utils.FeettoMeters(1.751 / 12.0);
+    private final double kr = RobotMath.FeettoMeters(1.751 / 12.0);
     // mass of load in kgs
-    private final double kMass = Utils.PoundstoKgs(30.0);
+    private final double kMass = RobotMath.PoundstoKgs(30.0);
 
     // position in m
     private double position = 0.0;

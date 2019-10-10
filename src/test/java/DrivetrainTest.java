@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import frc.team4159.robot.Main;
-import frc.team4159.robot.Utils;
+import frc.team4159.robot.RobotMath;
 import frc.team4159.robot.loops.DrivetrainLoop;
 
 /**
@@ -23,17 +23,17 @@ public class DrivetrainTest {
     // resistance of the motor in ohms
     private final double kResistance = 12.0 / 105.0;
     // motor velocity constant in RPM per volt
-    private final double Kv = Utils.RPMtoRadiansPerSec(5676.0) / (12.0 - 1.8 * kResistance);
+    private final double Kv = RobotMath.RPMtoRadiansPerSec(5676.0) / (12.0 - 1.8 * kResistance);
     // motor torque constant in torque per amp
     private final double Kt = 2.6 / 105.0;
     // gear ratio
     private final double kG = 7.36;
     // wheel radius in meters
-    private final double kr = Utils.FeettoMeters(3.0 / 12.0);
+    private final double kr = RobotMath.FeettoMeters(3.0 / 12.0);
     // mass of load in kgs
-    private final double kMass = Utils.PoundstoKgs(121.4);
+    private final double kMass = RobotMath.PoundstoKgs(121.4);
     // width of robot in meters
-    private final double width = Utils.FeettoMeters(27.0 / 12.0);
+    private final double width = RobotMath.FeettoMeters(27.0 / 12.0);
 
     // position in m
     private double displacement = 0.0;
@@ -77,10 +77,10 @@ public class DrivetrainTest {
             left_velocity += left_acceleration * kSimTime;
             right_velocity += right_acceleration * kSimTime;
 
-            x_position += ((left_velocity + right_velocity) / 2.0) * (Math.cos(angle) * kSimTime);
-            y_position += ((left_velocity + right_velocity) / 2.0) * (Math.sin(angle) * kSimTime);
+            x_position += ((left_velocity + right_velocity) / 2.0) * (java.lang.Math.cos(angle) * kSimTime);
+            y_position += ((left_velocity + right_velocity) / 2.0) * (java.lang.Math.sin(angle) * kSimTime);
 
-            displacement = Math.sqrt(x_position*x_position + y_position*y_position);
+            displacement = java.lang.Math.sqrt(x_position*x_position + y_position*y_position);
 
             time -= kSimTime;
         }
@@ -136,16 +136,16 @@ public class DrivetrainTest {
 
     @Test
     public void RightAngleTurn() {
-        drivetrain_loop.setThetaGoal(Math.PI / 2.0);
+        drivetrain_loop.setThetaGoal(java.lang.Math.PI / 2.0);
         simulateLoop(7.0);
 
-        Assert.assertEquals(Math.PI / 2.0, angle, 0.1);
+        Assert.assertEquals(java.lang.Math.PI / 2.0, angle, 0.1);
         Assert.assertEquals(0.0, displacement, 0.0);
     }
 
     @Test
     public void GoDiagonallyFiveMeters() {
-        drivetrain_loop.setThetaGoal(Math.atan(4.0/3.0));
+        drivetrain_loop.setThetaGoal(java.lang.Math.atan(4.0/3.0));
         drivetrain_loop.setForwardGoal(5.0);
         simulateLoop(7.0);
 

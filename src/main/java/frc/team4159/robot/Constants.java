@@ -1,32 +1,31 @@
 package frc.team4159.robot;
 
 public class Constants {
-    public static class Ports {
-        public static int LEFT_MASTER_SPARK = 2;
-        public static int LEFT_SLAVE_SPARK = 3;
-        public static int RIGHT_MASTER_SPARK = 4;
-        public static int RIGHT_SLAVE_SPARK = 5;
+    // Ports
+    public static int LEFT_MASTER_SPARK = 2;
+    public static int LEFT_SLAVE_SPARK = 3;
+    public static int RIGHT_MASTER_SPARK = 4;
+    public static int RIGHT_SLAVE_SPARK = 5;
 
-        public static int ELEVATOR_MASTER_TALON = 11;
-        public static int ELEVATOR_SLAVE_TALON = 15;
+    public static int ELEVATOR_MASTER_TALON = 11;
+    public static int ELEVATOR_SLAVE_TALON = 15;
 
-        public static int INTAKE_TALON = 9;
-        public static int LIFTER_TALON = 10;
+    public static int INTAKE_TALON = 9;
+    public static int LIFTER_TALON = 10;
 
-        public static int GRABBER_MASTER_VICTOR = 8;
-        public static int GRABBER_SLAVE_VICTOR = 5;
+    public static int GRABBER_MASTER_VICTOR = 8;
+    public static int GRABBER_SLAVE_VICTOR = 5;
 
-        public static int RAISER_FORWARD = 0;
-        public static int RAISER_REVERSE = 4;
+    public static int RAISER_FORWARD = 0;
+    public static int RAISER_REVERSE = 4;
 
-        public static int HOOKS_FORWARD = 5;
-        public static int HOOKS_REVERSE = 1;
+    public static int HOOKS_FORWARD = 5;
+    public static int HOOKS_REVERSE = 1;
 
-        public static int ELEVATOR_LIMIT_SWITCH = 9;
-    }
-    public static class RobotMath {
-        public static double ELEVATOR_SPROCKET_RADIUS = Utils.FeettoMeters(1.751 / 12.0);
-        public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
-        public static double TICKS_PER_REV = 4096.0;
-    }
+    public static int ELEVATOR_LIMIT_SWITCH = 9;
+
+    // Math-y Stuff
+    public static double ELEVATOR_SPROCKET_RADIUS = frc.team4159.robot.RobotMath.FeettoMeters(1.751 / 12.0);
+    public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * java.lang.Math.PI * 2;
+    public static double TICKS_PER_REV = 4096.0;
 }

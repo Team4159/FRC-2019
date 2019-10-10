@@ -30,8 +30,8 @@ public class Feeder implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        intake_talon = new TalonSRX(Constants.Ports.INTAKE_TALON);
-        lifter_talon = new TalonSRX(Constants.Ports.LIFTER_TALON);
+        intake_talon = new TalonSRX(Constants.INTAKE_TALON);
+        lifter_talon = new TalonSRX(Constants.LIFTER_TALON);
 
         intake_talon.configFactoryDefault();
         lifter_talon.configFactoryDefault();

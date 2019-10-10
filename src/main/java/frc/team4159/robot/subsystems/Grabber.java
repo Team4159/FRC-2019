@@ -21,8 +21,8 @@ public class Grabber implements Subsystem {
 
     private Grabber() {
         oi = OI.getInstance();
-        master_grabber_victor = new VictorSPX(Constants.Ports.GRABBER_MASTER_VICTOR);
-        slave_grabber_victor = new VictorSPX(Constants.Ports.GRABBER_SLAVE_VICTOR);
+        master_grabber_victor = new VictorSPX(Constants.GRABBER_MASTER_VICTOR);
+        slave_grabber_victor = new VictorSPX(Constants.GRABBER_SLAVE_VICTOR);
 
         master_grabber_victor.configFactoryDefault();
         slave_grabber_victor.configFactoryDefault();

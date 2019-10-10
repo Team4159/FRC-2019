@@ -1,6 +1,6 @@
 package frc.team4159.robot;
 
-public class Utils {
+public class RobotMath {
     public static double RPMtoRadiansPerSec(double RPM) {
         return RPM * 2 * Math.PI / 60;
     }
@@ -9,5 +9,8 @@ public class Utils {
     }
     public static double PoundstoKgs(double pounds) {
         return pounds / 2.205;
+    }
+    public static double MeterstoTicks(double meters, double radius, double ticksPerRev) {
+        return meters / (radius * 2 * Math.PI) * ticksPerRev;
     }
 }

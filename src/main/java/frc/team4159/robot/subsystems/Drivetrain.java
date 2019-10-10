@@ -30,10 +30,10 @@ public class Drivetrain implements Subsystem {
     private Drivetrain() {
         oi = OI.getInstance();
 
-        left_master_spark = new CANSparkMax(Constants.Ports.LEFT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
-        left_slave_spark = new CANSparkMax(Constants.Ports.LEFT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
-        right_master_spark = new CANSparkMax(Constants.Ports.RIGHT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
-        right_slave_spark = new CANSparkMax(Constants.Ports.RIGHT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
+        left_master_spark = new CANSparkMax(Constants.LEFT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        left_slave_spark = new CANSparkMax(Constants.LEFT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
+        right_master_spark = new CANSparkMax(Constants.RIGHT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        right_slave_spark = new CANSparkMax(Constants.RIGHT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
 
         left_master_spark.restoreFactoryDefaults();
         left_slave_spark.restoreFactoryDefaults();

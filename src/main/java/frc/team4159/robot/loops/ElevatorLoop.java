@@ -11,7 +11,7 @@ public class ElevatorLoop {
     // max elevator voltage in volts
     public static final double kMaxVoltage = 12.0;
     // max elevator height in meters
-    public static final double kMaxHeight = Constants.RobotMath.ELEVATOR_SPROCKET_RADIUS;
+    public static final double kMaxHeight = Constants.ELEVATOR_SPROCKET_RADIUS;
     // min elevator height in meters
     public static final double kMinHeight = 0.0;
     // soft max elevator height in meters

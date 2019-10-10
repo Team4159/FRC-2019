@@ -20,8 +20,8 @@ public class Nose implements Subsystem {
     private Nose() {
         oi = OI.getInstance();
 
-        raiser = new DoubleSolenoid(0, Constants.Ports.RAISER_FORWARD, Constants.Ports.RAISER_REVERSE);
-        hooks = new DoubleSolenoid(0, Constants.Ports.HOOKS_FORWARD, Constants.Ports.HOOKS_REVERSE);
+        raiser = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
+        hooks = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
     }
 
     @Override
