@@ -28,7 +28,7 @@ public class Elevator implements Subsystem {
     private TalonSRX master_talon;
     private TalonSRX slave_talon;
 
-    private DigitalInput limitSwitch;
+    private DigitalInput limit_switch;
 
     private Elevator() {
         oi = OI.getInstance();
@@ -38,7 +38,7 @@ public class Elevator implements Subsystem {
         master_talon = new TalonSRX(Constants.Ports.ELEVATOR_MASTER_TALON);
         slave_talon = new TalonSRX(Constants.Ports.ELEVATOR_SLAVE_TALON);
 
-        limitSwitch = new DigitalInput(9);
+        limit_switch = new DigitalInput(Constants.Ports.ELEVATOR_LIMIT_SWITCH);
 
         master_talon.configFactoryDefault();
         slave_talon.configFactoryDefault();
@@ -46,7 +46,6 @@ public class Elevator implements Subsystem {
         master_talon.setNeutralMode(NeutralMode.Coast);
         slave_talon.setNeutralMode(NeutralMode.Coast);
 
-        master_talon.configVoltageCompSaturation(ElevatorLoop.kMaxVoltage);
         master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         slave_talon.follow(master_talon);
@@ -62,7 +61,18 @@ public class Elevator implements Subsystem {
         }
         */
 
-        master_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
+        double voltage = elevator_loop.update(
+                master_talon.getSelectedSensorPosition() / Constants.RobotMath.TICKS_PER_REV * Constants.RobotMath.ELEVATOR_SPROCKET_CIRCUMFERENCE,
+                !limit_switch.get(),
+                ds.isEnabled()
+        );
+
+        master_talon.set(ControlMode.PercentOutput, voltage / 12.0);
+
+        if (elevator_loop.getState() == 2) {
+            System.out.println("Running");
+            System.out.println("Voltage: " + voltage + " Position: " + master_talon.getSelectedSensorPosition() / Constants.RobotMath.TICKS_PER_REV * Constants.RobotMath.ELEVATOR_SPROCKET_CIRCUMFERENCE);
+        }
 
         /*
         master_talon.set(ControlMode.PercentOutput,

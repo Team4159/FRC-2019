@@ -21,5 +21,12 @@ public class Constants {
 
         public static int HOOKS_FORWARD = 5;
         public static int HOOKS_REVERSE = 1;
+
+        public static int ELEVATOR_LIMIT_SWITCH = 9;
+    }
+    public static class RobotMath {
+        public static double ELEVATOR_SPROCKET_RADIUS = Utils.FeettoMeters(1.751 / 12.0);
+        public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
+        public static double TICKS_PER_REV = 4096.0;
     }
 }

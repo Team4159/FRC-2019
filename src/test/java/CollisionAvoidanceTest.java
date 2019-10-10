@@ -4,7 +4,7 @@ import frc.team4159.robot.Main;
 import frc.team4159.robot.loops.ElevatorLoop;
 import org.junit.*;
 
-public class CollisionAvoidanceTest {
+public class CollisionAvoidanceTest extends ElevatorTest {
     private CollisionAvoidance collision_avoidance = new CollisionAvoidance();
 
     @Before
