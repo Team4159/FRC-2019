@@ -1,7 +1,7 @@
 package frc.team4159.robot.loops;
 
-import frc.team4159.robot.Constants;
 import frc.team4159.robot.Main;
+import frc.team4159.robot.RobotMath;
 
 public class ElevatorLoop {
     // target velocity when zeroing in m/s
@@ -11,7 +11,7 @@ public class ElevatorLoop {
     // max elevator voltage in volts
     public static final double kMaxVoltage = 12.0;
     // max elevator height in meters
-    public static final double kMaxHeight = Constants.ELEVATOR_SPROCKET_RADIUS;
+    public static final double kMaxHeight = RobotMath.FeettoMeters(62.0 / 12);
     // min elevator height in meters
     public static final double kMinHeight = 0.0;
     // soft max elevator height in meters
@@ -79,7 +79,7 @@ public class ElevatorLoop {
                 break;
         }
 
-        double kP = 25.0;
+        double kP = 100.0;
         double kD = 25.0;
 
         error = filtered_goal - position;

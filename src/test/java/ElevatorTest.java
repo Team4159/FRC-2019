@@ -1,3 +1,4 @@
+import frc.team4159.robot.Constants;
 import org.junit.*;
 import org.junit.rules.TestName;
 
@@ -28,7 +29,7 @@ public class ElevatorTest {
     // gear ratio
     private final double kG = 12.8;
     // gear radius in meters
-    private final double kr = RobotMath.FeettoMeters(1.751 / 12.0);
+    private final double kr = Constants.ELEVATOR_SPROCKET_RADIUS;
     // mass of load in kgs
     private final double kMass = RobotMath.PoundstoKgs(30.0);
 
