@@ -1,7 +1,6 @@
 package frc.team4159.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
 import frc.team4159.robot.OI;
@@ -23,50 +22,32 @@ public class Drivetrain implements Subsystem {
 
     private OI oi;
     private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
-    private CANEncoder left_master_encoder, left_slave_encoder, right_master_encoder, right_slave_encoder;
     private PigeonIMU pigeon;
     private Orientation orientation = Orientation.CARGO;
 
+    @SuppressWarnings("ConstantConditions")
     private Drivetrain() {
         oi = OI.getInstance();
 
         left_master_spark = new CANSparkMax(Constants.LEFT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        configureSparkMax(left_master_spark, !(orientation == Orientation.CARGO), null);
         left_slave_spark = new CANSparkMax(Constants.LEFT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
+        configureSparkMax(left_slave_spark, !(orientation == Orientation.CARGO), left_master_spark);
         right_master_spark = new CANSparkMax(Constants.RIGHT_MASTER_SPARK, CANSparkMax.MotorType.kBrushless);
+        configureSparkMax(right_master_spark, orientation == Orientation.CARGO, null);
         right_slave_spark = new CANSparkMax(Constants.RIGHT_SLAVE_SPARK, CANSparkMax.MotorType.kBrushless);
+        configureSparkMax(right_slave_spark, orientation == Orientation.CARGO, right_master_spark);
+    }
 
-        left_master_spark.restoreFactoryDefaults();
-        left_slave_spark.restoreFactoryDefaults();
-        right_master_spark.restoreFactoryDefaults();
-        right_slave_spark.restoreFactoryDefaults();
-
-        /* Possible fix, see https://trello.com/c/hgMtrWMB/130-cansparkmax-construction-sets-the-sensor-type-to-nosensor-v140 */
-        left_master_encoder = left_master_spark.getEncoder();
-        left_slave_encoder = left_slave_spark.getEncoder();
-        right_master_encoder = right_master_spark.getEncoder();
-        right_slave_encoder = right_slave_spark.getEncoder();
-
-        /* Possible fix for spontaneous inversion of motors */
-        left_master_spark.setSmartCurrentLimit(40);
-        left_slave_spark.setSmartCurrentLimit(40);
-        right_master_spark.setSmartCurrentLimit(40);
-        right_slave_spark.setSmartCurrentLimit(40);
-
-        right_master_spark.setInverted(true);
-        right_slave_spark.setInverted(true);
-
-        right_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        right_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        left_master_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        left_slave_spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
-
-        left_slave_spark.follow(left_master_spark);
-        right_slave_spark.follow(right_master_spark);
-
-        left_master_spark.burnFlash();
-        left_slave_spark.burnFlash();
-        right_master_spark.burnFlash();
-        right_slave_spark.burnFlash();
+    public void configureSparkMax(CANSparkMax spark, boolean inverted, CANSparkMax master) {
+        spark.restoreFactoryDefaults();
+        spark.setSmartCurrentLimit(40);
+        spark.setInverted(inverted);
+        if (master != null) {
+            spark.follow(master);
+        }
+        spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        spark.burnFlash();
     }
 
     @Override
@@ -89,17 +70,14 @@ public class Drivetrain implements Subsystem {
     }
 
     private void flipOrientation() {
-        right_master_spark.setInverted(!right_master_spark.getInverted());
-        right_slave_spark.setInverted(!right_slave_spark.getInverted());
-        left_master_spark.setInverted(!left_master_spark.getInverted());
-        left_slave_spark.setInverted(!left_slave_spark.getInverted());
-        switch (orientation) {
-            case HATCH:
-                orientation = Orientation.CARGO;
-                break;
-            case CARGO:
-                orientation = Orientation.HATCH;
-                break;
+        if (orientation == Orientation.CARGO) {
+            orientation = Orientation.HATCH;
+        } else if (orientation == Orientation.HATCH) {
+            orientation = Orientation.CARGO;
         }
+        right_master_spark.setInverted(!(orientation == Orientation.CARGO));
+        right_slave_spark.setInverted(!(orientation == Orientation.CARGO));
+        left_master_spark.setInverted(orientation == Orientation.CARGO);
+        left_slave_spark.setInverted(orientation == Orientation.CARGO);
     }
 }

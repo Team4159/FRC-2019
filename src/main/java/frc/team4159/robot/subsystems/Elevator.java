@@ -3,14 +3,13 @@ package frc.team4159.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
-import frc.team4159.robot.loops.ElevatorLoop;
 
 public class Elevator implements Subsystem {
     private static Elevator instance;
@@ -21,7 +20,6 @@ public class Elevator implements Subsystem {
         return instance;
     }
 
-    private ElevatorLoop elevator_loop;
     private DriverStation ds;
     private OI oi;
 
@@ -30,10 +28,11 @@ public class Elevator implements Subsystem {
 
     private DigitalInput limit_switch;
 
+    private boolean zeroing = false;
+
     private Elevator() {
         oi = OI.getInstance();
         // elevator_loop = new ElevatorLoop();
-        ds = DriverStation.getInstance();
 
         master_talon = new TalonSRX(Constants.ELEVATOR_MASTER_TALON);
         slave_talon = new TalonSRX(Constants.ELEVATOR_SLAVE_TALON);
@@ -56,40 +55,23 @@ public class Elevator implements Subsystem {
 
     @Override
     public void iterate() {
-        /*
-        if (ds.isOperatorControl()) {
-
-        } else if (ds.isAutonomous()) {
+        if (zeroing) {
+            if (zeroed()) {
+                zeroing = false;
+                zero();
+            } else {
+                master_talon.set(ControlMode.PercentOutput, -0.1);
+            }
+        } else {
 
         }
-        */
+    }
 
-        if (!limit_switch.get()) {
-            master_talon.setSelectedSensorPosition(0);
-        }
+    private boolean zeroed() {
+        return !limit_switch.get();
+    }
 
-        /*
-        double voltage = elevator_loop.update(
-                master_talon.getSelectedSensorPosition() / Constants.RobotMath.TICKS_PER_REV * Constants.RobotMath.ELEVATOR_SPROCKET_CIRCUMFERENCE,
-                !limit_switch.get(),
-                ds.isEnabled()
-        );
-
-        master_talon.set(ControlMode.PercentOutput, voltage / 12.0);
-
-        if (elevator_loop.getState() == 2) {
-            System.out.println("Running");
-            System.out.println("Voltage: " + voltage + " Position: " + master_talon.getSelectedSensorPosition() / Constants.RobotMath.TICKS_PER_REV * Constants.RobotMath.ELEVATOR_SPROCKET_CIRCUMFERENCE);
-        }
-        */
-
-        /*
-        master_talon.set(ControlMode.PercentOutput,
-                        elevator_loop.update(
-                                master_talon.getSensorCollection().getQuadraturePosition(),
-                                limitSwitch.get(),
-                                ds.isEnabled()
-                        ) / ElevatorLoop.kMaxVoltage);
-         */
+    private void zero() {
+        master_talon.setSelectedSensorPosition(0);
     }
 }

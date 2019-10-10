@@ -38,9 +38,6 @@ public class Feeder implements Subsystem {
 
         intake_talon.setNeutralMode(NeutralMode.Brake);
         lifter_talon.setNeutralMode(NeutralMode.Brake);
-
-        lifter_talon.configVoltageCompSaturation(LifterLoopBad.kMaxVoltage);
-        lifter_talon.enableVoltageCompensation(true);
     }
 
     @Override
@@ -58,7 +55,7 @@ public class Feeder implements Subsystem {
         }
 
         lifter_talon.set(ControlMode.PercentOutput,
-                         lifter_loop.update(ds.isEnabled()) / LifterLoopBad.kMaxVoltage);
+                         lifter_loop.update(ds.isEnabled()) / 12.0);
     }
 
     private void intake() {
