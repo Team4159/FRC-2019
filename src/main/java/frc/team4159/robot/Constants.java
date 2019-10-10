@@ -25,7 +25,7 @@ public class Constants {
     public static int ELEVATOR_LIMIT_SWITCH = 9;
 
     // Math-y Stuff
-    public static double ELEVATOR_SPROCKET_RADIUS = frc.team4159.robot.RobotMath.FeettoMeters(1.751 / 12.0);
-    public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * java.lang.Math.PI * 2;
+    public static double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeettoMeters(1.751 / 12.0);
+    public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
     public static double TICKS_PER_REV = 4096.0;
 }

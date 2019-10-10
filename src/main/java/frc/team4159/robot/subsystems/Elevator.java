@@ -49,6 +49,12 @@ public class Elevator implements Subsystem {
         master_talon.config_kP(0, 0.12);
         master_talon.config_kI(0, 0);
         master_talon.config_kD(0, 4.0);
+        /*
+        master_talon.config_kF(0, 0.06);
+
+        master_talon.configMotionCruiseVelocity(10000);
+        master_talon.configMotionAcceleration(5000);
+        */
 
         slave_talon.follow(master_talon);
     }
