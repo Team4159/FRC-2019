@@ -1,6 +1,7 @@
 package frc.team4159.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
 import frc.team4159.robot.OI;
@@ -39,7 +40,7 @@ public class Drivetrain implements Subsystem {
         configureSparkMax(right_slave_spark, orientation == Orientation.CARGO, right_master_spark);
     }
 
-    public void configureSparkMax(CANSparkMax spark, boolean inverted, CANSparkMax master) {
+    private void configureSparkMax(CANSparkMax spark, boolean inverted, CANSparkMax master) {
         spark.restoreFactoryDefaults();
         spark.setSmartCurrentLimit(40);
         spark.setInverted(inverted);

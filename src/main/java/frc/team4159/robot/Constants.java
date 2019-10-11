@@ -10,8 +10,8 @@ public class Constants {
     public static int ELEVATOR_MASTER_TALON = 11;
     public static int ELEVATOR_SLAVE_TALON = 15;
 
-    public static int INTAKE_TALON = 9;
-    public static int LIFTER_TALON = 10;
+    public static int LIFTER_TALON = 9;
+    public static int INTAKE_TALON = 10;
 
     public static int GRABBER_MASTER_VICTOR = 8;
     public static int GRABBER_SLAVE_VICTOR = 5;

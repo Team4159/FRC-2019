@@ -1,7 +1,6 @@
 package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -20,7 +19,6 @@ public class Elevator implements Subsystem {
         return instance;
     }
 
-    private DriverStation ds;
     private OI oi;
 
     private TalonSRX master_talon;
@@ -28,7 +26,7 @@ public class Elevator implements Subsystem {
 
     private DigitalInput limit_switch;
 
-    private boolean zeroing = false;
+    private boolean zeroing = true;
 
     private Elevator() {
         oi = OI.getInstance();
@@ -66,10 +64,10 @@ public class Elevator implements Subsystem {
                 zeroing = false;
                 zero();
             } else {
-                master_talon.set(ControlMode.PercentOutput, -0.1);
+                master_talon.set(ControlMode.PercentOutput, -0.3);
             }
         } else {
-
+            master_talon.set(ControlMode.Position, 10000);
         }
     }
 
