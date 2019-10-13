@@ -69,7 +69,7 @@ public class Elevator implements Subsystem {
         if (zeroing) {
             master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
-            if (CollisionAvoidance.safeMoveElevator(position(), goal(), Feeder.getInstance().position())) {
+            if (CollisionAvoidance.safeToMoveElevator(position(), goal, Feeder.getInstance().position(), Nose.getInstance().raised())) {
                 master_talon.set(ControlMode.Position, goal);
             } else {
                 master_talon.set(ControlMode.Position, position());
@@ -77,16 +77,12 @@ public class Elevator implements Subsystem {
         }
     }
 
-    public int goal() {
+    int goal() {
         return goal;
     }
 
-    public int position() {
+    int position() {
         return master_talon.getSelectedSensorPosition();
-    }
-
-    private void setGoal(int goal) {
-        this.goal = goal;
     }
 
     private boolean zeroed() {

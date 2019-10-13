@@ -2,7 +2,6 @@ package frc.team4159.robot;
 
 public class Constants {
     // Ports
-
     // TODO: Check
     public static int LEFT_MASTER_TALON = 2;
     public static int LEFT_SLAVE_TALON = 3;
@@ -31,16 +30,25 @@ public class Constants {
     // Math-y Stuff
     public static double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeettoMeters(1.751 / 12.0);
     public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
-    public static double TICKS_PER_REV = 4096.0;
+    public static int TICKS_PER_REV = 4096;
 
-    public static int FEEDER_UP_TICKS = 0;
-    public static int FEEDER_DOWN_TICKS = -4096 * 3 / 4;
+    // TODO: Real numbers
+    public static int FEEDER_UP = 0;
+    public static int FEEDER_DOWN = -TICKS_PER_REV * 3 / 4;
+    public static int FEEDER_STOWED = FEEDER_DOWN / 2;
+
+    public static double RAISER_DANGEROUS_LOWER_BAND = RobotMath.MeterstoTicks(0.3, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
+    public static double RAISER_DANGEROUS_HIGHER_BAND = RobotMath.MeterstoTicks(0.4, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
+    public static double FEEDER_DANGEROUS_LOWER_BAND = RobotMath.MeterstoTicks(0.4, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
+    public static double FEEDER_DANGEROUS_HIGHER_BAND = RobotMath.MeterstoTicks(0.6, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
+
+    public static double ELEVATOR_BOTTOM = 0.0;
 
     // Rocket levels in meters
-    public static double ROCKET_PORT_LEVEL_ONE = 0.70;
-    public static double ROCKET_PORT_LEVEL_TWO = 1.41;
-    public static double ROCKET_PORT_LEVEL_THREE = 2.12;
-    public static double ROCKET_HATCH_LEVEL_ONE = 0.48;
-    public static double ROCKET_HATCH_LEVEL_TWO = 1.19;
-    public static double ROCKET_HATCH_LEVEL_THREE = 1.90;
+    public static double ROCKET_PORT_LEVEL_ONE = 0.70 - ELEVATOR_BOTTOM;
+    public static double ROCKET_PORT_LEVEL_TWO = 1.41 - ELEVATOR_BOTTOM;
+    public static double ROCKET_PORT_LEVEL_THREE = 2.12 - ELEVATOR_BOTTOM;
+    public static double ROCKET_HATCH_LEVEL_ONE = 0.48 - ELEVATOR_BOTTOM;
+    public static double ROCKET_HATCH_LEVEL_TWO = 1.19 - ELEVATOR_BOTTOM;
+    public static double ROCKET_HATCH_LEVEL_THREE = 1.90 - ELEVATOR_BOTTOM;
 }

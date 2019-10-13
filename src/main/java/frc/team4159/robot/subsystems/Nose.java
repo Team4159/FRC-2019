@@ -18,6 +18,8 @@ public class Nose implements Subsystem {
     private OI oi;
     private DoubleSolenoid raiser, hooks;
 
+    private boolean goal = false;
+
     private Nose() {
         oi = OI.getInstance();
 
@@ -27,24 +29,30 @@ public class Nose implements Subsystem {
 
     @Override
     public void iterate() {
-        if (CollisionAvoidance.getRaiserSafeState(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-            if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
-                if (raiser.get() == DoubleSolenoid.Value.kForward) {
-                    raise();
-                } else {
-                    lower();
-                }
-            }
-        } else {
-            lower();
-        }
-
         if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
             if (hooks.get() == DoubleSolenoid.Value.kForward) {
                 release();
             } else {
                 grab();
             }
+        }
+
+        if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
+            goal = raiser.get() != DoubleSolenoid.Value.kForward;
+        }
+
+        boolean filtered_goal = goal;
+
+        if (!goal) {
+            if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+                filtered_goal = true;
+            }
+        }
+
+        if (filtered_goal) {
+            lower();
+        } else {
+            raise();
         }
     }
 
@@ -62,5 +70,9 @@ public class Nose implements Subsystem {
 
     private void release() {
         hooks.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    boolean raised() {
+        return raiser.get() == DoubleSolenoid.Value.kReverse;
     }
 }

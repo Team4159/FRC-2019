@@ -65,17 +65,16 @@ public class Feeder implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButton(9)) {
-            setGoal(Constants.FEEDER_UP_TICKS);
+            goal = Constants.FEEDER_UP;
         } else if (oi.getSecondaryJoy().getRawButton(6)) {
-            // TODO: Measure
-            setGoal(Constants.FEEDER_DOWN_TICKS);
+            goal = Constants.FEEDER_DOWN;
         }
 
         int filtered_goal = goal;
 
-        if (goal >= CollisionAvoidance.kFeederPositionStayingBuffer) {
-            if (!CollisionAvoidance.safeFeederUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = CollisionAvoidance.kFeederPositionStayingBuffer;
+        if (goal == Constants.FEEDER_UP) {
+            if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+                filtered_goal = Constants.FEEDER_STOWED;
             }
         }
 
@@ -89,10 +88,6 @@ public class Feeder implements Subsystem {
         } else {
             lifter_talon.set(ControlMode.MotionMagic, filtered_goal);
         }
-    }
-
-    private void setGoal(int goal) {
-        this.goal = goal;
     }
 
     private boolean zeroed() {
@@ -109,10 +104,6 @@ public class Feeder implements Subsystem {
 
     private void stop() {
         intake_talon.set(ControlMode.PercentOutput, 0);
-    }
-
-    public int goal() {
-        return goal;
     }
 
     public int position() {

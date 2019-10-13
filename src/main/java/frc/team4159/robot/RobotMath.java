@@ -10,7 +10,7 @@ public class RobotMath {
     public static double PoundstoKgs(double pounds) {
         return pounds / 2.205;
     }
-    public static double MeterstoTicks(double meters, double radius, double ticksPerRev) {
+    public static double MeterstoTicks(double meters, double radius, int ticksPerRev) {
         return meters / (radius * 2 * Math.PI) * ticksPerRev;
     }
 }
