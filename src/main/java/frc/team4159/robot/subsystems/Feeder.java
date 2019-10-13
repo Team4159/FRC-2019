@@ -26,7 +26,7 @@ public class Feeder implements Subsystem {
     private OI oi;
     private TalonSRX lifter_talon, intake_talon;
     private DigitalInput limit_switch;
-    private int goal, temporary_goal;
+    private int goal;
     private boolean zeroing;
 
     private Feeder() {
@@ -71,12 +71,11 @@ public class Feeder implements Subsystem {
             setGoal(CollisionAvoidance.kFeederPositionDown);
         }
 
-        if (goal == CollisionAvoidance.kFeederPositionUp) {
-            if (CollisionAvoidance.safeFeederUp(Elevator.getInstance().getPosition(), Elevator.getInstance().getGoal())) {
-                temporary_goal = goal;
-            } else {
-                // TODO: Measure
-                temporary_goal = CollisionAvoidance.kFeederPositionStaying;
+        int filtered_goal = goal;
+
+        if (goal >= CollisionAvoidance.kFeederPositionStaying) {
+            if (!CollisionAvoidance.safeFeederUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+                filtered_goal = CollisionAvoidance.kFeederPositionStaying;
             }
         }
 
@@ -88,7 +87,7 @@ public class Feeder implements Subsystem {
         if (zeroing) {
             lifter_talon.set(ControlMode.PercentOutput, 0.3);
         } else {
-            lifter_talon.set(ControlMode.MotionMagic, temporary_goal);
+            lifter_talon.set(ControlMode.MotionMagic, filtered_goal);
         }
     }
 
@@ -112,11 +111,11 @@ public class Feeder implements Subsystem {
         intake_talon.set(ControlMode.PercentOutput, 0);
     }
 
-    public int getGoal() {
+    public int goal() {
         return goal;
     }
 
-    public int getPosition() {
+    public int position() {
         return lifter_talon.getSelectedSensorPosition();
     }
 }

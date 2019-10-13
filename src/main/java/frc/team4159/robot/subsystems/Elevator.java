@@ -28,7 +28,7 @@ public class Elevator implements Subsystem {
     private DigitalInput limit_switch;
 
     private boolean zeroing = true;
-    private int elevator_goal = 0;
+    private int goal = 0;
 
     private Elevator() {
         oi = OI.getInstance();
@@ -69,19 +69,19 @@ public class Elevator implements Subsystem {
         if (zeroing) {
             master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
-            if (CollisionAvoidance.safeMoveElevator(getPosition(), getGoal(), Feeder.getInstance().getPosition())) {
-                master_talon.set(ControlMode.Position, elevator_goal);
+            if (CollisionAvoidance.safeMoveElevator(position(), goal(), Feeder.getInstance().position())) {
+                master_talon.set(ControlMode.Position, goal);
             } else {
-                master_talon.set(ControlMode.Position, getPosition());
+                master_talon.set(ControlMode.Position, position());
             }
         }
     }
 
-    public int getGoal() {
-        return elevator_goal;
+    public int goal() {
+        return goal;
     }
 
-    public int getPosition() {
+    public int position() {
         return master_talon.getSelectedSensorPosition();
     }
 

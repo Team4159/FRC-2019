@@ -30,12 +30,13 @@ public class CollisionAvoidance {
                 && elevator_goal < kRaiserMinDangerousHeight;
     }
 
-    // Returns true if Elevator is under Feeder's h
+    // Returns true if Elevator is under Feeder's minimum height
     private static boolean elevatorUnderFeederUp(int elevator_position, int elevator_goal) {
         return elevator_position < kFeederMinDangerousHeight
                 && elevator_goal < kFeederMinDangerousHeight;
     }
 
+    // Returns true if Elevator is above Feeder's maximum height
     private static boolean elevatorAboveFeederUp(int elevator_position, int elevator_goal) {
         return elevator_goal > kFeederMaxDangerousHeight
                 && elevator_position > kFeederMaxDangerousHeight;

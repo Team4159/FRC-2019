@@ -27,7 +27,7 @@ public class Nose implements Subsystem {
 
     @Override
     public void iterate() {
-        if (CollisionAvoidance.getRaiserSafeState(Elevator.getInstance().getPosition(), Elevator.getInstance().getGoal())) {
+        if (CollisionAvoidance.getRaiserSafeState(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
             if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
                 if (raiser.get() == DoubleSolenoid.Value.kForward) {
                     raise();
