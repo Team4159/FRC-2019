@@ -71,7 +71,7 @@ public class Feeder implements Subsystem {
             setGoal(CollisionAvoidance.kFeederPositionDown);
         }
 
-        if (goal == 0) {
+        if (goal == CollisionAvoidance.kFeederPositionUp) {
             if (CollisionAvoidance.safeFeederUp(Elevator.getInstance().getPosition(), Elevator.getInstance().getGoal())) {
                 temporary_goal = goal;
             } else {
@@ -81,13 +81,14 @@ public class Feeder implements Subsystem {
         }
 
         if (zeroed()) {
-            lifter_talon.set(ControlMode.MotionMagic, temporary_goal);
+            zeroing = false;
+            zero();
+        }
+
+        if (zeroing) {
+            lifter_talon.set(ControlMode.PercentOutput, 0.3);
         } else {
-            if (zeroed()) {
-                zero();
-            } else {
-                lifter_talon.set(ControlMode.PercentOutput, 0.3);
-            }
+            lifter_talon.set(ControlMode.MotionMagic, temporary_goal);
         }
     }
 

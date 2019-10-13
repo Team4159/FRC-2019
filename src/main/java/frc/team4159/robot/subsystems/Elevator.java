@@ -61,16 +61,18 @@ public class Elevator implements Subsystem {
 
     @Override
     public void iterate() {
+        if (zeroed()) {
+            zeroing = false;
+            zero();
+        }
+
         if (zeroing) {
-            if (zeroed()) {
-                zeroing = false;
-                zero();
-            } else {
-                master_talon.set(ControlMode.PercentOutput, -0.3);
-            }
+            master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
             if (CollisionAvoidance.safeMoveElevator(getPosition(), getGoal(), Feeder.getInstance().getPosition())) {
                 master_talon.set(ControlMode.Position, elevator_goal);
+            } else {
+                master_talon.set(ControlMode.Position, getPosition());
             }
         }
     }
