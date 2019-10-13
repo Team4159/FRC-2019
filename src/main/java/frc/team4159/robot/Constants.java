@@ -35,4 +35,12 @@ public class Constants {
 
     public static int FEEDER_UP_TICKS = 0;
     public static int FEEDER_DOWN_TICKS = -4096 * 3 / 4;
+
+    // Rocket levels in meters
+    public static double ROCKET_PORT_LEVEL_ONE = 0.70;
+    public static double ROCKET_PORT_LEVEL_TWO = 1.41;
+    public static double ROCKET_PORT_LEVEL_THREE = 2.12;
+    public static double ROCKET_HATCH_LEVEL_ONE = 0.48;
+    public static double ROCKET_HATCH_LEVEL_TWO = 1.19;
+    public static double ROCKET_HATCH_LEVEL_THREE = 1.90;
 }

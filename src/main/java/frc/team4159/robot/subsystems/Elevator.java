@@ -85,6 +85,10 @@ public class Elevator implements Subsystem {
         return master_talon.getSelectedSensorPosition();
     }
 
+    private void setGoal(int goal) {
+        this.goal = goal;
+    }
+
     private boolean zeroed() {
         return !limit_switch.get();
     }
