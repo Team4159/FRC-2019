@@ -9,21 +9,28 @@ public class CollisionAvoidance {
     public static final double kFeederMinDangerousHeight = RobotMath.MeterstoTicks(0.4, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
     public static final double kFeederMaxDangerousHeight = RobotMath.MeterstoTicks(0.6, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
 
-    public static final double kFeederStayingPosition = -1536;
+    // Feeder positions in Feeder Ticks
+    public static final int kFeederPositionStaying = -1536;
+    public static final int kFeederPositionUp = 0;
+    public static final int kFeederPositionDown = -3072;
 
+    // Returns true if it is safe for Feeder to be up
     public static boolean safeFeederUp(int elevator_position, int elevator_goal) {
          return elevatorAboveFeederUp(elevator_position, elevator_goal) || elevatorUnderFeederUp(elevator_position, elevator_goal);
     }
 
+    // Returns true if it is safe to move Elevator
     public static boolean safeMoveElevator(int elevator_position, int elevator_goal, int feeder_position) {
-        return safeFeederUp(elevator_position, elevator_goal) || feeder_position >= 1536;
+        return safeFeederUp(elevator_position, elevator_goal) || feeder_position >= kFeederPositionStaying;
     }
 
+    // Returns true if it is safe for raiser (Nose) to be up
     public static boolean getRaiserSafeState(int elevator_position, int elevator_goal) {
         return elevator_position < kRaiserMinDangerousHeight
                 && elevator_goal < kRaiserMinDangerousHeight;
     }
 
+    // Returns true if Elevator is under Feeder's h
     private static boolean elevatorUnderFeederUp(int elevator_position, int elevator_goal) {
         return elevator_position < kFeederMinDangerousHeight
                 && elevator_goal < kFeederMinDangerousHeight;

@@ -44,6 +44,7 @@ public class Feeder implements Subsystem {
         intake_talon.setNeutralMode(NeutralMode.Brake);
         lifter_talon.setNeutralMode(NeutralMode.Brake);
 
+        // TODO: Tune
         lifter_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         lifter_talon.config_kP(0, 1.0);
         lifter_talon.config_kI(0, 0.0);
@@ -64,10 +65,10 @@ public class Feeder implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButton(9)) {
-            this.setGoal(0);
+            setGoal(CollisionAvoidance.kFeederPositionUp);
         } else if (oi.getSecondaryJoy().getRawButton(6)) {
             // TODO: Measure
-            this.setGoal(-3072);
+            setGoal(CollisionAvoidance.kFeederPositionDown);
         }
 
         if (goal == 0) {
@@ -75,7 +76,7 @@ public class Feeder implements Subsystem {
                 temporary_goal = goal;
             } else {
                 // TODO: Measure
-                temporary_goal = -1536;
+                temporary_goal = CollisionAvoidance.kFeederPositionStaying;
             }
         }
 
