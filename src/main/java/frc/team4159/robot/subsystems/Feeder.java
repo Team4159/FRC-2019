@@ -73,9 +73,9 @@ public class Feeder implements Subsystem {
 
         int filtered_goal = goal;
 
-        if (goal >= CollisionAvoidance.kFeederPositionStaying) {
+        if (goal >= CollisionAvoidance.kFeederPositionStayingBuffer) {
             if (!CollisionAvoidance.safeFeederUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = CollisionAvoidance.kFeederPositionStaying;
+                filtered_goal = CollisionAvoidance.kFeederPositionStayingBuffer;
             }
         }
 

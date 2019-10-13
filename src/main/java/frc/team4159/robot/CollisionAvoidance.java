@@ -11,6 +11,7 @@ public class CollisionAvoidance {
 
     // Feeder positions in Feeder Ticks
     public static final int kFeederPositionStaying = Constants.FEEDER_DOWN_TICKS / 2;
+    public static final int kFeederPositionStayingBuffer = Constants.FEEDER_DOWN_TICKS / 2 - 100;
 
     // Returns true if it is safe for Feeder to be up
     public static boolean safeFeederUp(int elevator_position, int elevator_goal) {
