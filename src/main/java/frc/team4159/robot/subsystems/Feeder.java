@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -25,7 +26,7 @@ public class Feeder implements Subsystem {
     private OI oi;
     private TalonSRX lifter_talon, intake_talon;
     private DigitalInput limit_switch;
-    private int goal;
+    private int goal, temporary_goal;
     private boolean zeroing;
 
     private Feeder() {
@@ -66,17 +67,25 @@ public class Feeder implements Subsystem {
             this.setGoal(0);
         } else if (oi.getSecondaryJoy().getRawButton(6)) {
             // TODO: Measure
-            this.setGoal(3072);
+            this.setGoal(-3072);
+        }
+
+        if (goal == 0) {
+            if (CollisionAvoidance.safeFeederUp(Elevator.getInstance().getPosition(), Elevator.getInstance().getGoal())) {
+                temporary_goal = goal;
+            } else {
+                // TODO: Measure
+                temporary_goal = -1536;
+            }
         }
 
         if (zeroed()) {
-            lifter_talon.set(ControlMode.MotionMagic, goal);
+            lifter_talon.set(ControlMode.MotionMagic, temporary_goal);
         } else {
             if (zeroed()) {
                 zero();
             } else {
-                // TODO: Check which way is negative
-                lifter_talon.set(ControlMode.PercentOutput, -0.3);
+                lifter_talon.set(ControlMode.PercentOutput, 0.3);
             }
         }
     }
@@ -99,5 +108,13 @@ public class Feeder implements Subsystem {
 
     private void stop() {
         intake_talon.set(ControlMode.PercentOutput, 0);
+    }
+
+    public int getGoal() {
+        return goal;
+    }
+
+    public int getPosition() {
+        return lifter_talon.getSelectedSensorPosition();
     }
 }

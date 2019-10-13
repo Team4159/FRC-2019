@@ -2,6 +2,7 @@ package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -26,12 +27,16 @@ public class Nose implements Subsystem {
 
     @Override
     public void iterate() {
-        if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
-            if (raiser.get() == DoubleSolenoid.Value.kForward) {
-                raise();
-            } else {
-                lower();
+        if (CollisionAvoidance.getRaiserSafeState(Elevator.getInstance().getPosition(), Elevator.getInstance().getGoal())) {
+            if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
+                if (raiser.get() == DoubleSolenoid.Value.kForward) {
+                    raise();
+                } else {
+                    lower();
+                }
             }
+        } else {
+            lower();
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(5)) {

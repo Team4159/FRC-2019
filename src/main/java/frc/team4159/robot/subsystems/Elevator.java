@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -27,6 +28,7 @@ public class Elevator implements Subsystem {
     private DigitalInput limit_switch;
 
     private boolean zeroing = true;
+    private int elevator_goal = 0;
 
     private Elevator() {
         oi = OI.getInstance();
@@ -67,8 +69,18 @@ public class Elevator implements Subsystem {
                 master_talon.set(ControlMode.PercentOutput, -0.3);
             }
         } else {
-            master_talon.set(ControlMode.Position, 10000);
+            if (CollisionAvoidance.safeMoveElevator(getPosition(), getGoal(), Feeder.getInstance().getPosition())) {
+                master_talon.set(ControlMode.Position, elevator_goal);
+            }
         }
+    }
+
+    public int getGoal() {
+        return elevator_goal;
+    }
+
+    public int getPosition() {
+        return master_talon.getSelectedSensorPosition();
     }
 
     private boolean zeroed() {
