@@ -65,10 +65,10 @@ public class Feeder implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButton(9)) {
-            setGoal(CollisionAvoidance.kFeederPositionUp);
+            setGoal(Constants.FEEDER_UP_TICKS);
         } else if (oi.getSecondaryJoy().getRawButton(6)) {
             // TODO: Measure
-            setGoal(CollisionAvoidance.kFeederPositionDown);
+            setGoal(Constants.FEEDER_DOWN_TICKS);
         }
 
         int filtered_goal = goal;

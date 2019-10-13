@@ -10,9 +10,7 @@ public class CollisionAvoidance {
     public static final double kFeederMaxDangerousHeight = RobotMath.MeterstoTicks(0.6, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
 
     // Feeder positions in Feeder Ticks
-    public static final int kFeederPositionStaying = -1536;
-    public static final int kFeederPositionUp = 0;
-    public static final int kFeederPositionDown = -3072;
+    public static final int kFeederPositionStaying = Constants.FEEDER_DOWN_TICKS / 2;
 
     // Returns true if it is safe for Feeder to be up
     public static boolean safeFeederUp(int elevator_position, int elevator_goal) {

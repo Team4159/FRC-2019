@@ -32,4 +32,7 @@ public class Constants {
     public static double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeettoMeters(1.751 / 12.0);
     public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
     public static double TICKS_PER_REV = 4096.0;
+
+    public static int FEEDER_UP_TICKS = 0;
+    public static int FEEDER_DOWN_TICKS = -4096 * 3 / 4;
 }
