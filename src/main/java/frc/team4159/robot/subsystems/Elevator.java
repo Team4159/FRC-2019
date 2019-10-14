@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
+import frc.team4159.robot.RobotMath;
 
 public class Elevator implements Subsystem {
     private static Elevator instance;
@@ -69,7 +70,7 @@ public class Elevator implements Subsystem {
         if (zeroing) {
             master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
-            if (CollisionAvoidance.safeToMoveElevator(position(), goal, Feeder.getInstance().position(), Nose.getInstance().raised())) {
+            if (CollisionAvoidance.safeToMoveElevator(position(), goal(), Feeder.getInstance().position(), Nose.getInstance().raised())) {
                 master_talon.set(ControlMode.Position, goal);
             } else {
                 master_talon.set(ControlMode.Position, position());
@@ -91,5 +92,9 @@ public class Elevator implements Subsystem {
 
     private void zero() {
         master_talon.setSelectedSensorPosition(0);
+    }
+
+    public static double MetersToTicks(double meters) {
+        return RobotMath.MetersToTicks(meters, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
     }
 }

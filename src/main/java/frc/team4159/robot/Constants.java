@@ -1,5 +1,7 @@
 package frc.team4159.robot;
 
+import frc.team4159.robot.subsystems.Elevator;
+
 public class Constants {
     // Ports
     // TODO: Check
@@ -28,7 +30,7 @@ public class Constants {
     public static int LIFTER_LIMIT_SWITCH = 8;
 
     // Math-y Stuff
-    public static double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeettoMeters(1.751 / 12.0);
+    public static double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeetToMeters(1.751 / 12.0);
     public static double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
     public static int TICKS_PER_REV = 4096;
 
@@ -37,18 +39,18 @@ public class Constants {
     public static int FEEDER_DOWN = -TICKS_PER_REV * 3 / 4;
     public static int FEEDER_STOWED = FEEDER_DOWN / 2;
 
-    public static double RAISER_DANGEROUS_LOWER_BAND = RobotMath.MeterstoTicks(0.3, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
-    public static double RAISER_DANGEROUS_HIGHER_BAND = RobotMath.MeterstoTicks(0.4, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
-    public static double FEEDER_DANGEROUS_LOWER_BAND = RobotMath.MeterstoTicks(0.4, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
-    public static double FEEDER_DANGEROUS_HIGHER_BAND = RobotMath.MeterstoTicks(0.6, ELEVATOR_SPROCKET_RADIUS, TICKS_PER_REV);
+    public static double RAISER_DANGEROUS_LOWER_BAND = Elevator.MetersToTicks(0.3);
+    public static double RAISER_DANGEROUS_HIGHER_BAND = Elevator.MetersToTicks(0.4);
+    public static double FEEDER_DANGEROUS_LOWER_BAND = Elevator.MetersToTicks(0.4);
+    public static double FEEDER_DANGEROUS_HIGHER_BAND = Elevator.MetersToTicks(0.6);
 
     public static double ELEVATOR_BOTTOM = 0.0;
 
     // Rocket levels in meters
-    public static double ROCKET_PORT_LEVEL_ONE = 0.70 - ELEVATOR_BOTTOM;
-    public static double ROCKET_PORT_LEVEL_TWO = 1.41 - ELEVATOR_BOTTOM;
-    public static double ROCKET_PORT_LEVEL_THREE = 2.12 - ELEVATOR_BOTTOM;
-    public static double ROCKET_HATCH_LEVEL_ONE = 0.48 - ELEVATOR_BOTTOM;
-    public static double ROCKET_HATCH_LEVEL_TWO = 1.19 - ELEVATOR_BOTTOM;
-    public static double ROCKET_HATCH_LEVEL_THREE = 1.90 - ELEVATOR_BOTTOM;
+    public static double ROCKET_PORT_LEVEL_ONE = Elevator.MetersToTicks(0.70 - ELEVATOR_BOTTOM);
+    public static double ROCKET_PORT_LEVEL_TWO = Elevator.MetersToTicks(1.41 - ELEVATOR_BOTTOM);
+    public static double ROCKET_PORT_LEVEL_THREE = Elevator.MetersToTicks(2.12 - ELEVATOR_BOTTOM);
+    public static double ROCKET_HATCH_LEVEL_ONE = Elevator.MetersToTicks(0.48 - ELEVATOR_BOTTOM);
+    public static double ROCKET_HATCH_LEVEL_TWO = Elevator.MetersToTicks(1.19 - ELEVATOR_BOTTOM);
+    public static double ROCKET_HATCH_LEVEL_THREE = Elevator.MetersToTicks(1.90 - ELEVATOR_BOTTOM);
 }

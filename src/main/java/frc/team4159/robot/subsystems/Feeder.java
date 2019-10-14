@@ -73,7 +73,7 @@ public class Feeder implements Subsystem {
         int filtered_goal = goal;
 
         if (goal == Constants.FEEDER_UP) {
-            if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+            if (!CollisionAvoidance.feederSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
                 filtered_goal = Constants.FEEDER_STOWED;
             }
         }
