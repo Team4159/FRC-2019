@@ -5,10 +5,10 @@ import frc.team4159.robot.subsystems.Elevator;
 public class Constants {
     // Ports
     // TODO: Check
-    public static int LEFT_MASTER_TALON = 2;
-    public static int LEFT_SLAVE_TALON = 3;
-    public static int RIGHT_MASTER_TALON = 4;
-    public static int RIGHT_SLAVE_TALON = 5;
+    public static int LEFT_MASTER_TALON = 6;
+    public static int LEFT_SLAVE_TALON = 14;
+    public static int RIGHT_MASTER_TALON = 13;
+    public static int RIGHT_SLAVE_TALON = 16;
 
     public static int ELEVATOR_MASTER_TALON = 11;
     public static int ELEVATOR_SLAVE_TALON = 15;
@@ -44,13 +44,18 @@ public class Constants {
     public static double FEEDER_DANGEROUS_LOWER_BAND = Elevator.MetersToTicks(0.4);
     public static double FEEDER_DANGEROUS_HIGHER_BAND = Elevator.MetersToTicks(0.6);
 
-    public static double ELEVATOR_BOTTOM = 0.0;
+    public static double HATCH_TO_BOTTOM = RobotMath.FeetToMeters(19 / 12);
+    public static double CARGO_TO_BOTTOM = RobotMath.FeetToMeters(13 / 12);
+
+    // Cargo ship levels in meters
+    public static int CARGO_SHIP_HATCH = 0;
+    public static int CARGO_SHIP_PORT = Elevator.MetersToTicks(RobotMath.FeetToMeters(50 / 12) - CARGO_TO_BOTTOM);
 
     // Rocket levels in meters
-    public static double ROCKET_PORT_LEVEL_ONE = Elevator.MetersToTicks(0.70 - ELEVATOR_BOTTOM);
-    public static double ROCKET_PORT_LEVEL_TWO = Elevator.MetersToTicks(1.41 - ELEVATOR_BOTTOM);
-    public static double ROCKET_PORT_LEVEL_THREE = Elevator.MetersToTicks(2.12 - ELEVATOR_BOTTOM);
-    public static double ROCKET_HATCH_LEVEL_ONE = Elevator.MetersToTicks(0.48 - ELEVATOR_BOTTOM);
-    public static double ROCKET_HATCH_LEVEL_TWO = Elevator.MetersToTicks(1.19 - ELEVATOR_BOTTOM);
-    public static double ROCKET_HATCH_LEVEL_THREE = Elevator.MetersToTicks(1.90 - ELEVATOR_BOTTOM);
+    public static int ROCKET_PORT_LEVEL_ONE = Elevator.MetersToTicks(0.70 - CARGO_TO_BOTTOM);
+    public static int ROCKET_PORT_LEVEL_TWO = Elevator.MetersToTicks(1.41 - CARGO_TO_BOTTOM);
+    public static int ROCKET_PORT_LEVEL_THREE = Elevator.MetersToTicks(2.12 - CARGO_TO_BOTTOM);
+    public static int ROCKET_HATCH_LEVEL_ONE = Elevator.MetersToTicks(0.48 - HATCH_TO_BOTTOM);
+    public static int ROCKET_HATCH_LEVEL_TWO = Elevator.MetersToTicks(1.19 - HATCH_TO_BOTTOM);
+    public static int ROCKET_HATCH_LEVEL_THREE = Elevator.MetersToTicks(1.90 - HATCH_TO_BOTTOM);
 }

@@ -67,14 +67,23 @@ public class Elevator implements Subsystem {
             zero();
         }
 
+        if (oi.getSecondaryJoy().getRawButtonPressed(2)) {
+            goal = Constants.CARGO_SHIP_HATCH;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(14)) {
+            goal = Constants.CARGO_SHIP_PORT;
+        }
+
         if (zeroing) {
             master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
+            master_talon.set(ControlMode.Position, goal);
+            /*
             if (CollisionAvoidance.safeToMoveElevator(position(), goal(), Feeder.getInstance().position(), Nose.getInstance().raised())) {
                 master_talon.set(ControlMode.Position, goal);
             } else {
-                master_talon.set(ControlMode.Position, position());
+                master_talon.set(ControlMode.PercentOutput, 0);
             }
+            */
         }
     }
 
@@ -94,7 +103,7 @@ public class Elevator implements Subsystem {
         master_talon.setSelectedSensorPosition(0);
     }
 
-    public static double MetersToTicks(double meters) {
+    public static int MetersToTicks(double meters) {
         return RobotMath.MetersToTicks(meters, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
     }
 }

@@ -23,8 +23,8 @@ public class Nose implements Subsystem {
     private Nose() {
         oi = OI.getInstance();
 
-        raiser = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
-        hooks = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
+        hooks = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
+        raiser = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
     }
 
     @Override
@@ -38,22 +38,29 @@ public class Nose implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
-            goal = raiser.get() != DoubleSolenoid.Value.kForward;
+            if (raiser.get() == DoubleSolenoid.Value.kForward) {
+                raise();
+            } else {
+                lower();
+            }
         }
 
         boolean filtered_goal = goal;
 
+        /*
         if (!goal) {
             if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
                 filtered_goal = true;
             }
         }
-
+        */
+        /*
         if (filtered_goal) {
             lower();
         } else {
             raise();
         }
+        */
     }
 
     private void raise() {
