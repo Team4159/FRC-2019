@@ -36,7 +36,7 @@ public class Constants {
 
     // TODO: Real numbers
     public static int FEEDER_UP = 0;
-    public static int FEEDER_DOWN = -TICKS_PER_REV * 3 / 4;
+    public static int FEEDER_DOWN = -2960;
     public static int FEEDER_STOWED = FEEDER_DOWN / 2;
 
     public static double RAISER_DANGEROUS_LOWER_BAND = Elevator.MetersToTicks(0.3);
@@ -44,12 +44,12 @@ public class Constants {
     public static double FEEDER_DANGEROUS_LOWER_BAND = Elevator.MetersToTicks(0.4);
     public static double FEEDER_DANGEROUS_HIGHER_BAND = Elevator.MetersToTicks(0.6);
 
-    public static double HATCH_TO_BOTTOM = RobotMath.FeetToMeters(19 / 12);
-    public static double CARGO_TO_BOTTOM = RobotMath.FeetToMeters(13 / 12);
+    public static double HATCH_TO_BOTTOM = RobotMath.FeetToMeters(19.0 / 12.0);
+    public static double CARGO_TO_BOTTOM = RobotMath.FeetToMeters(13.0 / 12.0);
 
     // Cargo ship levels in meters
-    public static int CARGO_SHIP_HATCH = 0;
-    public static int CARGO_SHIP_PORT = Elevator.MetersToTicks(RobotMath.FeetToMeters(50 / 12) - CARGO_TO_BOTTOM);
+    public static int CARGO_SHIP_HATCH = Elevator.MetersToTicks(RobotMath.FeetToMeters(19.0 / 12.0) - HATCH_TO_BOTTOM);
+    public static int CARGO_SHIP_PORT = Elevator.MetersToTicks(RobotMath.FeetToMeters(49.0 / 12.0) - CARGO_TO_BOTTOM);
 
     // Rocket levels in meters
     public static int ROCKET_PORT_LEVEL_ONE = Elevator.MetersToTicks(0.70 - CARGO_TO_BOTTOM);

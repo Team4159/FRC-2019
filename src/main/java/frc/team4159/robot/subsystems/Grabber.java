@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -16,11 +17,15 @@ public class Grabber implements Subsystem {
         return instance;
     }
 
+    private DriverStation ds;
     private OI oi;
+
     private VictorSPX master_grabber_victor, slave_grabber_victor;
 
     private Grabber() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
+
         master_grabber_victor = new VictorSPX(Constants.GRABBER_MASTER_VICTOR);
         slave_grabber_victor = new VictorSPX(Constants.GRABBER_SLAVE_VICTOR);
 
@@ -36,6 +41,10 @@ public class Grabber implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (oi.getSecondaryJoy().getRawButton(7)) {
             intake();
         } else if (oi.getSecondaryJoy().getRawButton(8)) {

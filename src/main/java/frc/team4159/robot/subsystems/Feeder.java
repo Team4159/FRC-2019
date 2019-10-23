@@ -21,6 +21,7 @@ public class Feeder implements Subsystem {
         return instance;
     }
 
+    private DriverStation ds;
     private OI oi;
 
     private TalonSRX lifter_talon, intake_talon;
@@ -30,6 +31,7 @@ public class Feeder implements Subsystem {
     private int goal = 0;
 
     private Feeder() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
         limit_switch = new DigitalInput(Constants.LIFTER_LIMIT_SWITCH);
@@ -59,6 +61,10 @@ public class Feeder implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (zeroed()) {
             zeroing = false;
             zero();
@@ -81,10 +87,9 @@ public class Feeder implements Subsystem {
         /*
         if (goal == Constants.FEEDER_UP) {
             if (!CollisionAvoidance.feederSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = Constants.FEEDER_STOWED;
+                filtered_goal = Constants.FEEDER_DOWN;
             }
-        }
-        */
+        }*/
 
         if (zeroing) {
             lifter_talon.set(ControlMode.PercentOutput, 0.4);

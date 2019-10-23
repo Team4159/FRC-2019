@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
@@ -21,6 +22,7 @@ public class Elevator implements Subsystem {
         return instance;
     }
 
+    private DriverStation ds;
     private OI oi;
 
     private TalonSRX master_talon;
@@ -32,6 +34,7 @@ public class Elevator implements Subsystem {
     private int goal = 0;
 
     private Elevator() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
         // elevator_loop = new ElevatorLoop();
 
@@ -62,6 +65,10 @@ public class Elevator implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (zeroed()) {
             zeroing = false;
             zero();
@@ -71,12 +78,27 @@ public class Elevator implements Subsystem {
             goal = Constants.CARGO_SHIP_HATCH;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(14)) {
             goal = Constants.CARGO_SHIP_PORT;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(15)) {
+            goal = Constants.ROCKET_HATCH_LEVEL_TWO;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(16)) {
+            goal = Constants.ROCKET_HATCH_LEVEL_THREE;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(13)) {
+            goal = Constants.ROCKET_PORT_LEVEL_ONE;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(12)) {
+            goal = Constants.ROCKET_PORT_LEVEL_TWO;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(11)) {
+            goal = Constants.ROCKET_PORT_LEVEL_THREE;
         }
 
         if (zeroing) {
             master_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
-            master_talon.set(ControlMode.Position, goal);
+            if (oi.getSecondaryJoy().getRawButton(1)) {
+                master_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
+                goal = position();
+            } else {
+                master_talon.set(ControlMode.Position, goal);
+            }
             /*
             if (CollisionAvoidance.safeToMoveElevator(position(), goal(), Feeder.getInstance().position(), Nose.getInstance().raised())) {
                 master_talon.set(ControlMode.Position, goal);

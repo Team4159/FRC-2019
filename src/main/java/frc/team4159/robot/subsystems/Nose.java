@@ -2,6 +2,7 @@ package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
@@ -15,12 +16,15 @@ public class Nose implements Subsystem {
         return instance;
     }
 
+    private DriverStation ds;
     private OI oi;
+
     private DoubleSolenoid raiser, hooks;
 
     private boolean goal = false;
 
     private Nose() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
         hooks = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
@@ -29,6 +33,10 @@ public class Nose implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
             if (hooks.get() == DoubleSolenoid.Value.kForward) {
                 release();
@@ -38,37 +46,30 @@ public class Nose implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
-            if (raiser.get() == DoubleSolenoid.Value.kForward) {
-                raise();
-            } else {
-                lower();
-            }
+            goal = !goal;
         }
 
         boolean filtered_goal = goal;
 
         /*
-        if (!goal) {
-            if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = true;
-            }
+        if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+            filtered_goal = false;
         }
-        */
-        /*
+         */
+
         if (filtered_goal) {
-            lower();
-        } else {
             raise();
+        } else {
+            lower();
         }
-        */
     }
 
     private void raise() {
-        raiser.set(DoubleSolenoid.Value.kReverse);
+        raiser.set(DoubleSolenoid.Value.kForward);
     }
 
     private void lower() {
-        raiser.set(DoubleSolenoid.Value.kForward);
+        raiser.set(DoubleSolenoid.Value.kReverse);
     }
 
     private void grab() {

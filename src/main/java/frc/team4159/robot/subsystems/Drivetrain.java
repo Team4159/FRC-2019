@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.Constants;
 
@@ -23,13 +24,17 @@ public class Drivetrain implements Subsystem {
         CARGO
     }
 
+    private DriverStation ds;
     private OI oi;
+
     private TalonSRX left_master_talon, left_slave_talon, right_master_talon, right_slave_talon;
     private PigeonIMU pigeon;
+
     private Orientation orientation = Orientation.CARGO;
 
     @SuppressWarnings("ConstantConditions")
     private Drivetrain() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
         left_master_talon = new TalonSRX(Constants.LEFT_MASTER_TALON);
@@ -53,6 +58,10 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (oi.getRightJoy().getRawButtonPressed(2)) {
             flipOrientation();
         }

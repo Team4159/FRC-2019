@@ -13,9 +13,9 @@ public class Robot extends TimedRobot {
     @Override
     public void startCompetition() {
         HAL.observeUserProgramStarting();
-        UsbCamera hatch_camera = CameraServer.getInstance().startAutomaticCapture(0);
+        UsbCamera hatch_camera = CameraServer.getInstance().startAutomaticCapture();
         hatch_camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
-        hatch_camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 320, 240, 15);
+        hatch_camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 480, 30);
         VideoSink server = CameraServer.getInstance().addServer("Driver Camera");
         server.setSource(hatch_camera);
         while (true) {
