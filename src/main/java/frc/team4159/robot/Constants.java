@@ -5,13 +5,13 @@ import frc.team4159.robot.subsystems.Elevator;
 public class Constants {
     // Ports
     // TODO: Check
-    public static int LEFT_MASTER_TALON = 2;
-    public static int LEFT_SLAVE_TALON = 3;
-    public static int RIGHT_MASTER_TALON = 4;
-    public static int RIGHT_SLAVE_TALON = 5;
+    public static int LEFT_MASTER_SPARK = 1;
+    public static int LEFT_SLAVE_SPARK = 2;
+    public static int RIGHT_MASTER_SPARK = 3;
+    public static int RIGHT_SLAVE_SPARK = 4;
 
     public static int ELEVATOR_MASTER_TALON = 11;
-    public static int ELEVATOR_SLAVE_TALON = 15;
+    public static int ELEVATOR_SLAVE_TALON = 16;
 
     public static int LIFTER_TALON = 9;
     public static int INTAKE_TALON = 10;

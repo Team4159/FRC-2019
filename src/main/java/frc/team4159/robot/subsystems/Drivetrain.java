@@ -1,11 +1,9 @@
 package frc.team4159.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
+import com.revrobotics.CANSparkMax;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.Constants;
 
@@ -24,7 +22,7 @@ public class Drivetrain implements Subsystem {
     }
 
     private OI oi;
-    private TalonSRX left_master_talon, left_slave_talon, right_master_talon, right_slave_talon;
+    private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
     private PigeonIMU pigeon;
     private Orientation orientation = Orientation.CARGO;
 
@@ -32,23 +30,23 @@ public class Drivetrain implements Subsystem {
     private Drivetrain() {
         oi = OI.getInstance();
 
-        left_master_talon = new TalonSRX(Constants.LEFT_MASTER_TALON);
-        right_master_talon = new TalonSRX(Constants.RIGHT_MASTER_TALON);
-        left_slave_talon = new TalonSRX(Constants.LEFT_SLAVE_TALON);
-        right_slave_talon = new TalonSRX(Constants.RIGHT_SLAVE_TALON);
+        left_master_spark = configureSparkMax(Constants.LEFT_MASTER_SPARK, false, null);
+        right_master_spark = configureSparkMax(Constants.RIGHT_MASTER_SPARK, false, null);
+        left_slave_spark = configureSparkMax(Constants.LEFT_SLAVE_SPARK, false, left_master_spark);
+        right_slave_spark = configureSparkMax(Constants.RIGHT_SLAVE_SPARK, false, right_master_spark);
+    }
 
-        left_master_talon.configFactoryDefault();
-        right_master_talon.configFactoryDefault();
-        left_slave_talon.configFactoryDefault();
-        right_slave_talon.configFactoryDefault();
-
-        left_master_talon.setNeutralMode(NeutralMode.Coast);
-        left_slave_talon.setNeutralMode(NeutralMode.Coast);
-        right_master_talon.setNeutralMode(NeutralMode.Coast);
-        right_slave_talon.setNeutralMode(NeutralMode.Coast);
-
-        left_slave_talon.follow(left_master_talon);
-        right_slave_talon.follow(right_master_talon);
+    private CANSparkMax configureSparkMax(int id, boolean inverted, CANSparkMax master) {
+        CANSparkMax spark = new CANSparkMax(id, CANSparkMax.MotorType.kBrushless);
+        spark.restoreFactoryDefaults();
+        spark.setSmartCurrentLimit(40);
+        spark.setInverted(inverted);
+        if (master != null) {
+            spark.follow(master);
+        }
+        spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        spark.burnFlash();
+        return spark;
     }
 
     @Override
@@ -62,11 +60,11 @@ public class Drivetrain implements Subsystem {
 
     private void rawDrive(double left, double right) {
         if (orientation == Orientation.CARGO) {
-            left_master_talon.set(ControlMode.PercentOutput, left);
-            right_master_talon.set(ControlMode.PercentOutput, right);
+            left_master_spark.set(left);
+            right_master_spark.set(right);
         } else if (orientation == Orientation.HATCH) {
-            left_master_talon.set(ControlMode.PercentOutput, right);
-            right_master_talon.set(ControlMode.PercentOutput, left);
+            left_master_spark.set(right);
+            right_master_spark.set(left);
         }
     }
 
@@ -76,9 +74,9 @@ public class Drivetrain implements Subsystem {
         } else if (orientation == Orientation.HATCH) {
             orientation = Orientation.CARGO;
         }
-        right_master_talon.setInverted(orientation == Orientation.CARGO);
-        right_slave_talon.setInverted(orientation == Orientation.CARGO);
-        left_master_talon.setInverted(orientation == Orientation.CARGO);
-        left_slave_talon.setInverted(orientation == Orientation.CARGO);
+        right_master_spark.setInverted(orientation == Orientation.CARGO);
+        right_slave_spark.setInverted(orientation == Orientation.CARGO);
+        left_master_spark.setInverted(orientation == Orientation.CARGO);
+        left_slave_spark.setInverted(orientation == Orientation.CARGO);
     }
 }
