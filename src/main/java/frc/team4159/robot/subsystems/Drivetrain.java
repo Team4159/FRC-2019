@@ -4,6 +4,7 @@ package frc.team4159.robot.subsystems;
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.Constants;
 
@@ -21,13 +22,17 @@ public class Drivetrain implements Subsystem {
         CARGO
     }
 
+    private DriverStation ds;
     private OI oi;
+
     private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
     private PigeonIMU pigeon;
+
     private Orientation orientation = Orientation.CARGO;
 
     @SuppressWarnings("ConstantConditions")
     private Drivetrain() {
+        ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
         left_master_spark = configureSparkMax(Constants.LEFT_MASTER_SPARK, false, null);
@@ -51,6 +56,10 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void iterate() {
+        if (!ds.isEnabled()) {
+            return;
+        }
+
         if (oi.getRightJoy().getRawButtonPressed(2)) {
             flipOrientation();
         }

@@ -22,12 +22,13 @@ public class Feeder implements Subsystem {
     }
 
     private DriverStation ds;
-
     private OI oi;
+
     private TalonSRX lifter_talon, intake_talon;
     private DigitalInput limit_switch;
-    private int goal;
-    private boolean zeroing;
+
+    private boolean zeroing = true;
+    private int goal = 0;
 
     private Feeder() {
         ds = DriverStation.getInstance();
@@ -54,28 +55,14 @@ public class Feeder implements Subsystem {
 
         lifter_talon.configMotionCruiseVelocity(5000);
         lifter_talon.configMotionAcceleration(2000);
+
+        zero();
     }
 
     @Override
     public void iterate() {
-        if (oi.getSecondaryJoy().getRawButton(7)) {
-            intake();
-        } else {
-            stop();
-        }
-
-        if (oi.getSecondaryJoy().getRawButton(9)) {
-            goal = Constants.FEEDER_UP;
-        } else if (oi.getSecondaryJoy().getRawButton(6)) {
-            goal = Constants.FEEDER_DOWN;
-        }
-
-        int filtered_goal = goal;
-
-        if (goal == Constants.FEEDER_UP) {
-            if (!CollisionAvoidance.feederSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = Constants.FEEDER_STOWED;
-            }
+        if (!ds.isEnabled()) {
+            return;
         }
 
         if (zeroed()) {
@@ -83,8 +70,29 @@ public class Feeder implements Subsystem {
             zero();
         }
 
+        if (oi.getSecondaryJoy().getRawButton(7)) {
+            intake();
+        } else {
+            stop();
+        }
+
+        if (oi.getSecondaryJoy().getRawButton(9)) {
+            goal = Constants.FEEDER_DOWN;
+        } else if (oi.getSecondaryJoy().getRawButton(6)) {
+            goal = Constants.FEEDER_UP;
+        }
+
+        int filtered_goal = goal;
+
+        /*
+        if (goal == Constants.FEEDER_UP) {
+            if (!CollisionAvoidance.feederSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+                filtered_goal = Constants.FEEDER_DOWN;
+            }
+        }*/
+
         if (zeroing) {
-            lifter_talon.set(ControlMode.PercentOutput, 0.3);
+            lifter_talon.set(ControlMode.PercentOutput, 0.4);
         } else {
             lifter_talon.set(ControlMode.MotionMagic, filtered_goal);
         }
