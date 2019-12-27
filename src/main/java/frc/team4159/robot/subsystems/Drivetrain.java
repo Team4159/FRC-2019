@@ -11,6 +11,7 @@ public class Drivetrain implements Subsystem {
     private static final int kSparkMaxCurrentLimit = 40;
 
     private static Drivetrain instance;
+
     public static Drivetrain getInstance() {
         if (instance == null) {
             instance = new Drivetrain();
@@ -84,6 +85,7 @@ public class Drivetrain implements Subsystem {
         } else if (robot_orientation == Orientation.HATCH) {
             robot_orientation = Orientation.CARGO;
         }
+
         right_master_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
         right_slave_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
         left_master_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);

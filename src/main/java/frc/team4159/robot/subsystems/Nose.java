@@ -8,7 +8,8 @@ import frc.team4159.robot.OI;
 
 public class Nose implements Subsystem {
     private static Nose instance;
-    public static  Nose getInstance() {
+
+    public static Nose getInstance() {
         if (instance == null) {
             instance = new Nose();
         }

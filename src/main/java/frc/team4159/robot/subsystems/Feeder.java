@@ -26,6 +26,7 @@ public class Feeder implements Subsystem {
     private static final double kZeroingVoltage = 0.4;
 
     private static Feeder instance;
+
     public static Feeder getInstance() {
         if (instance == null) {
             instance = new Feeder();

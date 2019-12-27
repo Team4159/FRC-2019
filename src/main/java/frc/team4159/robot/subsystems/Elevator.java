@@ -21,6 +21,7 @@ public class Elevator implements Subsystem {
     private static final double kZeroingVoltage = -0.3;
 
     private static Elevator instance;
+
     public static Elevator getInstance() {
         if (instance == null) {
             instance = new Elevator();

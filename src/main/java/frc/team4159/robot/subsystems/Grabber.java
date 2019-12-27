@@ -9,7 +9,10 @@ import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
 public class Grabber implements Subsystem {
+    public static final double kIdleVoltage = -0.15;
+
     private static Grabber instance;
+
     public static Grabber getInstance() {
         if (instance == null) {
             instance = new Grabber();
@@ -63,6 +66,6 @@ public class Grabber implements Subsystem {
     }
 
     private void stopGrabber() {
-        master_grabber_victor.set(ControlMode.PercentOutput, -0.15);
+        master_grabber_victor.set(ControlMode.PercentOutput, kIdleVoltage);
     }
 }

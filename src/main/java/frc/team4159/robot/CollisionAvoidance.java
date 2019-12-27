@@ -3,8 +3,8 @@ package frc.team4159.robot;
 public class CollisionAvoidance {
     // Returns whether or not it's safe for the feeder to be up
     public static boolean feederSafeToBeUp(int elevator_position, int elevator_goal) {
-         return elevatorNotMovingUpThroughFeeder(elevator_position, elevator_goal)
-                 || elevatorNotMovingDownThroughFeeder(elevator_position, elevator_goal);
+        return elevatorNotMovingUpThroughFeeder(elevator_position, elevator_goal)
+                || elevatorNotMovingDownThroughFeeder(elevator_position, elevator_goal);
     }
 
     // Returns whether or not it's safe for the raiser to be up
