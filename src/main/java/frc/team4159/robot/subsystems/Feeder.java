@@ -69,7 +69,7 @@ public class Feeder implements Subsystem {
         lifter_talon.configMotionCruiseVelocity(kCruiseVelocityCap);
         lifter_talon.configMotionAcceleration(kAccelerationCap);
 
-        zero();
+        zeroFeederEncoder();
     }
 
     @Override
@@ -78,21 +78,21 @@ public class Feeder implements Subsystem {
             return;
         }
 
-        if (zeroed()) {
+        if (isZeroed()) {
             zeroing = false;
-            zero();
+            zeroFeederEncoder();
         }
 
         if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.INTAKE)) {
-            intake();
+            intakeCargo();
         } else {
-            stop();
+            stopFeederIntake();
         }
 
         if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.LOWER_FEEDER)) {
-            goal = Constants.NUMS.FEEDER_DOWN;
+            goal = Constants.POSITIONS.FEEDER_DOWN;
         } else if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.RAISE_FEEDER)) {
-            goal = Constants.NUMS.FEEDER_UP;
+            goal = Constants.POSITIONS.FEEDER_UP;
         }
 
         int filtered_goal = goal;
@@ -111,23 +111,23 @@ public class Feeder implements Subsystem {
         }
     }
 
-    private boolean zeroed() {
+    private boolean isZeroed() {
         return !limit_switch.get();
     }
 
-    private void zero() {
+    private void zeroFeederEncoder() {
         lifter_talon.setSelectedSensorPosition(0);
     }
 
-    private void intake() {
+    private void intakeCargo() {
         intake_talon.set(ControlMode.PercentOutput, 1);
     }
 
-    private void stop() {
+    private void stopFeederIntake() {
         intake_talon.set(ControlMode.PercentOutput, 0);
     }
 
-    public int position() {
+    public int getFeederPosition() {
         return lifter_talon.getSelectedSensorPosition();
     }
 }

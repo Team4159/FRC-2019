@@ -49,19 +49,19 @@ public class Grabber implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.INTAKE)) {
-            grabberIntake();
+            intakeCargo();
         } else if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.OUTTAKE)) {
-            grabberOuttake();
+            outtakeCargo();
         } else {
             stopGrabber();
         }
     }
 
-    private void grabberIntake() {
+    private void intakeCargo() {
         master_grabber_victor.set(ControlMode.PercentOutput, -1);
     }
 
-    private void grabberOuttake() {
+    private void outtakeCargo() {
         master_grabber_victor.set(ControlMode.PercentOutput, +1);
     }
 

@@ -55,11 +55,14 @@ public class Constants {
     }
 
     // Math-y Stuff
-    public static class NUMS {
+    public static class MATH {
         public static final double ELEVATOR_SPROCKET_RADIUS = RobotMath.FeetToMeters(1.751 / 12.0);
         public static final double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
         public static final int TICKS_PER_REV = 4096;
+    }
 
+    // Positions in ticks
+    public static class POSITIONS {
         public static final int FEEDER_UP = 0;
         public static final int FEEDER_DOWN = -2960;
         public static final int FEEDER_STOWED = FEEDER_DOWN / 2;

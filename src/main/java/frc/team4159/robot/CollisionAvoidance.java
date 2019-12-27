@@ -13,12 +13,12 @@ public class CollisionAvoidance {
         return elevatorNotMovingUpThroughRaiser(elevator_position, elevator_goal)
                    || elevatorNotMovingDownThroughRaiser(elevator_position, elevator_goal);
          */
-        return elevator_position < Constants.NUMS.FEEDER_DANGEROUS_LOWER_BAND && elevator_goal < Constants.NUMS.FEEDER_DANGEROUS_LOWER_BAND;
+        return elevator_position < Constants.POSITIONS.FEEDER_DANGEROUS_LOWER_BAND && elevator_goal < Constants.POSITIONS.FEEDER_DANGEROUS_LOWER_BAND;
     }
 
     // Returns whether or not it is safe to move the elevator
     public static boolean safeToMoveElevator(int elevator_position, int elevator_goal, int feeder_position, boolean raiser_extended) {
-        boolean feeder_up = feeder_position >= (Constants.NUMS.FEEDER_STOWED + 100);
+        boolean feeder_up = feeder_position >= (Constants.POSITIONS.FEEDER_STOWED + 100);
         if (!feederSafeToBeUp(elevator_position, elevator_goal) && feeder_up) {
             return false;
         }
@@ -30,25 +30,25 @@ public class CollisionAvoidance {
 
     // Returns whether or not the elevator is moving up through the feeder
     private static boolean elevatorNotMovingUpThroughFeeder(int elevator_position, int elevator_goal) {
-        return elevator_position < Constants.NUMS.FEEDER_DANGEROUS_LOWER_BAND
-                && elevator_goal < Constants.NUMS.FEEDER_DANGEROUS_LOWER_BAND;
+        return elevator_position < Constants.POSITIONS.FEEDER_DANGEROUS_LOWER_BAND
+                && elevator_goal < Constants.POSITIONS.FEEDER_DANGEROUS_LOWER_BAND;
     }
 
     // Returns whether or not the elevator is moving down through the feeder
     private static boolean elevatorNotMovingDownThroughFeeder(int elevator_position, int elevator_goal) {
-        return elevator_goal > Constants.NUMS.FEEDER_DANGEROUS_HIGHER_BAND
-                && elevator_position > Constants.NUMS.FEEDER_DANGEROUS_HIGHER_BAND;
+        return elevator_goal > Constants.POSITIONS.FEEDER_DANGEROUS_HIGHER_BAND
+                && elevator_position > Constants.POSITIONS.FEEDER_DANGEROUS_HIGHER_BAND;
     }
 
     // Returns whether or not the elevator is moving up through the raiser
     private static boolean elevatorNotMovingUpThroughRaiser(int elevator_position, int elevator_goal) {
-        return elevator_position < Constants.NUMS.RAISER_DANGEROUS_LOWER_BAND
-                && elevator_goal < Constants.NUMS.RAISER_DANGEROUS_LOWER_BAND;
+        return elevator_position < Constants.POSITIONS.RAISER_DANGEROUS_LOWER_BAND
+                && elevator_goal < Constants.POSITIONS.RAISER_DANGEROUS_LOWER_BAND;
     }
 
     // Returns whether or not the elevator is moving down through the feeder
     private static boolean elevatorNotMovingDownThroughRaiser(int elevator_position, int elevator_goal) {
-        return elevator_goal > Constants.NUMS.RAISER_DANGEROUS_HIGHER_BAND
-                && elevator_position > Constants.NUMS.RAISER_DANGEROUS_HIGHER_BAND;
+        return elevator_goal > Constants.POSITIONS.RAISER_DANGEROUS_HIGHER_BAND
+                && elevator_position > Constants.POSITIONS.RAISER_DANGEROUS_HIGHER_BAND;
     }
 }

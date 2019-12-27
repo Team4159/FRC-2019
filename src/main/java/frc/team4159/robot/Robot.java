@@ -31,5 +31,4 @@ public class Robot extends TimedRobot {
 
         camera_server.setSource(hatch_camera);
     }
-
 }

@@ -87,23 +87,23 @@ public class Elevator implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_CARGO_SHIP_HATCH)) {
-            goal = Constants.NUMS.CARGO_SHIP_HATCH;
+            goal = Constants.POSITIONS.CARGO_SHIP_HATCH;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_CARGO_SHIP_PORT)) {
-            goal = Constants.NUMS.CARGO_SHIP_PORT;
+            goal = Constants.POSITIONS.CARGO_SHIP_PORT;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_TWO)) {
-            goal = Constants.NUMS.ROCKET_HATCH_LEVEL_TWO;
+            goal = Constants.POSITIONS.ROCKET_HATCH_LEVEL_TWO;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_THREE)) {
-            goal = Constants.NUMS.ROCKET_HATCH_LEVEL_THREE;
+            goal = Constants.POSITIONS.ROCKET_HATCH_LEVEL_THREE;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_ONE)) {
-            goal = Constants.NUMS.ROCKET_PORT_LEVEL_ONE;
+            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_ONE;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_TWO)) {
-            goal = Constants.NUMS.ROCKET_PORT_LEVEL_TWO;
+            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_TWO;
         } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_THREE)) {
-            goal = Constants.NUMS.ROCKET_PORT_LEVEL_THREE;
+            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_THREE;
         }
 
         if (zeroing) {
-            master_elevator_talon.set(ControlMode.PercentOutput, -kZeroingVoltage);
+            master_elevator_talon.set(ControlMode.PercentOutput, kZeroingVoltage);
         } else {
             if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.ELEVATOR_MANUAL_CONTROL)) {
                 master_elevator_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
@@ -138,6 +138,6 @@ public class Elevator implements Subsystem {
     }
 
     public static int MetersToTicks(double meters) {
-        return RobotMath.MetersToTicks(meters, Constants.NUMS.ELEVATOR_SPROCKET_RADIUS, Constants.NUMS.TICKS_PER_REV);
+        return RobotMath.MetersToTicks(meters, Constants.MATH.ELEVATOR_SPROCKET_RADIUS, Constants.MATH.TICKS_PER_REV);
     }
 }
