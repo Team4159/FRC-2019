@@ -46,8 +46,8 @@ public class Elevator implements Subsystem {
 
         limit_switch = new DigitalInput(Constants.PORTS.ELEVATOR_LIMIT_SWITCH);
 
-        master_elevator_talon = configureTalon(false);
-        slave_elevator_talon = configureTalon(true);
+        master_elevator_talon = configureTalon(Constants.PORTS.ELEVATOR_MASTER_TALON, false, null);
+        slave_elevator_talon = configureTalon(Constants.PORTS.ELEVATOR_SLAVE_TALON, false, master_elevator_talon);
 
         master_elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         master_elevator_talon.config_kP(slotIdx, kP);
@@ -63,10 +63,14 @@ public class Elevator implements Subsystem {
         slave_elevator_talon.follow(master_elevator_talon);
     }
 
-    private TalonSRX configureTalon(boolean isSlave) {
-        TalonSRX talon = new TalonSRX(isSlave ? Constants.PORTS.ELEVATOR_MASTER_TALON : Constants.PORTS.ELEVATOR_SLAVE_TALON);
+    private TalonSRX configureTalon(int port, boolean inverted, TalonSRX master) {
+        TalonSRX talon = new TalonSRX(port);
         talon.configFactoryDefault();
         talon.setNeutralMode(NeutralMode.Coast);
+        talon.setInverted(inverted);
+
+        if (master != null) talon.follow(master);
+
         return talon;
     }
 
