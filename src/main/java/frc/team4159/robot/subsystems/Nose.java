@@ -26,8 +26,8 @@ public class Nose implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        hooks_solenoid = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
-        raiser_solenoid = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
+        hooks_solenoid = new DoubleSolenoid(0, Constants.PORTS.RAISER_FORWARD, Constants.PORTS.RAISER_REVERSE);
+        raiser_solenoid = new DoubleSolenoid(0, Constants.PORTS.HOOKS_FORWARD, Constants.PORTS.HOOKS_REVERSE);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Nose implements Subsystem {
             return;
         }
 
-        if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
+        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.TOGGLE_HOOKS)) {
             if (hooks_solenoid.get() == DoubleSolenoid.Value.kForward) {
                 hooksSolenoidRelease();
             } else {
@@ -44,7 +44,7 @@ public class Nose implements Subsystem {
             }
         }
 
-        if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
+        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.TOGGLE_RAISER)) {
             goal = !goal;
         }
 

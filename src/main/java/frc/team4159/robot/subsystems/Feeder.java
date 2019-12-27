@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -34,10 +33,10 @@ public class Feeder implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        limit_switch = new DigitalInput(Constants.LIFTER_LIMIT_SWITCH);
+        limit_switch = new DigitalInput(Constants.PORTS.LIFTER_LIMIT_SWITCH);
 
-        intake_talon = new TalonSRX(Constants.INTAKE_TALON);
-        lifter_talon = new TalonSRX(Constants.LIFTER_TALON);
+        intake_talon = new TalonSRX(Constants.PORTS.INTAKE_TALON);
+        lifter_talon = new TalonSRX(Constants.PORTS.LIFTER_TALON);
 
         intake_talon.configFactoryDefault();
         lifter_talon.configFactoryDefault();
@@ -70,16 +69,16 @@ public class Feeder implements Subsystem {
             zero();
         }
 
-        if (oi.getSecondaryJoy().getRawButton(7)) {
+        if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.INTAKE)) {
             intake();
         } else {
             stop();
         }
 
-        if (oi.getSecondaryJoy().getRawButton(9)) {
-            goal = Constants.FEEDER_DOWN;
-        } else if (oi.getSecondaryJoy().getRawButton(6)) {
-            goal = Constants.FEEDER_UP;
+        if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.LOWER_FEEDER)) {
+            goal = Constants.NUMS.FEEDER_DOWN;
+        } else if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.RAISE_FEEDER)) {
+            goal = Constants.NUMS.FEEDER_UP;
         }
 
         int filtered_goal = goal;

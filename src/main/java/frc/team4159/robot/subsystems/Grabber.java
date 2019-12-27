@@ -26,8 +26,8 @@ public class Grabber implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        master_grabber_victor = new VictorSPX(Constants.GRABBER_MASTER_VICTOR);
-        slave_grabber_victor = new VictorSPX(Constants.GRABBER_SLAVE_VICTOR);
+        master_grabber_victor = new VictorSPX(Constants.PORTS.GRABBER_MASTER_VICTOR);
+        slave_grabber_victor = new VictorSPX(Constants.PORTS.GRABBER_SLAVE_VICTOR);
 
         master_grabber_victor.configFactoryDefault();
         slave_grabber_victor.configFactoryDefault();
@@ -45,9 +45,9 @@ public class Grabber implements Subsystem {
             return;
         }
 
-        if (oi.getSecondaryJoy().getRawButton(7)) {
+        if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.INTAKE)) {
             grabberIntake();
-        } else if (oi.getSecondaryJoy().getRawButton(8)) {
+        } else if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.OUTTAKE)) {
             grabberOuttake();
         } else {
             stopGrabber();

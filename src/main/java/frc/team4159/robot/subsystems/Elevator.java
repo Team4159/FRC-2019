@@ -37,7 +37,7 @@ public class Elevator implements Subsystem {
         oi = OI.getInstance();
         // elevator_loop = new ElevatorLoop();
 
-        limit_switch = new DigitalInput(Constants.ELEVATOR_LIMIT_SWITCH);
+        limit_switch = new DigitalInput(Constants.PORTS.ELEVATOR_LIMIT_SWITCH);
 
         master_elevator_talon = configureTalon(false);
         slave_elevator_talon = configureTalon(true);
@@ -57,7 +57,7 @@ public class Elevator implements Subsystem {
     }
 
     private TalonSRX configureTalon(boolean isSlave) {
-        TalonSRX talon = new TalonSRX(isSlave ? Constants.ELEVATOR_MASTER_TALON : Constants.ELEVATOR_SLAVE_TALON);
+        TalonSRX talon = new TalonSRX(isSlave ? Constants.PORTS.ELEVATOR_MASTER_TALON : Constants.PORTS.ELEVATOR_SLAVE_TALON);
         talon.configFactoryDefault();
         talon.setNeutralMode(NeutralMode.Coast);
         return talon;
@@ -74,26 +74,26 @@ public class Elevator implements Subsystem {
             zeroElevatorEncoder();
         }
 
-        if (oi.getSecondaryJoy().getRawButtonPressed(2)) {
-            goal = Constants.CARGO_SHIP_HATCH;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(14)) {
-            goal = Constants.CARGO_SHIP_PORT;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(15)) {
-            goal = Constants.ROCKET_HATCH_LEVEL_TWO;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(16)) {
-            goal = Constants.ROCKET_HATCH_LEVEL_THREE;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(13)) {
-            goal = Constants.ROCKET_PORT_LEVEL_ONE;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(12)) {
-            goal = Constants.ROCKET_PORT_LEVEL_TWO;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(11)) {
-            goal = Constants.ROCKET_PORT_LEVEL_THREE;
+        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_CARGO_SHIP_HATCH)) {
+            goal = Constants.NUMS.CARGO_SHIP_HATCH;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_CARGO_SHIP_PORT)) {
+            goal = Constants.NUMS.CARGO_SHIP_PORT;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_TWO)) {
+            goal = Constants.NUMS.ROCKET_HATCH_LEVEL_TWO;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_THREE)) {
+            goal = Constants.NUMS.ROCKET_HATCH_LEVEL_THREE;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_ONE)) {
+            goal = Constants.NUMS.ROCKET_PORT_LEVEL_ONE;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_TWO)) {
+            goal = Constants.NUMS.ROCKET_PORT_LEVEL_TWO;
+        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.BUTTON_IDS.ELEVATOR_TO_ROCKET_PORT_LEVEL_THREE)) {
+            goal = Constants.NUMS.ROCKET_PORT_LEVEL_THREE;
         }
 
         if (zeroing) {
             master_elevator_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
-            if (oi.getSecondaryJoy().getRawButton(1)) {
+            if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.ELEVATOR_MANUAL_CONTROL)) {
                 master_elevator_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
                 goal = getElevatorPosition();
             } else {
@@ -126,6 +126,6 @@ public class Elevator implements Subsystem {
     }
 
     public static int MetersToTicks(double meters) {
-        return RobotMath.MetersToTicks(meters, Constants.ELEVATOR_SPROCKET_RADIUS, Constants.TICKS_PER_REV);
+        return RobotMath.MetersToTicks(meters, Constants.NUMS.ELEVATOR_SPROCKET_RADIUS, Constants.NUMS.TICKS_PER_REV);
     }
 }

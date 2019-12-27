@@ -35,10 +35,10 @@ public class Drivetrain implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        left_master_drivetrain_spark = configureSparkMax(Constants.LEFT_MASTER_SPARK, false, null);
-        right_master_drivetrain_spark = configureSparkMax(Constants.RIGHT_MASTER_SPARK, false, null);
-        left_slave_drivetrain_spark = configureSparkMax(Constants.LEFT_SLAVE_SPARK, false, left_master_drivetrain_spark);
-        right_slave_drivetrain_spark = configureSparkMax(Constants.RIGHT_SLAVE_SPARK, false, right_master_drivetrain_spark);
+        left_master_drivetrain_spark = configureSparkMax(Constants.PORTS.LEFT_MASTER_SPARK, false, null);
+        right_master_drivetrain_spark = configureSparkMax(Constants.PORTS.RIGHT_MASTER_SPARK, false, null);
+        left_slave_drivetrain_spark = configureSparkMax(Constants.PORTS.LEFT_SLAVE_SPARK, false, left_master_drivetrain_spark);
+        right_slave_drivetrain_spark = configureSparkMax(Constants.PORTS.RIGHT_SLAVE_SPARK, false, right_master_drivetrain_spark);
     }
 
     private CANSparkMax configureSparkMax(int id, boolean inverted, CANSparkMax master) {
@@ -60,7 +60,7 @@ public class Drivetrain implements Subsystem {
             return;
         }
 
-        if (oi.getRightJoy().getRawButtonPressed(2)) {
+        if (oi.getRightJoy().getRawButtonPressed(Constants.BUTTON_IDS.ROBOT_ORIENTATION)) {
             flipOrientation();
         }
 
