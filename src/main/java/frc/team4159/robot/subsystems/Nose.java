@@ -3,7 +3,6 @@ package frc.team4159.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
@@ -19,7 +18,7 @@ public class Nose implements Subsystem {
     private DriverStation ds;
     private OI oi;
 
-    private DoubleSolenoid raiser, hooks;
+    private DoubleSolenoid raiser_solenoid, hooks_solenoid;
 
     private boolean goal = false;
 
@@ -27,8 +26,8 @@ public class Nose implements Subsystem {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        hooks = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
-        raiser = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
+        hooks_solenoid = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
+        raiser_solenoid = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
     }
 
     @Override
@@ -38,10 +37,10 @@ public class Nose implements Subsystem {
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
-            if (hooks.get() == DoubleSolenoid.Value.kForward) {
-                release();
+            if (hooks_solenoid.get() == DoubleSolenoid.Value.kForward) {
+                hooksSolenoidRelease();
             } else {
-                grab();
+                hooksSolenoidGrab();
             }
         }
 
@@ -52,35 +51,35 @@ public class Nose implements Subsystem {
         boolean filtered_goal = goal;
 
         /*
-        if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
+        if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().getElevatorPosition(), Elevator.getInstance().getElevatorGoal())) {
             filtered_goal = false;
         }
          */
 
         if (filtered_goal) {
-            raise();
+            raiserSolenoidRaise();
         } else {
-            lower();
+            raiserSolenoidLower();
         }
     }
 
-    private void raise() {
-        raiser.set(DoubleSolenoid.Value.kForward);
+    private void raiserSolenoidRaise() {
+        raiser_solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
-    private void lower() {
-        raiser.set(DoubleSolenoid.Value.kReverse);
+    private void raiserSolenoidLower() {
+        raiser_solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
-    private void grab() {
-        hooks.set(DoubleSolenoid.Value.kForward);
+    private void hooksSolenoidGrab() {
+        hooks_solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
-    private void release() {
-        hooks.set(DoubleSolenoid.Value.kReverse);
+    private void hooksSolenoidRelease() {
+        hooks_solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
-    boolean raised() {
-        return raiser.get() == DoubleSolenoid.Value.kReverse;
+    boolean isRaiserSolenoidRaised() {
+        return raiser_solenoid.get() == DoubleSolenoid.Value.kReverse;
     }
 }

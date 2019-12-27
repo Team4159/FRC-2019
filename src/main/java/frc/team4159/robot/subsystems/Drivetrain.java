@@ -25,20 +25,20 @@ public class Drivetrain implements Subsystem {
     private DriverStation ds;
     private OI oi;
 
-    private CANSparkMax left_master_spark, left_slave_spark, right_master_spark, right_slave_spark;
+    private CANSparkMax left_master_drivetrain_spark, left_slave_drivetrain_spark, right_master_drivetrain_spark, right_slave_drivetrain_spark;
     private PigeonIMU pigeon;
 
-    private Orientation orientation = Orientation.CARGO;
+    private Orientation robot_orientation = Orientation.CARGO;
 
     @SuppressWarnings("ConstantConditions")
     private Drivetrain() {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
-        left_master_spark = configureSparkMax(Constants.LEFT_MASTER_SPARK, false, null);
-        right_master_spark = configureSparkMax(Constants.RIGHT_MASTER_SPARK, false, null);
-        left_slave_spark = configureSparkMax(Constants.LEFT_SLAVE_SPARK, false, left_master_spark);
-        right_slave_spark = configureSparkMax(Constants.RIGHT_SLAVE_SPARK, false, right_master_spark);
+        left_master_drivetrain_spark = configureSparkMax(Constants.LEFT_MASTER_SPARK, false, null);
+        right_master_drivetrain_spark = configureSparkMax(Constants.RIGHT_MASTER_SPARK, false, null);
+        left_slave_drivetrain_spark = configureSparkMax(Constants.LEFT_SLAVE_SPARK, false, left_master_drivetrain_spark);
+        right_slave_drivetrain_spark = configureSparkMax(Constants.RIGHT_SLAVE_SPARK, false, right_master_drivetrain_spark);
     }
 
     private CANSparkMax configureSparkMax(int id, boolean inverted, CANSparkMax master) {
@@ -64,28 +64,28 @@ public class Drivetrain implements Subsystem {
             flipOrientation();
         }
 
-        rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
+        setRawSpeeds(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
     }
 
-    private void rawDrive(double left, double right) {
-        if (orientation == Orientation.CARGO) {
-            left_master_spark.set(left);
-            right_master_spark.set(right);
-        } else if (orientation == Orientation.HATCH) {
-            left_master_spark.set(right);
-            right_master_spark.set(left);
+    private void setRawSpeeds(double left, double right) {
+        if (robot_orientation == Orientation.CARGO) {
+            left_master_drivetrain_spark.set(left);
+            right_master_drivetrain_spark.set(right);
+        } else if (robot_orientation == Orientation.HATCH) {
+            left_master_drivetrain_spark.set(right);
+            right_master_drivetrain_spark.set(left);
         }
     }
 
     private void flipOrientation() {
-        if (orientation == Orientation.CARGO) {
-            orientation = Orientation.HATCH;
-        } else if (orientation == Orientation.HATCH) {
-            orientation = Orientation.CARGO;
+        if (robot_orientation == Orientation.CARGO) {
+            robot_orientation = Orientation.HATCH;
+        } else if (robot_orientation == Orientation.HATCH) {
+            robot_orientation = Orientation.CARGO;
         }
-        right_master_spark.setInverted(orientation == Orientation.CARGO);
-        right_slave_spark.setInverted(orientation == Orientation.CARGO);
-        left_master_spark.setInverted(orientation == Orientation.CARGO);
-        left_slave_spark.setInverted(orientation == Orientation.CARGO);
+        right_master_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
+        right_slave_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
+        left_master_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
+        left_slave_drivetrain_spark.setInverted(robot_orientation == Orientation.CARGO);
     }
 }

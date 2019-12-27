@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.RobotMath;
@@ -25,8 +24,8 @@ public class Elevator implements Subsystem {
     private DriverStation ds;
     private OI oi;
 
-    private TalonSRX master_talon;
-    private TalonSRX slave_talon;
+    private TalonSRX master_elevator_talon;
+    private TalonSRX slave_elevator_talon;
 
     private DigitalInput limit_switch;
 
@@ -38,29 +37,30 @@ public class Elevator implements Subsystem {
         oi = OI.getInstance();
         // elevator_loop = new ElevatorLoop();
 
-        master_talon = new TalonSRX(Constants.ELEVATOR_MASTER_TALON);
-        slave_talon = new TalonSRX(Constants.ELEVATOR_SLAVE_TALON);
-
         limit_switch = new DigitalInput(Constants.ELEVATOR_LIMIT_SWITCH);
 
-        master_talon.configFactoryDefault();
-        slave_talon.configFactoryDefault();
+        master_elevator_talon = configureTalon(false);
+        slave_elevator_talon = configureTalon(true);
 
-        master_talon.setNeutralMode(NeutralMode.Coast);
-        slave_talon.setNeutralMode(NeutralMode.Coast);
-
-        master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        master_talon.config_kP(0, 0.12);
-        master_talon.config_kI(0, 0);
-        master_talon.config_kD(0, 4.0);
+        master_elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        master_elevator_talon.config_kP(0, 0.12);
+        master_elevator_talon.config_kI(0, 0);
+        master_elevator_talon.config_kD(0, 4.0);
         /*
-        master_talon.config_kF(0, 0.06);
+        master_elevator_talon.config_kF(0, 0.06);
 
-        master_talon.configMotionCruiseVelocity(10000);
-        master_talon.configMotionAcceleration(5000);
+        master_elevator_talon.configMotionCruiseVelocity(10000);
+        master_elevator_talon.configMotionAcceleration(5000);
         */
 
-        slave_talon.follow(master_talon);
+        slave_elevator_talon.follow(master_elevator_talon);
+    }
+
+    private TalonSRX configureTalon(boolean isSlave) {
+        TalonSRX talon = new TalonSRX(isSlave ? Constants.ELEVATOR_MASTER_TALON : Constants.ELEVATOR_SLAVE_TALON);
+        talon.configFactoryDefault();
+        talon.setNeutralMode(NeutralMode.Coast);
+        return talon;
     }
 
     @Override
@@ -69,9 +69,9 @@ public class Elevator implements Subsystem {
             return;
         }
 
-        if (zeroed()) {
+        if (isElevatorZeroed()) {
             zeroing = false;
-            zero();
+            zeroElevatorEncoder();
         }
 
         if (oi.getSecondaryJoy().getRawButtonPressed(2)) {
@@ -91,38 +91,38 @@ public class Elevator implements Subsystem {
         }
 
         if (zeroing) {
-            master_talon.set(ControlMode.PercentOutput, -0.3);
+            master_elevator_talon.set(ControlMode.PercentOutput, -0.3);
         } else {
             if (oi.getSecondaryJoy().getRawButton(1)) {
-                master_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
-                goal = position();
+                master_elevator_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
+                goal = getElevatorPosition();
             } else {
-                master_talon.set(ControlMode.Position, goal);
+                master_elevator_talon.set(ControlMode.Position, goal);
             }
             /*
-            if (CollisionAvoidance.safeToMoveElevator(position(), goal(), Feeder.getInstance().position(), Nose.getInstance().raised())) {
-                master_talon.set(ControlMode.Position, goal);
+            if (CollisionAvoidance.safeToMoveElevator(getElevatorPosition(), getElevatorGoal(), Feeder.getInstance().getElevatorPosition(), Nose.getInstance().isRaiserSolenoidRaised())) {
+                master_elevator_talon.set(ControlMode.Position, getElevatorGoal);
             } else {
-                master_talon.set(ControlMode.PercentOutput, 0);
+                master_elevator_talon.set(ControlMode.PercentOutput, 0);
             }
             */
         }
     }
 
-    int goal() {
+    int getElevatorGoal() {
         return goal;
     }
 
-    int position() {
-        return master_talon.getSelectedSensorPosition();
+    int getElevatorPosition() {
+        return master_elevator_talon.getSelectedSensorPosition();
     }
 
-    private boolean zeroed() {
+    private boolean isElevatorZeroed() {
         return !limit_switch.get();
     }
 
-    private void zero() {
-        master_talon.setSelectedSensorPosition(0);
+    private void zeroElevatorEncoder() {
+        master_elevator_talon.setSelectedSensorPosition(0);
     }
 
     public static int MetersToTicks(double meters) {

@@ -12,14 +12,24 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
     @Override
     public void startCompetition() {
-        HAL.observeUserProgramStarting();
-        UsbCamera hatch_camera = CameraServer.getInstance().startAutomaticCapture();
-        hatch_camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
-        hatch_camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 480, 30);
-        VideoSink server = CameraServer.getInstance().addServer("Driver Camera");
-        server.setSource(hatch_camera);
+        setupVideoCamera();
+
+        // Loop to keep thread alive
         while (true) {
 
         }
     }
+
+    private void setupVideoCamera() {
+        UsbCamera hatch_camera;
+        VideoSink camera_server;
+
+        hatch_camera = CameraServer.getInstance().startAutomaticCapture();
+        hatch_camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
+        hatch_camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 480, 30);
+        camera_server = CameraServer.getInstance().addServer("Driver Camera");
+
+        camera_server.setSource(hatch_camera);
+    }
+
 }
