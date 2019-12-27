@@ -12,6 +12,19 @@ import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
 
 public class Feeder implements Subsystem {
+    private static final int slotIdx = 0;
+    private static final double kP = 1.0;
+    private static final double kI = 0.0;
+    private static final double kD = 20.0;
+    private static final double kF = 0.3;
+
+    private static final double kDeadband = 0;
+
+    private static final int kCruiseVelocityCap = 5000;
+    private static final int kAccelerationCap = 2000;
+
+    private static final double kZeroingVoltage = 0.4;
+
     private static Feeder instance;
     public static Feeder getInstance() {
         if (instance == null) {
@@ -46,14 +59,14 @@ public class Feeder implements Subsystem {
 
         // TODO: Tune
         lifter_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        lifter_talon.config_kP(0, 1.0);
-        lifter_talon.config_kI(0, 0.0);
-        lifter_talon.config_kD(0, 20.0);
-        lifter_talon.config_kF(0, 0.3);
-        lifter_talon.configNeutralDeadband(0);
+        lifter_talon.config_kP(slotIdx, kP);
+        lifter_talon.config_kI(slotIdx, kI);
+        lifter_talon.config_kD(slotIdx, kD);
+        lifter_talon.config_kF(slotIdx, kF);
+        lifter_talon.configNeutralDeadband(kDeadband);
 
-        lifter_talon.configMotionCruiseVelocity(5000);
-        lifter_talon.configMotionAcceleration(2000);
+        lifter_talon.configMotionCruiseVelocity(kCruiseVelocityCap);
+        lifter_talon.configMotionAcceleration(kAccelerationCap);
 
         zero();
     }
@@ -91,7 +104,7 @@ public class Feeder implements Subsystem {
         }*/
 
         if (zeroing) {
-            lifter_talon.set(ControlMode.PercentOutput, 0.4);
+            lifter_talon.set(ControlMode.PercentOutput, kZeroingVoltage);
         } else {
             lifter_talon.set(ControlMode.MotionMagic, filtered_goal);
         }

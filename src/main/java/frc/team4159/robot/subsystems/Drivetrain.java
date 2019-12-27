@@ -9,6 +9,8 @@ import frc.team4159.robot.OI;
 import frc.team4159.robot.Constants;
 
 public class Drivetrain implements Subsystem {
+    private static final int kSparkMaxCurrentLimit = 40;
+
     private static Drivetrain instance;
     public static Drivetrain getInstance() {
         if (instance == null) {
@@ -44,7 +46,7 @@ public class Drivetrain implements Subsystem {
     private CANSparkMax configureSparkMax(int id, boolean inverted, CANSparkMax master) {
         CANSparkMax spark = new CANSparkMax(id, CANSparkMax.MotorType.kBrushless);
         spark.restoreFactoryDefaults();
-        spark.setSmartCurrentLimit(40);
+        spark.setSmartCurrentLimit(kSparkMaxCurrentLimit);
         spark.setInverted(inverted);
         if (master != null) {
             spark.follow(master);

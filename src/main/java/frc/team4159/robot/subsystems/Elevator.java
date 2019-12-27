@@ -13,6 +13,13 @@ import frc.team4159.robot.OI;
 import frc.team4159.robot.RobotMath;
 
 public class Elevator implements Subsystem {
+    private static final int slotIdx = 0;
+    private static final double kP = 0.12;
+    private static final double kI = 0.0;
+    private static final double kD = 4.0;
+
+    private static final double kZeroingVoltage = -0.3;
+
     private static Elevator instance;
     public static Elevator getInstance() {
         if (instance == null) {
@@ -43,9 +50,9 @@ public class Elevator implements Subsystem {
         slave_elevator_talon = configureTalon(true);
 
         master_elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        master_elevator_talon.config_kP(0, 0.12);
-        master_elevator_talon.config_kI(0, 0);
-        master_elevator_talon.config_kD(0, 4.0);
+        master_elevator_talon.config_kP(slotIdx, kP);
+        master_elevator_talon.config_kI(slotIdx, kI);
+        master_elevator_talon.config_kD(slotIdx, kD);
         /*
         master_elevator_talon.config_kF(0, 0.06);
 
@@ -91,7 +98,7 @@ public class Elevator implements Subsystem {
         }
 
         if (zeroing) {
-            master_elevator_talon.set(ControlMode.PercentOutput, -0.3);
+            master_elevator_talon.set(ControlMode.PercentOutput, -kZeroingVoltage);
         } else {
             if (oi.getSecondaryJoy().getRawButton(Constants.BUTTON_IDS.ELEVATOR_MANUAL_CONTROL)) {
                 master_elevator_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
