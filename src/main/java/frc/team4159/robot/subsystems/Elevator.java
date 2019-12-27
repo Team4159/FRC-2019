@@ -113,7 +113,7 @@ public class Elevator implements Subsystem {
             }
             /*
             if (CollisionAvoidance.safeToMoveElevator(getElevatorPosition(), getElevatorGoal(), Feeder.getInstance().getElevatorPosition(), Nose.getInstance().isRaiserSolenoidRaised())) {
-                master_elevator_talon.set(ControlMode.Position, getElevatorGoal);
+                master_elevator_talon.set(ControlMode.Position, getElevatorGoal());
             } else {
                 master_elevator_talon.set(ControlMode.PercentOutput, 0);
             }
