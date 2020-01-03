@@ -1,11 +1,11 @@
 package frc.team4159.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
 import frc.team4159.robot.OI;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class Nose implements Subsystem {
     private static Nose instance;
@@ -23,7 +23,7 @@ public class Nose implements Subsystem {
 
     private boolean goal = false;
 
-    private Nose() {
+    public Nose() {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
@@ -37,25 +37,19 @@ public class Nose implements Subsystem {
             return;
         }
 
-        if (oi.getSecondaryJoy().getRawButtonPressed(5)) {
-            if (hooks.get() == DoubleSolenoid.Value.kForward) {
-                release();
+        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.TOGGLE_HOOKS)) {
+            if (hooks_solenoid.get() == DoubleSolenoid.Value.kForward) {
+                hooksSolenoidRelease();
             } else {
                 grab();
             }
         }
 
-        if (oi.getSecondaryJoy().getRawButtonPressed(10)) {
+        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.TOGGLE_RAISER)) {
             goal = !goal;
         }
 
         boolean filtered_goal = goal;
-
-        /*
-        if (!CollisionAvoidance.raiserSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-            filtered_goal = false;
-        }
-         */
 
         if (filtered_goal) {
             raise();

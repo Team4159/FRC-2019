@@ -1,28 +1,23 @@
 package frc.team4159.robot.subsystems;
 
+import frc.team4159.robot.Constants;
+import frc.team4159.robot.OI;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import frc.team4159.robot.Constants;
-import frc.team4159.robot.OI;
-
 public class Grabber implements Subsystem {
-    private static Grabber instance;
-    public static Grabber getInstance() {
-        if (instance == null) {
-            instance = new Grabber();
-        }
-        return instance;
-    }
+    public static final double kIdleVoltage = -0.15;
 
     private DriverStation ds;
     private OI oi;
 
     private VictorSPX master_grabber_victor, slave_grabber_victor;
 
-    private Grabber() {
+    public Grabber() {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
@@ -45,10 +40,10 @@ public class Grabber implements Subsystem {
             return;
         }
 
-        if (oi.getSecondaryJoy().getRawButton(7)) {
-            intake();
-        } else if (oi.getSecondaryJoy().getRawButton(8)) {
-            outtake();
+        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.INTAKE_CARGO)) {
+            intakeCargo();
+        } else if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.OUTTAKE_CARGO)) {
+            outtakeCargo();
         } else {
             stop();
         }

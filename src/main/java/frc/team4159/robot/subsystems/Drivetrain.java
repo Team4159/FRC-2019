@@ -1,23 +1,18 @@
 package frc.team4159.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import com.ctre.phoenix.sensors.PigeonIMU;
-//hi lol
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.OI;
 import frc.team4159.robot.Constants;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+//hi lol
+
 public class Drivetrain implements Subsystem {
-    private static Drivetrain instance;
-    public static Drivetrain getInstance() {
-        if (instance == null) {
-            instance = new Drivetrain();
-        }
-        return instance;
-    }
+    private static final int kSparkMaxCurrentLimit = 40;
 
     private enum Orientation {
         HATCH,
@@ -32,8 +27,7 @@ public class Drivetrain implements Subsystem {
 
     private Orientation orientation = Orientation.CARGO;
 
-    @SuppressWarnings("ConstantConditions")
-    private Drivetrain() {
+    public Drivetrain() {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
@@ -62,7 +56,7 @@ public class Drivetrain implements Subsystem {
             return;
         }
 
-        if (oi.getRightJoy().getRawButtonPressed(2)) {
+        if (oi.getRightJoy().getRawButtonPressed(Constants.CONTROLS.FLIP_ORIENTATION)) {
             flipOrientation();
         }
 

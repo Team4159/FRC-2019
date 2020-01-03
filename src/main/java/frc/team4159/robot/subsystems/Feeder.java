@@ -8,19 +8,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import frc.team4159.robot.CollisionAvoidance;
 import frc.team4159.robot.Constants;
-import frc.team4159.robot.OI;
 
 public class Feeder implements Subsystem {
-    private static Feeder instance;
-    public static Feeder getInstance() {
-        if (instance == null) {
-            instance = new Feeder();
-        }
-        return instance;
-    }
-
     private DriverStation ds;
     private OI oi;
 
@@ -30,7 +20,7 @@ public class Feeder implements Subsystem {
     private boolean zeroing = true;
     private int goal = 0;
 
-    private Feeder() {
+    public Feeder() {
         ds = DriverStation.getInstance();
         oi = OI.getInstance();
 
@@ -70,26 +60,19 @@ public class Feeder implements Subsystem {
             zero();
         }
 
-        if (oi.getSecondaryJoy().getRawButton(7)) {
-            intake();
+        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.INTAKE_CARGO)) {
+            intakeCargo();
         } else {
             stop();
         }
 
-        if (oi.getSecondaryJoy().getRawButton(9)) {
-            goal = Constants.FEEDER_DOWN;
-        } else if (oi.getSecondaryJoy().getRawButton(6)) {
-            goal = Constants.FEEDER_UP;
+        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.LOWER_FEEDER)) {
+            goal = Constants.POSITIONS.FEEDER_DOWN;
+        } else if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.RAISE_FEEDER)) {
+            goal = Constants.POSITIONS.FEEDER_UP;
         }
 
         int filtered_goal = goal;
-
-        /*
-        if (goal == Constants.FEEDER_UP) {
-            if (!CollisionAvoidance.feederSafeToBeUp(Elevator.getInstance().position(), Elevator.getInstance().goal())) {
-                filtered_goal = Constants.FEEDER_DOWN;
-            }
-        }*/
 
         if (zeroing) {
             lifter_talon.set(ControlMode.PercentOutput, 0.4);
