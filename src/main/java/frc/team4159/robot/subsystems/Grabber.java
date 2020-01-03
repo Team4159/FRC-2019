@@ -1,63 +1,46 @@
 package frc.team4159.robot.subsystems;
 
-import frc.team4159.robot.Constants;
-import frc.team4159.robot.OI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-public class Grabber implements Subsystem {
-    public static final double kIdleVoltage = -0.15;
+import static frc.team4159.robot.Constants.*;
 
-    private DriverStation ds;
-    private OI oi;
-
-    private VictorSPX master_grabber_victor, slave_grabber_victor;
+public class Grabber extends SubsystemBase {
+    private SpeedControllerGroup motors;
 
     public Grabber() {
-        ds = DriverStation.getInstance();
-        oi = OI.getInstance();
+        VictorSPX master_grabber_victor, slave_grabber_victor;
 
-        master_grabber_victor = new VictorSPX(Constants.GRABBER_MASTER_VICTOR);
-        slave_grabber_victor = new VictorSPX(Constants.GRABBER_SLAVE_VICTOR);
-
-        master_grabber_victor.configFactoryDefault();
-        slave_grabber_victor.configFactoryDefault();
-
-        master_grabber_victor.setNeutralMode(NeutralMode.Brake);
-        slave_grabber_victor.setNeutralMode(NeutralMode.Brake);
-
+        master_grabber_victor = configureVictorSPX(new WPI_VictorSPX(PORTS.GRABBER_MASTER_VICTOR));
+        slave_grabber_victor = configureVictorSPX(new WPI_VictorSPX(PORTS.GRABBER_SLAVE_VICTOR));
         slave_grabber_victor.setInverted(true);
-        slave_grabber_victor.follow(master_grabber_victor);
+
+        motors = new SpeedControllerGroup(
+                (WPI_VictorSPX) master_grabber_victor,
+                (WPI_VictorSPX) slave_grabber_victor
+        );
     }
 
-    @Override
-    public void iterate() {
-        if (!ds.isEnabled()) {
-            return;
-        }
+    private VictorSPX configureVictorSPX(VictorSPX victorSPX) {
+        victorSPX.configFactoryDefault();
+        victorSPX.setNeutralMode(NeutralMode.Brake);
 
-        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.INTAKE_CARGO)) {
-            intakeCargo();
-        } else if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.OUTTAKE_CARGO)) {
-            outtakeCargo();
-        } else {
-            stop();
-        }
+        return victorSPX;
     }
 
-    private void intake() {
-        master_grabber_victor.set(ControlMode.PercentOutput, -1);
+    public void intakeCargo() {
+        motors.set(-1);
     }
 
-    private void outtake() {
-        master_grabber_victor.set(ControlMode.PercentOutput, +1);
+    public void outtakeCargo() {
+        motors.set(1);
     }
 
-    private void stop() {
-        master_grabber_victor.set(ControlMode.PercentOutput, -0.15);
+    public void stopTaking() {
+        motors.set(GRABBER_CONSTANTS.IDLE_SPEED);
     }
 }

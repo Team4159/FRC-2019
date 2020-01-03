@@ -1,122 +1,75 @@
 package frc.team4159.robot.subsystems;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import com.ctre.phoenix.motorcontrol.SensorCollection;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import frc.team4159.robot.Constants;
-import frc.team4159.robot.OI;
+import static frc.team4159.robot.Constants.*;
 import frc.team4159.robot.Utils;
 
-public class Elevator implements Subsystem {
-    private static final int slotIdx = 0;
-    private static final double kP = 0.12;
-    private static final double kI = 0.0;
-    private static final double kD = 4.0;
-
-    private static final double kZeroingVoltage = -0.3;
-
-    private DriverStation ds;
-    private OI oi;
-
-    private TalonSRX master_talon;
-    private TalonSRX slave_talon;
+public class Elevator extends PIDSubsystem {
+    private SpeedControllerGroup motors;
 
     private DigitalInput limit_switch;
+    private SensorCollection encoder;
 
     private boolean zeroing = true;
-    private int goal = 0;
 
     public Elevator() {
-        ds = DriverStation.getInstance();
-        oi = OI.getInstance();
-        // elevator_loop = new ElevatorLoop();
+        super(new PIDController(ELEVATOR_CONSTANTS.kP, ELEVATOR_CONSTANTS.kI, ELEVATOR_CONSTANTS.kD));
+        getController().setTolerance(ELEVATOR_CONSTANTS.TOLERANCE);
+        setSetpoint(ELEVATOR_CONSTANTS.ROCKET_HATCH_LEVEL_ONE); // 0
 
-        master_talon = new TalonSRX(Constants.ELEVATOR_MASTER_TALON);
-        slave_talon = new TalonSRX(Constants.ELEVATOR_SLAVE_TALON);
+        TalonSRX master_talon, slave_talon;
 
-        limit_switch = new DigitalInput(Constants.ELEVATOR_LIMIT_SWITCH);
+        master_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.ELEVATOR_MASTER_TALON));
+        slave_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.ELEVATOR_SLAVE_TALON));
 
-        master_talon.configFactoryDefault();
-        slave_talon.configFactoryDefault();
+        limit_switch = new DigitalInput(PORTS.ELEVATOR_LIMIT_SWITCH);
+        encoder = master_talon.getSensorCollection();
 
-        master_talon.setNeutralMode(NeutralMode.Coast);
-        slave_talon.setNeutralMode(NeutralMode.Coast);
+        motors = new SpeedControllerGroup(
+                (WPI_TalonSRX) master_talon,
+                (WPI_TalonSRX) slave_talon
+        );
+    }
 
-        master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        master_talon.config_kP(0, 0.12);
-        master_talon.config_kI(0, 0);
-        master_talon.config_kD(0, 4.0);
-        /*
-        master_talon.config_kF(0, 0.06);
+    private TalonSRX configureTalonSRX(TalonSRX talonSRX) {
+        talonSRX.configFactoryDefault();
+        talonSRX.setNeutralMode(NeutralMode.Coast);
 
-        master_talon.configMotionCruiseVelocity(10000);
-        master_talon.configMotionAcceleration(5000);
-        */
-
-        slave_talon.follow(master_talon);
+        return talonSRX;
     }
 
     @Override
-    public void iterate() {
-        if (!ds.isEnabled()) {
-            return;
-        }
-
-        if (zeroed()) {
-            zeroing = false;
-            zero();
-        }
-
-        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_CARGO_SHIP_HATCH)) {
-            goal = Constants.POSITIONS.CARGO_SHIP_HATCH;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_CARGO_SHIP_PORT)) {
-            goal = Constants.POSITIONS.CARGO_SHIP_PORT;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_TWO)) {
-            goal = Constants.POSITIONS.ROCKET_HATCH_LEVEL_TWO;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_ROCKET_HATCH_LEVEL_THREE)) {
-            goal = Constants.POSITIONS.ROCKET_HATCH_LEVEL_THREE;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_ROCKET_PORT_LEVEL_ONE)) {
-            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_ONE;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_ROCKET_PORT_LEVEL_TWO)) {
-            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_TWO;
-        } else if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.ELEVATOR_TO_ROCKET_PORT_LEVEL_THREE)) {
-            goal = Constants.POSITIONS.ROCKET_PORT_LEVEL_THREE;
-        }
-
-        if (zeroing) {
-            master_talon.set(ControlMode.PercentOutput, -0.3);
-        } else {
-            if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.ELEVATOR_MANUAL_CONTROL)) {
-                master_elevator_talon.set(ControlMode.PercentOutput, oi.getSecondaryJoy().getY());
-                goal = getElevatorPosition();
-            } else {
-                master_talon.set(ControlMode.Position, goal);
-            }
-        }
+    public void useOutput(double output, double setpoint) {
+        motors.setVoltage(output);
     }
 
-    int goal() {
-        return goal;
+    @Override
+    protected double getMeasurement() {
+        return encoder.getQuadraturePosition();
     }
 
-    int position() {
-        return master_talon.getSelectedSensorPosition();
+    public void setRawSpeed(double speed) {
+        motors.set(speed);
     }
 
-    private boolean zeroed() {
+    public boolean isZeroed() {
         return !limit_switch.get();
     }
 
-    private void zero() {
-        master_talon.setSelectedSensorPosition(0);
+    public void resetEncoder() {
+        encoder.setQuadraturePosition(0, 0);
     }
 
     public static int metersToTicks(double meters) {
-        return Utils.metersToTicks(meters, Constants.MATH.ELEVATOR_SPROCKET_RADIUS, Constants.MATH.TICKS_PER_REV);
+        return Utils.metersToTicks(meters, ELEVATOR_CONSTANTS.SPROCKET_RADIUS, ELEVATOR_CONSTANTS.TICKS_PER_REV);
     }
 }

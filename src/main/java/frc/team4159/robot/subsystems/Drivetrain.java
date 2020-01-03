@@ -1,17 +1,16 @@
 package frc.team4159.robot.subsystems;
 
-import frc.team4159.robot.OI;
-import frc.team4159.robot.Constants;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 //hi lol
+import static frc.team4159.robot.Constants.*;
 
-public class Drivetrain implements Subsystem {
+public class Drivetrain extends SubsystemBase {
     private static final int kSparkMaxCurrentLimit = 40;
 
     private enum Orientation {
@@ -19,69 +18,54 @@ public class Drivetrain implements Subsystem {
         CARGO
     }
 
-    private DriverStation ds;
-    private OI oi;
-
-    private TalonSRX left_master_talon, left_slave_talon, right_master_talon, right_slave_talon;
+    private SpeedControllerGroup left_motors, right_motors;
     private PigeonIMU pigeon;
 
     private Orientation orientation = Orientation.CARGO;
 
     public Drivetrain() {
-        ds = DriverStation.getInstance();
-        oi = OI.getInstance();
+        TalonSRX left_master_talon, left_slave_talon, right_master_talon, right_slave_talon;
 
-        left_master_talon = new TalonSRX(Constants.LEFT_MASTER_TALON);
-        right_master_talon = new TalonSRX(Constants.RIGHT_MASTER_TALON);
-        left_slave_talon = new TalonSRX(Constants.LEFT_SLAVE_TALON);
-        right_slave_talon = new TalonSRX(Constants.RIGHT_SLAVE_TALON);
+        left_master_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.LEFT_MASTER_TALON));
+        right_master_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.RIGHT_MASTER_TALON));
+        left_slave_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.LEFT_SLAVE_TALON));
+        right_slave_talon = configureTalonSRX(new WPI_TalonSRX(PORTS.RIGHT_SLAVE_TALON));
 
-        left_master_talon.configFactoryDefault();
-        right_master_talon.configFactoryDefault();
-        left_slave_talon.configFactoryDefault();
-        right_slave_talon.configFactoryDefault();
+        left_motors = new SpeedControllerGroup(
+                (WPI_TalonSRX) left_master_talon,
+                (WPI_TalonSRX) left_slave_talon
+        );
 
-        left_master_talon.setNeutralMode(NeutralMode.Coast);
-        left_slave_talon.setNeutralMode(NeutralMode.Coast);
-        right_master_talon.setNeutralMode(NeutralMode.Coast);
-        right_slave_talon.setNeutralMode(NeutralMode.Coast);
-
-        left_slave_talon.follow(left_master_talon);
-        right_slave_talon.follow(right_master_talon);
+        right_motors = new SpeedControllerGroup(
+                (WPI_TalonSRX) right_master_talon,
+                (WPI_TalonSRX) right_slave_talon
+        );
     }
 
-    @Override
-    public void iterate() {
-        if (!ds.isEnabled()) {
-            return;
-        }
+    private TalonSRX configureTalonSRX(TalonSRX talonSRX) {
+        talonSRX.configFactoryDefault();
+        talonSRX.setNeutralMode(NeutralMode.Coast);
 
-        if (oi.getRightJoy().getRawButtonPressed(Constants.CONTROLS.FLIP_ORIENTATION)) {
-            flipOrientation();
-        }
-
-        rawDrive(oi.getLeftJoy().getY(), oi.getRightJoy().getY());
+        return talonSRX;
     }
 
-    private void rawDrive(double left, double right) {
+    public void setRawSpeeds(double left, double right) {
         if (orientation == Orientation.CARGO) {
-            left_master_talon.set(ControlMode.PercentOutput, left);
-            right_master_talon.set(ControlMode.PercentOutput, right);
+            left_motors.set(left);
+            right_motors.set(right);
         } else if (orientation == Orientation.HATCH) {
-            left_master_talon.set(ControlMode.PercentOutput, right);
-            right_master_talon.set(ControlMode.PercentOutput, left);
+            left_motors.set(right);
+            right_motors.set(left);
         }
     }
 
-    private void flipOrientation() {
+    public void flipOrientation() {
         if (orientation == Orientation.CARGO) {
             orientation = Orientation.HATCH;
         } else if (orientation == Orientation.HATCH) {
             orientation = Orientation.CARGO;
         }
-        right_master_talon.setInverted(orientation == Orientation.CARGO);
-        right_slave_talon.setInverted(orientation == Orientation.CARGO);
-        left_master_talon.setInverted(orientation == Orientation.CARGO);
-        left_slave_talon.setInverted(orientation == Orientation.CARGO);
+        right_motors.setInverted(orientation == Orientation.CARGO);
+        left_motors.setInverted(orientation == Orientation.CARGO);
     }
 }

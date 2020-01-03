@@ -5,7 +5,7 @@ import frc.team4159.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj.util.Units;
 
 public class Constants {
-    // Button IDs
+    // Controls for robot
     public static class CONTROLS {
         public static final int LEFT_JOY = 0;
         public static final int RIGHT_JOY = 1;
@@ -33,24 +33,39 @@ public class Constants {
         public static final int ELEVATOR_TO_ROCKET_PORT_LEVEL_THREE = 11;
     }
 
-    // Math-y Stuff
-    public static class MATH {
-        public static final double ELEVATOR_SPROCKET_RADIUS = Units.feetToMeters(1.751 / 12.0);
-        public static final double ELEVATOR_SPROCKET_CIRCUMFERENCE = ELEVATOR_SPROCKET_RADIUS * Math.PI * 2;
-        public static final int TICKS_PER_REV = 4096;
+    // Ports
+    public static class PORTS {
+        // TODO: Check
+        public static int LEFT_MASTER_TALON = 6;
+        public static int LEFT_SLAVE_TALON = 14;
+        public static int RIGHT_MASTER_TALON = 13;
+        public static int RIGHT_SLAVE_TALON = 16;
+
+        public static int ELEVATOR_MASTER_TALON = 11;
+        public static int ELEVATOR_SLAVE_TALON = 15;
+
+        public static int LIFTER_TALON = 9;
+        public static int INTAKE_TALON = 10;
+
+        public static int GRABBER_MASTER_VICTOR = 8;
+        public static int GRABBER_SLAVE_VICTOR = 5;
+
+        public static int RAISER_FORWARD = 0;
+        public static int RAISER_REVERSE = 4;
+
+        public static int HOOKS_FORWARD = 5;
+        public static int HOOKS_REVERSE = 1;
+
+        public static int ELEVATOR_LIMIT_SWITCH = 9;
+        // TODO: Check
+        public static int LIFTER_LIMIT_SWITCH = 8;
     }
 
-    // Positions in ticks
-    public static class POSITIONS {
-        public static final int FEEDER_UP = 0;
-        public static final int FEEDER_DOWN = -2960;
-        public static final int FEEDER_STOWED = FEEDER_DOWN / 2;
-
-        public static final double RAISER_DANGEROUS_LOWER_BAND = Elevator.metersToTicks(0.3);
-        public static final double RAISER_DANGEROUS_HIGHER_BAND = Elevator.metersToTicks(0.4);
-
-        public static final double FEEDER_DANGEROUS_LOWER_BAND = Elevator.metersToTicks(0.4);
-        public static final double FEEDER_DANGEROUS_HIGHER_BAND = Elevator.metersToTicks(0.6);
+    // Constants for the elevator
+    public static class ELEVATOR_CONSTANTS {
+        public static final double SPROCKET_RADIUS = Units.feetToMeters(1.751 / 12.0);
+        public static final double SPROCKET_CIRCUMFERENCE = SPROCKET_RADIUS * Math.PI * 2;
+        public static final int TICKS_PER_REV = 4096;
 
         public static final double HATCH_TO_BOTTOM = Units.feetToMeters(19.0 / 12.0);
         public static final int ROCKET_HATCH_LEVEL_THREE = Elevator.metersToTicks(1.90 - HATCH_TO_BOTTOM);
@@ -62,5 +77,31 @@ public class Constants {
         public static final int ROCKET_PORT_LEVEL_TWO = Elevator.metersToTicks(1.41 - CARGO_TO_BOTTOM);
         public static final int ROCKET_PORT_LEVEL_ONE = Elevator.metersToTicks(0.70 - CARGO_TO_BOTTOM);
         public static final int CARGO_SHIP_PORT = Elevator.metersToTicks(Units.feetToMeters(49.0 / 12.0) - CARGO_TO_BOTTOM);
+
+        public static final double kP = 0.12;
+        public static final double kI = 0.0;
+        public static final double kD = 4.0;
+
+        public static final double ZEROING_SPEED = -0.3;
+        public static final int TOLERANCE = Elevator.metersToTicks(0.01);
+    }
+
+    // Constants for the feeder
+    public static class FEEDER_CONSTANTS {
+        public static final double kP = 1.0;
+        public static final double kI = 0.0;
+        public static final double kD = 20.0;
+
+        public static final int FEEDER_UP = 0;
+        public static final int FEEDER_DOWN = -2960;
+        public static final int FEEDER_STOWED = FEEDER_DOWN / 2;
+
+        public static final double ZEROING_SPEED = 0.4;
+        public static final int TOLERANCE = 0;
+    }
+
+    // Constants for the grabber
+    public static class GRABBER_CONSTANTS {
+        public static final double IDLE_SPEED = -0.15;
     }
 }

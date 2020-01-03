@@ -1,103 +1,67 @@
 package frc.team4159.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import frc.team4159.robot.Constants;
+import static frc.team4159.robot.Constants.*;
 
-public class Feeder implements Subsystem {
-    private DriverStation ds;
-    private OI oi;
-
+public class Feeder extends PIDSubsystem {
     private TalonSRX lifter_talon, intake_talon;
+
     private DigitalInput limit_switch;
 
-    private boolean zeroing = true;
-    private int goal = 0;
-
     public Feeder() {
-        ds = DriverStation.getInstance();
-        oi = OI.getInstance();
+        super(new PIDController(FEEDER_CONSTANTS.kP, FEEDER_CONSTANTS.kI, FEEDER_CONSTANTS.kD));
+        getController().setTolerance(FEEDER_CONSTANTS.TOLERANCE);
+        setSetpoint(FEEDER_CONSTANTS.FEEDER_UP);
 
-        limit_switch = new DigitalInput(Constants.LIFTER_LIMIT_SWITCH);
-
-        intake_talon = new TalonSRX(Constants.INTAKE_TALON);
-        lifter_talon = new TalonSRX(Constants.LIFTER_TALON);
-
-        intake_talon.configFactoryDefault();
-        lifter_talon.configFactoryDefault();
-
-        intake_talon.setNeutralMode(NeutralMode.Brake);
-        lifter_talon.setNeutralMode(NeutralMode.Brake);
-
-        // TODO: Tune
+        lifter_talon = configureTalonSRX(new TalonSRX(PORTS.LIFTER_TALON));
         lifter_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        lifter_talon.config_kP(0, 1.0);
-        lifter_talon.config_kI(0, 0.0);
-        lifter_talon.config_kD(0, 20.0);
-        lifter_talon.config_kF(0, 0.3);
-        lifter_talon.configNeutralDeadband(0);
+        intake_talon = configureTalonSRX(new TalonSRX(PORTS.INTAKE_TALON));
 
-        lifter_talon.configMotionCruiseVelocity(5000);
-        lifter_talon.configMotionAcceleration(2000);
+        limit_switch = new DigitalInput(PORTS.LIFTER_LIMIT_SWITCH);
+    }
 
-        zero();
+    private TalonSRX configureTalonSRX(TalonSRX talonSRX) {
+        talonSRX.configFactoryDefault();
+        talonSRX.setNeutralMode(NeutralMode.Brake);
+
+        return talonSRX;
     }
 
     @Override
-    public void iterate() {
-        if (!ds.isEnabled()) {
-            return;
-        }
-
-        if (zeroed()) {
-            zeroing = false;
-            zero();
-        }
-
-        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.INTAKE_CARGO)) {
-            intakeCargo();
-        } else {
-            stop();
-        }
-
-        if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.LOWER_FEEDER)) {
-            goal = Constants.POSITIONS.FEEDER_DOWN;
-        } else if (oi.getSecondaryJoy().getRawButton(Constants.CONTROLS.RAISE_FEEDER)) {
-            goal = Constants.POSITIONS.FEEDER_UP;
-        }
-
-        int filtered_goal = goal;
-
-        if (zeroing) {
-            lifter_talon.set(ControlMode.PercentOutput, 0.4);
-        } else {
-            lifter_talon.set(ControlMode.MotionMagic, filtered_goal);
-        }
+    protected void useOutput(double output, double setpoint) {
+        lifter_talon.set(ControlMode.PercentOutput, output / 12.0);
     }
 
-    private boolean zeroed() {
+    @Override
+    protected double getMeasurement() {
+        return lifter_talon.getSelectedSensorPosition();
+    }
+
+    public boolean isZeroed() {
         return !limit_switch.get();
     }
 
-    private void zero() {
+    public void resetEncoder() {
         lifter_talon.setSelectedSensorPosition(0);
     }
 
-    private void intake() {
+    public void setRawLifterSpeed(double speed) {
+        lifter_talon.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void intakeCargo() {
         intake_talon.set(ControlMode.PercentOutput, 1);
     }
 
-    private void stop() {
+    public void stopIntaking() {
         intake_talon.set(ControlMode.PercentOutput, 0);
-    }
-
-    public int position() {
-        return lifter_talon.getSelectedSensorPosition();
     }
 }

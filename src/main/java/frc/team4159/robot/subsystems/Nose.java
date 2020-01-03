@@ -1,80 +1,39 @@
 package frc.team4159.robot.subsystems;
 
-import frc.team4159.robot.CollisionAvoidance;
-import frc.team4159.robot.Constants;
-import frc.team4159.robot.OI;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 
-public class Nose implements Subsystem {
-    private static Nose instance;
-    public static  Nose getInstance() {
-        if (instance == null) {
-            instance = new Nose();
-        }
-        return instance;
-    }
+import static frc.team4159.robot.Constants.*;
 
-    private DriverStation ds;
-    private OI oi;
-
+public class Nose extends SubsystemBase {
     private DoubleSolenoid raiser, hooks;
 
-    private boolean goal = false;
-
     public Nose() {
-        ds = DriverStation.getInstance();
-        oi = OI.getInstance();
-
-        hooks = new DoubleSolenoid(0, Constants.RAISER_FORWARD, Constants.RAISER_REVERSE);
-        raiser = new DoubleSolenoid(0, Constants.HOOKS_FORWARD, Constants.HOOKS_REVERSE);
+        hooks = new DoubleSolenoid(0, PORTS.RAISER_FORWARD, PORTS.RAISER_REVERSE);
+        raiser = new DoubleSolenoid(0, PORTS.HOOKS_FORWARD, PORTS.HOOKS_REVERSE);
     }
 
-    @Override
-    public void iterate() {
-        if (!ds.isEnabled()) {
-            return;
-        }
-
-        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.TOGGLE_HOOKS)) {
-            if (hooks_solenoid.get() == DoubleSolenoid.Value.kForward) {
-                hooksSolenoidRelease();
-            } else {
-                grab();
-            }
-        }
-
-        if (oi.getSecondaryJoy().getRawButtonPressed(Constants.CONTROLS.TOGGLE_RAISER)) {
-            goal = !goal;
-        }
-
-        boolean filtered_goal = goal;
-
-        if (filtered_goal) {
-            raise();
-        } else {
-            lower();
-        }
-    }
-
-    private void raise() {
-        raiser.set(DoubleSolenoid.Value.kForward);
-    }
-
-    private void lower() {
+    public void raiseIntake() {
         raiser.set(DoubleSolenoid.Value.kReverse);
     }
 
-    private void grab() {
+    public void lowerIntake() {
+        raiser.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void grabHatch() {
         hooks.set(DoubleSolenoid.Value.kForward);
     }
 
-    private void release() {
+    public void releaseHatch() {
         hooks.set(DoubleSolenoid.Value.kReverse);
     }
 
-    boolean raised() {
+    public boolean isRaised() {
         return raiser.get() == DoubleSolenoid.Value.kReverse;
+    }
+
+    public boolean isGrabbing() {
+        return hooks.get() == DoubleSolenoid.Value.kForward;
     }
 }
